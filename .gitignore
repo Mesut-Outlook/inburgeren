@@ -1,0 +1,11 @@
+# Local-only: copyrighted real CvTE exams — reproduction allowed only for
+# personal, non-commercial use, so these are NEVER published.
+data/lezen/examen_2023.js
+data/lezen/examen_2024.js
+data/lezen/examen_2025.js
+js/data-files.local.js
+
+# Local tooling / OS
+.claude/
+.DS_Store
+*.log
