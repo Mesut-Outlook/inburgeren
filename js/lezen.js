@@ -48,17 +48,28 @@
     function renderRunner() {
       var html = "";
       html += '<div class="exam-header">';
-      html += '<h2>' + escapeHtml(examen.titel) + '</h2>';
+      html += '<h2>' + escapeHtml(INB.tr(examen.titel)) + '</h2>';
       html += '<div class="exam-meta"><span class="pill">' + escapeHtml(INB.t("label_niveau")) + ": " + escapeHtml(examen.niveau || "") + '</span>';
       html += '<span class="pill">' + flat.length + ' ' + escapeHtml(INB.t("label_vragen")) + '</span></div>';
       html += '</div>';
 
       var teksten = examen.teksten || [];
+      var isKnm = examen.vak === "knm";
       for (var ti = 0; ti < teksten.length; ti++) {
         var tekst = teksten[ti];
-        html += '<section class="tekst-block card">';
-        html += '<h3>' + escapeHtml(INB.t("text_label")) + ' ' + (ti + 1) + ': ' + escapeHtml(tekst.titel || "") + '</h3>';
-        html += '<div class="tekst-html scroll-panel">' + (tekst.html || "") + '</div>';
+        // Non-KNM (Lezen/Luisteren): two-column layout — the reading text stays
+        // in a left column (.tekst-kolom) so it remains beside ALL of its
+        // questions (.vragen-list, right column). KNM has no reading panel and
+        // renders full-width.
+        html += '<section class="tekst-block card' + (isKnm ? " knm-block" : " tekst-block--split") + '">';
+        if (!isKnm) {
+          html += '<div class="tekst-kolom">';
+          html += '<h3>' + escapeHtml(INB.t("text_label")) + ' ' + (ti + 1) + ': ' + escapeHtml(tekst.titel || "") + '</h3>';
+          html += '<div class="tekst-html scroll-panel">' + (tekst.html || "") + '</div>';
+          html += '</div>'; // tekst-kolom
+        } else if (tekst.titel) {
+          html += '<h3>' + escapeHtml(tekst.titel) + '</h3>';
+        }
         html += '<div class="vragen-list">';
 
         var vragen = tekst.vragen || [];
@@ -167,10 +178,14 @@
     }
 
     function renderResult(correct, total, score, passed) {
+      var hasScoretabel = (examen.scoretabel || []).length > 0;
       var html = '<div class="result-screen card">';
       html += '<h2>' + escapeHtml(INB.t("result_title")) + '</h2>';
-      html += '<div class="result-score">' + score + '</div>';
-      html += '<p class="result-score-label">' + escapeHtml(INB.t("result_score_label")) + '</p>';
+      if (hasScoretabel) {
+        // Only exams with an official score conversion table show the NT2 score.
+        html += '<div class="result-score">' + score + '</div>';
+        html += '<p class="result-score-label">' + escapeHtml(INB.t("result_score_label")) + '</p>';
+      }
       html += '<p class="result-correct">' + escapeHtml(INB.t("result_correct_label")) + ': <strong>' + correct + ' / ' + total + '</strong></p>';
       html += '<div class="badge ' + (passed ? "badge-pass" : "badge-fail") + '">' + escapeHtml(passed ? INB.t("result_pass") : INB.t("result_fail")) + '</div>';
       html += '</div>';

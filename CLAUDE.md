@@ -1,72 +1,81 @@
-# CLAUDE.md — Inburgeren / NT2 Oefensite
+# CLAUDE.md — Inburgeringsexamen A2 oefensite
 
-Statische oefensite voor het **NT2 Staatsexamen Programma I (B1)** — voor een volwassene die **Engels en Turks** spreekt en Nederlands leert voor inburgering. **Pure static, geen build, geen ES-modules** (werkt op `file://` én via `python3 server.py`). Alle examen-**inhoud blijft Nederlands**; de UI, hints, woordglossen en antwoorduitleg zijn **drietalig (NL / EN / TR)** via een taalknop.
+Statische, **drietalige (NL / EN / TR)** oefensite voor het **Inburgeringsexamen op A2-niveau** (DUO) — voor een volwassene die Engels en Turks spreekt en Nederlands leert voor de inburgering. **Pure static, geen build, geen ES-modules** (werkt op `file://` én via `python3 server.py`, **poort 8126**). Examen-**inhoud blijft Nederlands**; UI, hints, woordglossen en antwoorduitleg zijn drietalig via een taalknop.
 
-## Doel & scope
-- Onderdeel **Lezen** eerst (Luisteren later — audio nog niet aanwezig).
-- Drie soorten oefening:
-  1. **Echte examens** (`bron:"echt"`) — letterlijk overgenomen uit de officiële PDF's (2023/2024/2025). ⚠️ Telijk: CvTE staat reproductie alleen toe voor *eigen, niet-commercieel* gebruik → echte examens **niet publiek hosten**; lokaal/privé houden.
-  2. **Oefenexamens** (`bron:"oefen"`) — zelf gegenereerde, gelijkende B1-teksten + MC-vragen. **Dit is wat publiek mag.**
-  3. **Woordenschat & zinsbouw** — woorden en zinsstructuren uit de examenteksten, met NL/EN/TR-uitleg.
+> **Niveau: A2 is primair.** Het basis-inburgeringsexamen is **A2**. Eerder gemaakte **B1 / NT2 Staatsexamen Programma I**-content (Lezen 2023/2024/2025 + bijbehorende woordenschat) is **opzijgezet**: de bestanden blijven lokaal op schijf staan maar worden **niet meer geladen** (verwijderd uit de manifests) en **niet getoond**. Niet opnieuw inschakelen tenzij gevraagd.
 
-## Echte examenstructuur (uit de PDF's)
-Lezen I = **6 teksten**, elk **5–7 meerkeuzevragen** (A/B/C/D), **totaal 35 vragen**. Domeinen: `werk` / `educatie` / `overig`. Tekstsoorten: `persuasief` / `instructief` / `descriptief` / `beschouwend`. **Geslaagd = ≥24 goed** (NT2-score ≥500). Per examen hoort een eigen **scoretabel** (punten→NT2-score) en eigen antwoordsleutel. Bron-PDF's: `/home/mesuto/Downloads/Inburgeren/Lezen/`.
+## Onderdelen (A2 inburgeringsexamen)
+Taalvaardigheden: **Lezen** (Reading), **Luisteren** (Listening), **Spreken** (Speaking), **Schrijven** (Writing). Kennis: **KNM** (Kennis van de Nederlandse Maatschappij). Daarnaast bestaan **ONA** en **PVT** (afhankelijk van inburgeringsdatum) — alleen informatief op de "Over het examen"-pagina. Slagen op niveau **A2 of hoger**.
+
+## Bronmateriaal (A2)
+Map `/home/mesuto/Downloads/Inburgeren/`:
+- `A2/Lezen/oefenexamen-1..4/` — DUO online oefenexamens, per vraag een screenshot `q01.png..q25.png` (**25 vragen/examen**, tekst links + **3 opties A/B/C** rechts). ⚠️ De screenshots bevatten **geen antwoordsleutel** (interactieve online examens) → het juiste antwoord wordt **door begrip bepaald** (A2 is eenvoudig genoeg; markeer als afgeleid antwoord).
+- `A2/Schrijven/oefenexamen-A2-schrijven-1..3.pdf` — schrijfopdrachten (productief).
+- `A2/KNM/voorbeeldexamen-1..2/` (PNG `s01..`) + PDF's — KNM-voorbeeldexamens.
+- `A2/Online-oefenexamens-LINKS.md` — DUO oefen-links (Lezen/Luisteren/Spreken/KNM; online, niet downloadbaar).
+- `Inburgeren Sinav Notlari/` — `KNS.pdf`, `KNS Exam notes.pdf`, `word notlaar.docx`, `Spreeken and Schrijven Notes.pdf`, `Tegenstelling - Karsit Anlamlilar.xlsx` (woordenschat/notities; andere agents extraheren deze).
 
 ## Structuur
 ```
-index.html              hub-shell + NL·EN·TR taalknop, views: "Examens" / "Mijn voortgang"
-css/style.css           thema (licht + dark via prefers-color-scheme), kaarten/badges
-js/i18n.js              UI-stringtabel nl/en/tr · INB.t(key) · INB.tr({nl,en,tr}) (fallback nl→en→tr) · taal in localStorage['inb_lang']
-js/bootstrap.js         window.INB · registerExamen() · registerWoorden() · getters
-js/store.js             localStorage (prefix inb_): examenpogingen + woorden-stats. Lees altijd met `|| {}` / `|| []`
-js/lezen.js             Lezen-runner: tekstpaneel + MC, globale nummering 1..N, score = #goed, NT2 = scoretabel[#goed]
-js/woorden.js           woorden-runner: teach/flashcard + oefenvragen (mc / invoer / gat)
-js/app.js               hub-render + hash-routing (#/, #/examen/<id>, #/woorden/<id>, #/voortgang) — LAATST geladen
-data/lezen/*.js         één registerExamen() per bestand
-data/woorden/*.js       één registerWoorden() per bestand
-server.py               statische server, **poort 8126**
+index.html              hub-shell + NL·EN·TR taalknop; views: Examens / Over het examen / Mijn voortgang
+css/style.css           pastel thema (licht primair + zachte dark) — GEEN paars (zie design-voorkeuren)
+js/i18n.js              UI-strings nl/en/tr · INB.t(key) · INB.tr({nl,en,tr})
+js/bootstrap.js         window.INB · registerExamen/registerWoorden · getOnderdelen (groepeert exams per vak) · getAllWoorden · ONDERDELEN (lezen/luisteren/spreken/schrijven/knm)
+js/store.js             localStorage (prefix inb_): examenpogingen + woorden-stats (guard met || {})
+js/lezen.js             Lezen-runner: tekstpaneel + MC (A/B/C of A/B/C/D), globale nummering, score + (optioneel) niveau-conversie
+js/woorden.js           woorden-runner: teach/flashcard + mc/invoer/gat
+js/app.js               hub + hash-routing: #/, #/examen/<id>, #/examen/<id>/stats, #/woorden/<id>, #/woorden/alle, #/info, #/voortgang — LAATST geladen
+js/data-files.js        PUBLIEKE manifest (INB.dataFiles) — de te laden A2-databestanden
+js/data-files.local.js  LOKALE override (gitignored) — extra/lokaal-only bestanden
+data/<vak>/*.js         databestanden (lezen/knm/schrijven/woorden/…), één register-call per bestand
+server.py               statische server, poort 8126
 ```
-**Script-volgorde in index.html** (cruciaal): i18n → bootstrap → store → lezen → woorden → data/lezen/* → data/woorden/* → app.js (laatst). Cache-busting `?v=` bumpen bij CSS/JS-wijzigingen.
+**Laadvolgorde (index.html):** core libs (i18n→bootstrap→store→lezen→woorden) → `data-files.js` → inline loader die `data-files.local.js` (optioneel) + alle `INB.dataFiles` + `app.js` + footer laadt. Ontbrekende bestanden worden stil overgeslagen (onerror). Bump `?v=` bij wijzigingen.
 
-## Datacontract — EXAMEN (`data/lezen/*.js`)
+## Werkverdeling (BELANGRIJK)
+Meerdere agents werken parallel. **Andere agents + AGY schrijven A2-databestanden rechtstreeks in `data/<vak>/`.** **Opus (ik) bezit en wijzigt de "kern": `index.html`, `js/data-files.js`, `js/data-files.local.js`, `js/app.js`, `js/i18n.js`, `js/bootstrap.js`, `js/lezen.js`, `js/woorden.js`, `css/style.css`, `CLAUDE.md`.** Databestand-agents raken deze kernbestanden NIET aan. Nieuwe databestanden worden door Opus in `js/data-files.js` gezet (wiring) en geverifieerd. (Andere agents lieten extractie-scripts/-output in de root achter: `extract*.py`, `extracted_*.txt` — staan in `.gitignore`.)
+
+**Naamconventie A2-databestanden:** `data/lezen/a2_lezen_1.js`…, `data/knm/a2_knm_1.js`…, `data/schrijven/a2_schrijven_1.js`…, `data/woorden/a2_woorden_*.js`. Achtergrond-subagents krijgen in deze omgeving GEEN permissies (Read/Bash geweigerd) → PDF/afbeelding-werk via FOREGROUND-subagents.
+
+## Datacontract — EXAMEN (`data/<vak>/*.js`)
 ```js
 INB.registerExamen({
-  id:"lezen-2024", vak:"lezen", jaar:2024, bron:"echt",   // "echt" | "oefen"
-  titel:"Lezen I — 2024", niveau:"B1", geslaagdVanaf:24,
-  scoretabel:[283, …, 694],   // index = #punten (0..N), waarde = NT2-score
+  id:"a2-lezen-1", vak:"lezen",          // lezen | luisteren | spreken | schrijven | knm
+  niveau:"A2",                            // "A2" (primair) | "B1" (NT2, verborgen)
+  bron:"duo-oefen",                       // herkomst (bv. DUO oefenexamen)
+  titel:"Lezen A2 — Oefenexamen 1",
+  geslaagdVanaf:<min #goed>,              // slaaggrens
+  scoretabel:[…],                         // optioneel; index=#punten → score. Weglaten = alleen #goed/totaal tonen
   teksten:[ {
-    titel:"Bakkerij", domein:"werk", tekstsoort:"persuasief",
+    titel:"…", domein:"…", tekstsoort:"…",
     html:`<p>…</p>`,
-    vragen:[ { vraag:"…?", opties:["A…","B…","C…","D…"], antwoord:1 /*0-based*/,
+    vragen:[ { vraag:"…?", opties:["A…","B…","C…"], antwoord:1 /*0-based*/,
+               antwoordBron:"afgeleid",   // optioneel: "afgeleid" als antwoord door begrip bepaald is (geen officiële sleutel)
                uitleg:{nl:"…",en:"…",tr:"…"} } ]
   } ]
 });
 ```
-Runner nummert vragen globaal 1..N, `score=#goed`, `NT2=scoretabel[#goed]`, `geslaagd = #goed>=geslaagdVanaf`. Resultaatscherm: grote NT2-score + geslaagd/gezakt-badge + per-vraag review met uitleg in de actieve taal. **Houd `scoretabel`-lengte = N+1** (anders out-of-range).
+KNM kan dezelfde vorm gebruiken (korte situatie als `html` + MC-vraag). **Schrijven/Spreken zijn productief** (opdracht + modelantwoord/zelfbeoordeling) → eigen runner later; voorlopig als onderdeel-placeholder of simpele opdracht-weergave.
 
 ## Datacontract — WOORDEN (`data/woorden/*.js`)
 ```js
 INB.registerWoorden({
-  id:"w-2024-werk", titel:"Woordenschat — Werk", bronExamen:"lezen-2024", icoon:"💼",
-  intro:{nl:"…",en:"…",tr:"…"},
-  items:[ {woord:"de bakkerij", nl:"…", en:"bakery", tr:"fırın", voorbeeld:"…"} ],
-  vragen:[
-    {type:"mc",     vraag:"…", opties:["…"], antwoord:0, uitleg:{nl,en,tr}},
-    {type:"invoer", vraag:"…", antwoord:"bakkerij", uitleg:{…}},  // case-insensitive, alternatieven met "a|b"
-    {type:"gat",    zin:"Ik koop brood bij de ___.", antwoord:"bakkerij", uitleg:{…}}
-  ]
+  id:"a2-woorden-1", titel:"Woordenschat A2 — …", bronExamen:"a2-lezen-1", icoon:"📖",
+  intro:{nl,en,tr},
+  items:[ {woord:"de buurt", nl:"…", en:"neighbourhood", tr:"mahalle", voorbeeld:"…"} ],
+  vragen:[ {type:"mc",vraag,opties,antwoord,uitleg:{nl,en,tr}},
+           {type:"invoer",vraag,antwoord:"a|b",uitleg},
+           {type:"gat",zin:"… ___ …",antwoord,uitleg} ]
 });
 ```
 
 ## Draaien & hosting
-`python3 server.py` → `http://localhost:8126/` (of `index.html` direct via `file://`). **Publiceren: GitHub Pages** (puur statisch, geen backend; scores in localStorage). **Alleen `bron:"oefen"` + woordenschat publiek**; echte examens via `.gitignore` uit de publieke repo houden.
+`python3 server.py` → `http://localhost:8126/`. **Publiceren: GitHub Pages** (puur statisch). Telijk: officiële DUO-oefenexamens zijn vrij beschikbaar oefenmateriaal (lager risico dan de CvTE-examens), maar houd dezelfde splitsing aan — twijfelachtige/letterlijke content kan lokaal blijven via `.gitignore` + `data-files.local.js`. git: branch `main`, user `Mesut-Outlook` / `ozdemirmesut@gmail.com`; `gh` niet geïnstalleerd → push/Pages doet de gebruiker zelf.
 
 ## Werkwijze (tokenbeleid)
-**Planning + coördinatie + verificatie door Opus 4.8; code en data-extractie door Sonnet-subagents** (mechanisch werk eventueel Haiku). PDF-extractie en bulk-generatie kunnen later via Antigravity CLI. Commit-trailer: `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`. Bij CSS/JS-wijziging de `?v=`-versie in `index.html` bumpen.
+**Planning + coördinatie + verificatie door Opus 4.8; code/data door Sonnet-subagents (mechanisch evt. Haiku).** Bulk PDF/afbeelding-extractie + generatie kan via AGY (Antigravity CLI) — verdeel per bestandseigenaarschap zodat niemand elkaars bestanden overschrijft. Commit-trailer: `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`. **Design: pastel, zacht, licht, elegant — NOOIT paars.**
 
-## Status
-- ✅ Skelet + Lezen-engine + woorden-runner + drietalige UI + dashboard (geverifieerd: node --check + headless render).
-- ✅ 1 sample-oefenexamen + 1 sample-woordenset (end-to-end werkend).
-- ⬜ Echte examens 2023/2024/2025 extraheren (taak #3).
-- ⬜ Meer oefenexamens + woordensets (taken #4/#5).
-- ⬜ GitHub Pages-publicatie (taak #6). ⬜ Luisteren + audio (later).
+## Status (2026-06-21)
+- ✅ Engine (Lezen/woorden), drietalige UI, 5-onderdelen-hub, "Over het examen", "Alle woorden", per-examen dashboard, pastel thema.
+- 🔄 **Omschakeling naar A2 bezig.** B1/NT2-content opzijgezet (niet geladen). A2-databestanden worden door andere agents/AGY in `data/` geschreven; Opus wired ze in `data-files.js`.
+- ⬜ A2 Lezen (4 oefenexamens), KNM, Schrijven, woordenschat A2 — in productie door agents. ⬜ Luisteren/Spreken (online/audio).

@@ -72,4 +72,74 @@
   INB.getWoordenSet = function (id) {
     return INB._woorden[id] || null;
   };
+
+  /** id of the virtual "all words" combined vocabulary set. */
+  INB.ALLE_WOORDEN_ID = "w-alle";
+
+  /**
+   * Build (on demand) a virtual vocabulary set that aggregates the items
+   * and vragen of every registered woorden set into one. Used by the
+   * "Alle woorden" combined practice card. Not stored in INB._woorden,
+   * so it never shows up twice in INB.getWoordenSets().
+   * @returns {Object|null} the combined set, or null if nothing is registered yet.
+   */
+  INB.getAllWoorden = function () {
+    var sets = INB.getWoordenSets() || [];
+    if (sets.length === 0) { return null; }
+    var items = [];
+    var vragen = [];
+    for (var i = 0; i < sets.length; i++) {
+      items = items.concat(sets[i].items || []);
+      vragen = vragen.concat(sets[i].vragen || []);
+    }
+    return {
+      id: INB.ALLE_WOORDEN_ID,
+      titel: { nl: "Alle woorden — alle examens", en: "All words — all exams", tr: "Tüm kelimeler — tüm sınavlar" },
+      icoon: "🗂️",
+      intro: { nl: "Oefen alle woorden uit alle woordensets in één keer.", en: "Practice all the words from every vocabulary set at once.", tr: "Tüm kelime setlerindeki kelimeleri bir kerede çalışın." },
+      items: items,
+      vragen: vragen
+    };
+  };
+
+  /**
+   * Onderdeel (exam component) section definitions for the hub, in display order.
+   * Each section groups registered exams by their `vak` field. Sections with
+   * no registered exams yet render as "in voorbereiding" placeholders, so the
+   * structure stays visible and new exams (e.g. vak:"luisteren") automatically
+   * slot into the right section once registered.
+   */
+  INB.ONDERDELEN = [
+    { vak: "lezen",      icoon: "📖", titelKey: "onderdeel_lezen_titel",      descKey: "onderdeel_lezen_desc",      noteKey: null },
+    { vak: "luisteren",  icoon: "🎧", titelKey: "onderdeel_luisteren_titel",  descKey: "onderdeel_luisteren_desc",  noteKey: "onderdeel_luisteren_note" },
+    { vak: "schrijven",  icoon: "✍️", titelKey: "onderdeel_schrijven_titel",  descKey: "onderdeel_schrijven_desc",  noteKey: "onderdeel_schrijven_note" },
+    { vak: "spreken",    icoon: "🗣️", titelKey: "onderdeel_spreken_titel",    descKey: "onderdeel_spreken_desc",    noteKey: "onderdeel_spreken_note" },
+    { vak: "knm",        icoon: "🏛️", titelKey: "onderdeel_knm_titel",        descKey: "onderdeel_knm_desc",        noteKey: "onderdeel_knm_note" }
+  ];
+
+  /**
+   * Group all registered exams by `vak`, returning one entry per item in
+   * INB.ONDERDELEN with its matching exams (possibly empty array).
+   * @returns {Array<{vak,icoon,titelKey,descKey,noteKey,examens:Array}>}
+   */
+  INB.getOnderdelen = function () {
+    var examens = INB.getExamens() || [];
+    var out = [];
+    for (var i = 0; i < INB.ONDERDELEN.length; i++) {
+      var def = INB.ONDERDELEN[i];
+      var matched = [];
+      for (var j = 0; j < examens.length; j++) {
+        if (examens[j].vak === def.vak) { matched.push(examens[j]); }
+      }
+      out.push({
+        vak: def.vak,
+        icoon: def.icoon,
+        titelKey: def.titelKey,
+        descKey: def.descKey,
+        noteKey: def.noteKey,
+        examens: matched
+      });
+    }
+    return out;
+  };
 })();

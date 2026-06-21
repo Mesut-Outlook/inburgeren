@@ -5,6 +5,19 @@ data/lezen/examen_2024.js
 data/lezen/examen_2025.js
 js/data-files.local.js
 
+# Intermediate extraction scripts/outputs left by helper agents (not part of the site)
+extract*.py
+debug_extract.py
+read_*.py
+extracted_*.txt
+*_extracted.txt
+extracted_images/
+generate_answer_keys.py
+scratch_inspect.py
+test_write.txt
+test_review_write.txt
+knm_debug_screenshot.png
+
 # Local tooling / OS
 .claude/
 .DS_Store

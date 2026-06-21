@@ -9,16 +9,20 @@
 
   var STRINGS = {
     // ---- nav / header ----
-    app_title:        { nl: "Inburgeren NT2 — Lezen", en: "Inburgeren NT2 — Reading", tr: "Inburgeren NT2 — Okuma" },
+    app_title:        { nl: "Inburgeringsexamen A2", en: "Civic Integration Exam A2", tr: "İnburgering Sınavı A2" },
+    app_tagline:       { nl: "Oefenen voor het inburgeringsexamen", en: "Practice for the civic integration exam", tr: "İnburgering sınavı için pratik yapın" },
     nav_examens:       { nl: "Examens", en: "Exams", tr: "Sınavlar" },
     nav_voortgang:     { nl: "Mijn voortgang", en: "My progress", tr: "İlerlemem" },
+    nav_info:          { nl: "Over het examen", en: "About the exam", tr: "Sınav hakkında" },
     lang_nl:           { nl: "Nederlands", en: "Dutch", tr: "Hollandaca" },
     lang_en:           { nl: "Engels", en: "English", tr: "İngilizce" },
     lang_tr:           { nl: "Turks", en: "Turkish", tr: "Türkçe" },
 
     // ---- hub ----
-    hub_examens_title:    { nl: "Leesexamens", en: "Reading exams", tr: "Okuma sınavları" },
-    hub_examens_sub:      { nl: "Kies een examen om te oefenen.", en: "Pick an exam to practice.", tr: "Pratik yapmak için bir sınav seçin." },
+    hub_examens_title:    { nl: "Onderdelen van het examen", en: "Exam components", tr: "Sınav bölümleri" },
+    hub_examens_sub:      { nl: "Oefen de vijf onderdelen van het inburgeringsexamen A2: Lezen, Luisteren, Spreken, Schrijven en KNM.",
+                             en: "Practice the five components of the A2 civic integration exam: Reading, Listening, Speaking, Writing and KNM.",
+                             tr: "A2 İnburgering sınavının beş bölümünü çalışın: Okuma, Dinleme, Konuşma, Yazma ve KNM." },
     hub_woorden_title:    { nl: "Woordenschat & zinsbouw", en: "Vocabulary & sentence structure", tr: "Kelime bilgisi ve cümle yapısı" },
     hub_woorden_sub:      { nl: "Oefen de woorden uit de examens.", en: "Practice the words from the exams.", tr: "Sınavlardaki kelimeleri çalışın." },
     badge_echt:           { nl: "Echt examen", en: "Real exam", tr: "Gerçek sınav" },
@@ -29,6 +33,28 @@
     label_items:          { nl: "woorden", en: "words", tr: "kelime" },
     btn_start:            { nl: "Start", en: "Start", tr: "Başla" },
     btn_bekijk:           { nl: "Bekijk", en: "View", tr: "Görüntüle" },
+    btn_resultaten:       { nl: "Resultaten", en: "Results", tr: "Sonuçlar" },
+
+    // ---- onderdeel sections ----
+    onderdeel_lezen_titel:      { nl: "Lezen", en: "Reading", tr: "Okuma" },
+    onderdeel_lezen_desc:       { nl: "Lees teksten en beantwoord meerkeuzevragen.", en: "Read texts and answer multiple-choice questions.", tr: "Metinleri okuyun ve çoktan seçmeli soruları cevaplayın." },
+    onderdeel_luisteren_titel:  { nl: "Luisteren", en: "Listening", tr: "Dinleme" },
+    onderdeel_luisteren_desc:   { nl: "Luister naar gesprekken en beantwoord vragen.", en: "Listen to conversations and answer questions.", tr: "Konuşmaları dinleyin ve soruları cevaplayın." },
+    onderdeel_schrijven_titel:  { nl: "Schrijven", en: "Writing", tr: "Yazma" },
+    onderdeel_schrijven_desc:   { nl: "Schrijf korte teksten zoals formulieren, berichten en brieven.", en: "Write short texts such as forms, messages and letters.", tr: "Formlar, mesajlar ve mektuplar gibi kısa metinler yazın." },
+    onderdeel_spreken_titel:    { nl: "Spreken", en: "Speaking", tr: "Konuşma" },
+    onderdeel_spreken_desc:     { nl: "Oefen met spreken in alledaagse situaties.", en: "Practice speaking in everyday situations.", tr: "Günlük durumlarda konuşma pratiği yapın." },
+    onderdeel_knm_titel:        { nl: "KNM — Kennis van de Nederlandse Maatschappij", en: "KNM — Knowledge of Dutch Society", tr: "KNM — Hollanda Toplumu Bilgisi" },
+    onderdeel_knm_desc:         { nl: "Toets je kennis van de Nederlandse samenleving.", en: "Test your knowledge of Dutch society.", tr: "Hollanda toplumu hakkındaki bilginizi test edin." },
+    onderdeel_in_voorbereiding: { nl: "In voorbereiding", en: "Coming soon", tr: "Yakında" },
+    onderdeel_luisteren_note:   { nl: "Audio-oefeningen worden nog toegevoegd.", en: "Audio exercises will be added soon.", tr: "Ses alıştırmaları yakında eklenecek." },
+    onderdeel_schrijven_note:   { nl: "Schrijfoefeningen worden nog toegevoegd.", en: "Writing exercises will be added soon.", tr: "Yazma alıştırmaları yakında eklenecek." },
+    onderdeel_spreken_note:     { nl: "Spreekoefeningen worden nog toegevoegd.", en: "Speaking exercises will be added soon.", tr: "Konuşma alıştırmaları yakında eklenecek." },
+    onderdeel_knm_note:         { nl: "KNM-oefeningen worden nog toegevoegd.", en: "KNM exercises will be added soon.", tr: "KNM alıştırmaları yakında eklenecek." },
+
+    // ---- alle woorden ----
+    alle_woorden_titel:   { nl: "Alle woorden — alle examens", en: "All words — all exams", tr: "Tüm kelimeler — tüm sınavlar" },
+    alle_woorden_intro:   { nl: "Oefen alle woorden uit alle woordensets in één keer.", en: "Practice all the words from every vocabulary set at once.", tr: "Tüm kelime setlerindeki kelimeleri bir kerede çalışın." },
 
     // ---- exam runner ----
     btn_check:            { nl: "Nakijken", en: "Check", tr: "Kontrol et" },
@@ -54,6 +80,28 @@
     explanation_label:    { nl: "Uitleg", en: "Explanation", tr: "Açıklama" },
     no_answer:            { nl: "(geen antwoord)", en: "(no answer)", tr: "(cevap yok)" },
 
+    // ---- productieve onderdelen (schrijven / spreken) ----
+    label_taken:          { nl: "opdrachten", en: "tasks", tr: "görev" },
+    situatie_label:       { nl: "Situatie", en: "Situation", tr: "Durum" },
+    opdracht_label:       { nl: "Opdracht", en: "Task", tr: "Görev" },
+    eisen_label:          { nl: "Eisen", en: "Requirements", tr: "Gereksinimler" },
+    prod_intro_schrijven: { nl: "Schrijf zelf je antwoord en vergelijk daarna met het modelantwoord. Deze oefening wordt niet automatisch beoordeeld.", en: "Write your own answer, then compare it with the model answer. This exercise is not scored automatically.", tr: "Kendi cevabınızı yazın, ardından model cevapla karşılaştırın. Bu alıştırma otomatik puanlanmaz." },
+    prod_intro_spreken:   { nl: "Spreek je antwoord hardop uit en vergelijk daarna met de modelantwoorden. Deze oefening wordt niet automatisch beoordeeld.", en: "Say your answer out loud, then compare it with the model answers. This exercise is not scored automatically.", tr: "Cevabınızı yüksek sesle söyleyin, ardından model cevaplarla karşılaştırın. Bu alıştırma otomatik puanlanmaz." },
+    jouw_antwoord_label:  { nl: "Jouw antwoord", en: "Your answer", tr: "Cevabınız" },
+    jouw_antwoord_ph:     { nl: "Typ hier je antwoord…", en: "Type your answer here…", tr: "Cevabınızı buraya yazın…" },
+    toon_model:           { nl: "Toon modelantwoord", en: "Show model answer", tr: "Model cevabı göster" },
+    verberg_model:        { nl: "Verberg modelantwoord", en: "Hide model answer", tr: "Model cevabı gizle" },
+    model_label:          { nl: "Modelantwoord", en: "Model answer", tr: "Model cevap" },
+    tips_label:           { nl: "Tip", en: "Tip", tr: "İpucu" },
+    self_eval_title:      { nl: "Zelfbeoordeling", en: "Self-evaluation", tr: "Kendi kendini değerlendirme" },
+    self_eval_label:      { nl: "Voldoet jouw antwoord aan alle eisen?", en: "Does your answer meet all requirements?", tr: "Cevabınız tüm gereksinimleri karşılıyor mu?" },
+    btn_eval_yes:         { nl: "Ja (Voldoet)", en: "Yes (Pass)", tr: "Evet (Geçti)" },
+    btn_eval_no:          { nl: "Nee (Niet voldoende)", en: "No (Fail)", tr: "Hayır (Geçmedi)" },
+    btn_record_start:     { nl: "Opname starten", en: "Start recording", tr: "Kaydı başlat" },
+    btn_record_stop:      { nl: "Opname stoppen", en: "Stop recording", tr: "Kaydı durdur" },
+    recording_label:      { nl: "Opname", en: "Recording", tr: "Kayıt" },
+    model_antwoorden_label: { nl: "Modelantwoorden", en: "Model answers", tr: "Model cevaplar" },
+
     // ---- woorden ----
     woorden_teach_title:  { nl: "Woorden leren", en: "Learn the words", tr: "Kelimeleri öğren" },
     woorden_practice_title:{ nl: "Oefenen", en: "Practice", tr: "Alıştırma" },
@@ -63,9 +111,30 @@
     fill_gap_placeholder: { nl: "Vul het ontbrekende woord in…", en: "Fill in the missing word…", tr: "Eksik kelimeyi yazın…" },
     type_answer_placeholder:{ nl: "Typ je antwoord…", en: "Type your answer…", tr: "Cevabınızı yazın…" },
     result_percent_label: { nl: "Percentage goed", en: "Percent correct", tr: "Doğru yüzdesi" },
+    no_practice_questions:{ nl: "Deze set heeft nog geen oefenvragen.", en: "This set has no practice questions yet.", tr: "Bu sette henüz alıştırma sorusu yok." },
+    streak_label:         { nl: "serie", en: "streak", tr: "seri" },
+    feedback_correct:     { nl: "Goed gedaan!", en: "Well done!", tr: "Doğru!" },
+    feedback_wrong:       { nl: "Helaas, niet juist.", en: "Not quite.", tr: "Yanlış oldu." },
+    requeue_note:         { nl: "Deze vraag komt straks nog een keer terug.", en: "This question will come back again later.", tr: "Bu soru birazdan tekrar gelecek." },
+    btn_continue:         { nl: "Verder", en: "Continue", tr: "Devam" },
+    practice_done_title:  { nl: "Klaar!", en: "Done!", tr: "Bitti!" },
+    enc_high:             { nl: "Geweldig gedaan! 🌟", en: "Excellent work! 🌟", tr: "Harikasın! 🌟" },
+    enc_mid:              { nl: "Goed bezig — blijf oefenen!", en: "Nice job — keep it up!", tr: "Aferin — devam et!" },
+    enc_low:             { nl: "Blijf oefenen, je wordt steeds beter!", en: "Keep practicing, you're getting better!", tr: "Çalışmaya devam, gittikçe gelişiyorsun!" },
 
     // ---- voortgang dashboard ----
     voortgang_title:      { nl: "Mijn voortgang", en: "My progress", tr: "İlerlemem" },
+    vg_intro:             { nl: "Zie in één oogopslag wat je al hebt gedaan en wat er nog op je wacht.",
+                             en: "See at a glance what you've done and what's still waiting for you.",
+                             tr: "Neyi tamamladığını ve neyin seni beklediğini tek bakışta gör." },
+    vg_done_count:        { nl: "Afgerond", en: "Completed", tr: "Tamamlanan" },
+    vg_woorden_mastered:  { nl: "Woordsets ≥80%", en: "Word sets ≥80%", tr: "Kelime setleri ≥80%" },
+    vg_status_geslaagd:   { nl: "Geslaagd", en: "Passed", tr: "Geçti" },
+    vg_status_bezig:      { nl: "Bijna!", en: "Almost!", tr: "Az kaldı!" },
+    vg_status_todo:       { nl: "Nog te doen", en: "Not started", tr: "Henüz yapılmadı" },
+    vg_status_gedaan:     { nl: "Gedaan", en: "Done", tr: "Yapıldı" },
+    vg_status_top:        { nl: "Top!", en: "Mastered!", tr: "Süper!" },
+    vg_status_oefenen:    { nl: "Blijf oefenen", en: "Keep practicing", tr: "Çalışmaya devam" },
     card_exams_taken:     { nl: "Examens gemaakt", en: "Exams taken", tr: "Yapılan sınavlar" },
     card_avg_score:       { nl: "Gemiddelde NT2-score", en: "Average NT2 score", tr: "Ortalama NT2 puanı" },
     card_best_score:      { nl: "Beste score", en: "Best score", tr: "En iyi puan" },
@@ -80,8 +149,64 @@
     table_times:          { nl: "Keer geoefend", en: "Times practiced", tr: "Alıştırma sayısı" },
     table_best:           { nl: "Beste %", en: "Best %", tr: "En iyi %" },
     no_woorden_practice:  { nl: "Nog geen woordenoefeningen gedaan.", en: "No vocabulary practice yet.", tr: "Henüz kelime alıştırması yapılmadı." },
+    vg_alle_oefeningen:   { nl: "Alle oefeningen", en: "All exercises", tr: "Tüm alıştırmalar" },
+    vg_col_onderdeel:     { nl: "Onderdeel", en: "Component", tr: "Bölüm" },
+    vg_col_oefening:      { nl: "Oefening", en: "Exercise", tr: "Alıştırma" },
+    vg_col_resultaat:     { nl: "Resultaat", en: "Result", tr: "Sonuç" },
+    vg_col_status:        { nl: "Status", en: "Status", tr: "Durum" },
+    vg_col_keer:          { nl: "Keer", en: "Times", tr: "Kez" },
+    vg_col_beste:         { nl: "Beste", en: "Best", tr: "En iyi" },
+    vg_col_gemiddeld:     { nl: "Gemiddeld", en: "Average", tr: "Ortalama" },
+    vg_gemiddeld:         { nl: "gem.", en: "avg", tr: "ort." },
+    vg_vak_woorden:       { nl: "Woorden", en: "Words", tr: "Kelime" },
 
-    footer_note:          { nl: "Lokaal opgeslagen in je browser — geen account nodig.", en: "Stored locally in your browser — no account needed.", tr: "Tarayıcınızda yerel olarak saklanır — hesap gerekmez." }
+    footer_note:          { nl: "Onofficiële oefensite voor het inburgeringsexamen A2 — lokaal opgeslagen in je browser, geen account nodig.",
+                             en: "Unofficial practice site for the A2 civic integration exam — stored locally in your browser, no account needed.",
+                             tr: "A2 İnburgering sınavı için resmi olmayan alıştırma sitesi — tarayıcınızda yerel olarak saklanır, hesap gerekmez." },
+
+    // ---- per-exam stats page ----
+    stats_title:          { nl: "Resultaten", en: "Results", tr: "Sonuçlar" },
+    stats_attempts:       { nl: "Pogingen", en: "Attempts", tr: "Denemeler" },
+    stats_best_score:     { nl: "Beste NT2-score", en: "Best NT2 score", tr: "En iyi NT2 puanı" },
+    stats_last_score:     { nl: "Laatste score", en: "Last score", tr: "Son puan" },
+    stats_timeline_title: { nl: "Geschiedenis", en: "History", tr: "Geçmiş" },
+    no_exam_found:        { nl: "Examen niet gevonden.", en: "Exam not found.", tr: "Sınav bulunamadı." },
+    no_set_found:         { nl: "Set niet gevonden.", en: "Set not found.", tr: "Set bulunamadı." },
+
+    // ---- info page ----
+    info_title:               { nl: "Over het examen", en: "About the exam", tr: "Sınav hakkında" },
+    info_intro: { nl: "Het inburgeringsexamen op A2-niveau toetst je Nederlandse taalvaardigheid en je kennis van de Nederlandse samenleving. Hieronder een kort overzicht van de onderdelen — gebaseerd op de officiële informatie van inburgeren.nl.",
+                  en: "The civic integration exam at A2 level tests your Dutch language skills and your knowledge of Dutch society. Below is a short overview of the components — based on the official information from inburgeren.nl.",
+                  tr: "A2 seviyesindeki İnburgering sınavı Hollandaca dil becerilerinizi ve Hollanda toplumu hakkındaki bilginizi test eder. Aşağıda inburgeren.nl'deki resmi bilgilere dayanan kısa bir özet bulabilirsiniz." },
+    info_taalvaardigheden_titel: { nl: "Taalvaardigheden", en: "Language skills", tr: "Dil becerileri" },
+    info_taalvaardigheden_desc: { nl: "Vier onderdelen toetsen je Nederlands op A2-niveau: Lezen, Luisteren, Schrijven en Spreken.",
+                                   en: "Four components test your Dutch at A2 level: Reading, Listening, Writing and Speaking.",
+                                   tr: "Hollandacanızı A2 seviyesinde dört bölüm test eder: Okuma, Dinleme, Yazma ve Konuşma." },
+    info_knm_titel: { nl: "KNM — Kennis van de Nederlandse Maatschappij", en: "KNM — Knowledge of Dutch Society", tr: "KNM — Hollanda Toplumu Bilgisi" },
+    info_knm_desc: { nl: "KNM is verplicht voor iedereen die moet inburgeren. Het toetst je kennis van wonen, werken, gezondheid, geschiedenis en de Nederlandse normen en waarden.",
+                      en: "KNM is mandatory for everyone who has to integrate. It tests your knowledge of housing, work, health, history, and Dutch norms and values.",
+                      tr: "KNM, entegrasyon yükümlülüğü olan herkes için zorunludur. Barınma, çalışma, sağlık, tarih ve Hollanda norm ve değerleri hakkındaki bilginizi test eder." },
+    info_ona_pvt_titel: { nl: "ONA en PVT (afhankelijk van je situatie)", en: "ONA and PVT (depending on your situation)", tr: "ONA ve PVT (durumunuza bağlı olarak)" },
+    info_ona_pvt_desc: { nl: "Afhankelijk van je inburgeringsdatum moet je mogelijk ook ONA (Oriëntatie op de Nederlandse Arbeidsmarkt) en het PVT (Participatieverklaringstraject) afronden.",
+                          en: "Depending on your integration start date, you may also need to complete ONA (Orientation on the Dutch Labour Market) and the PVT (Participation Statement process).",
+                          tr: "Entegrasyon başlangıç tarihinize bağlı olarak ONA (Hollanda İş Piyasasına Yönelim) ve PVT (Katılım Beyanı süreci) sürecini de tamamlamanız gerekebilir." },
+    info_niveau_titel: { nl: "Vereist niveau", en: "Required level", tr: "Gerekli seviye" },
+    info_niveau_desc: { nl: "Het basis-inburgeringsexamen leg je af op niveau A2, met de onderdelen Lezen, Luisteren, Spreken en Schrijven plus KNM (en, afhankelijk van je inburgeringsdatum, ONA en/of het PVT). Deze site oefent in de eerste plaats met dit A2-examen. Wie liever via de B1-route inburgert, kan in plaats daarvan het NT2 Staatsexamen Programma I (B1) doen — dat is een afzonderlijk, hoger niveau-traject en geen onderdeel van het standaard A2-examen.",
+                         en: "The basic civic integration exam is taken at A2 level, with the components Reading, Listening, Speaking and Writing plus KNM (and, depending on your integration start date, ONA and/or the PVT). This site's practice material is primarily aimed at this A2 exam. People who prefer to integrate via the B1 route can instead take the NT2 Staatsexamen Programma I (B1) — a separate, higher-level option, not part of the standard A2 exam.",
+                         tr: "Temel İnburgering sınavı A2 seviyesinde yapılır; Okuma, Dinleme, Konuşma ve Yazma bölümleriyle birlikte KNM (ve entegrasyon başlangıç tarihinize bağlı olarak ONA ve/veya PVT) içerir. Bu sitedeki alıştırma materyali öncelikle bu A2 sınavına yöneliktir. B1 rotası ile entegrasyonu tercih edenler bunun yerine NT2 Staatsexamen Programma I (B1) sınavına girebilir — bu, standart A2 sınavının bir parçası olmayan, ayrı ve daha yüksek seviyeli bir seçenektir." },
+    info_pip_titel: { nl: "Persoonlijk Plan Inburgering en Participatie (PIP)", en: "Personal Integration and Participation Plan (PIP)", tr: "Kişisel Entegrasyon ve Katılım Planı (PIP)" },
+    info_pip_desc: { nl: "Je gemeente stelt samen met jou een PIP op. Je deadline hangt af van je inburgeringsdatum — check dit in je Mijn Inburgering account.",
+                      en: "Your municipality creates a PIP together with you. Your deadline depends on your integration date — check this in your Mijn Inburgering account.",
+                      tr: "Belediyeniz sizinle birlikte bir PIP hazırlar. Son tarihiniz entegrasyon tarihinize bağlıdır — bunu Mijn Inburgering hesabınızdan kontrol edin." },
+    info_vrijstelling_titel: { nl: "Vrijstelling", en: "Exemptions", tr: "Muafiyet" },
+    info_vrijstelling_desc: { nl: "In sommige gevallen kun je vrijstelling krijgen, bijvoorbeeld bij ziekte/beperking of als je al een erkend diploma hebt.",
+                                en: "In some cases you can get an exemption, for example due to illness/disability or if you already have a recognized diploma.",
+                                tr: "Bazı durumlarda muafiyet alabilirsiniz, örneğin hastalık/engellilik durumunda veya zaten tanınmış bir diplomanız varsa." },
+    info_disclaimer_titel: { nl: "Let op: dit is geen officiële site", en: "Note: this is not an official site", tr: "Dikkat: bu resmi bir site değildir" },
+    info_disclaimer_desc: { nl: "Deze website is een onofficiële oefensite. Voor officiële informatie, inschrijving en regelgeving ga je naar inburgeren.nl en DUO.",
+                              en: "This website is an unofficial practice site. For official information, registration and rules, go to inburgeren.nl and DUO.",
+                              tr: "Bu web sitesi resmi olmayan bir alıştırma sitesidir. Resmi bilgi, kayıt ve kurallar için inburgeren.nl ve DUO'yu ziyaret edin." },
+    info_link_label: { nl: "Officiële informatie over het examen (inburgeren.nl)", en: "Official information about the exam (inburgeren.nl)", tr: "Sınav hakkında resmi bilgi (inburgeren.nl)" }
   };
 
   function getLang() {
@@ -109,9 +234,10 @@
     return entry[lang] || entry.nl || entry.en || entry.tr || key;
   }
 
-  // INB.tr({nl,en,tr}) -> string in current language with nl -> en -> tr fallback
+  // INB.tr({nl,en,tr} or string) -> string in current language with nl -> en -> tr fallback
   function tr(obj) {
     if (!obj) { return ""; }
+    if (typeof obj === "string") { return obj; }
     var lang = (window.INB && window.INB._lang) || getLang();
     return obj[lang] || obj.nl || obj.en || obj.tr || "";
   }

@@ -1,13 +1,36 @@
 /* data-files.js — PUBLIC data manifest (committed, safe to publish).
- * Lists the data files that are loaded on EVERY deployment, including the
- * public GitHub Pages site: generated practice exams (bron:"oefen") and the
- * vocabulary sets. The three REAL CvTE exams are added only locally via the
- * gitignored js/data-files.local.js override (see .gitignore). */
+ * Lists the A2 data files loaded on every deployment. Opus wires new A2 files
+ * here as agents add them under data/<vak>/ (see CLAUDE.md "Werkverdeling").
+ *
+ * NOTE: the earlier B1 / NT2 content (examen_2023/24/25, w_2023/24/25, the B1
+ * oefen sample) is intentionally NOT listed here — it is set aside (files stay
+ * on disk but are not loaded or shown). Do not re-add unless asked. */
 window.INB = window.INB || {};
 INB.dataFiles = [
-  "data/lezen/examen_oefen_1.js?v=1",
-  "data/woorden/w_2023.js?v=2",
-  "data/woorden/w_2024.js?v=2",
-  "data/woorden/w_2025.js?v=2",
-  "data/woorden/w_oefen_1.js?v=1"
+  // A2 data files:
+  "data/woorden/a2_woorden_tegenstellingen.js?v=1",
+  "data/woorden/a2_woorden_tegenstellingen_2.js?v=1",
+  "data/woorden/a2_woorden_knm.js?v=1",
+  "data/woorden/a2_woorden_knm_2.js?v=1",
+  "data/woorden/a2_woorden_basis_1.js?v=1",
+  "data/woorden/a2_woorden_basis_2.js?v=1",
+  "data/woorden/a2_woorden_basis_3.js?v=1",
+  "data/woorden/a2_woorden_basis_4.js?v=1",
+  "data/woorden/a2_woorden_basis_5.js?v=1",
+  "data/woorden/a2_woorden_basis_6.js?v=1",
+  "data/woorden/a2_woorden_zinnen.js?v=1",
+  "data/knm/a2_knm_1.js?v=1",
+  "data/schrijven/a2_schrijven_1.js?v=1",
+  "data/schrijven/a2_schrijven_2.js?v=1",
+  "data/schrijven/a2_schrijven_3.js?v=1",
+  "data/schrijven/a2_schrijven_notities.js?v=1",
+  "data/spreken/a2_spreken_1.js?v=1",
+  "data/spreken/a2_spreken_2.js?v=1",
+  "data/spreken/a2_spreken_notities.js?v=1",
+  "data/lezen/a2_lezen_1.js?v=1",
+  "data/lezen/a2_lezen_2.js?v=1",
+  "data/lezen/a2_lezen_3.js?v=1",
+  "data/lezen/a2_lezen_4.js?v=1",
+  "data/knm/a2_knm_oefen_1.js?v=1",
+  "data/knm/a2_knm_oefen_2.js?v=1"
 ];
