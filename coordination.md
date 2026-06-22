@@ -110,6 +110,10 @@ Build a set of **thematic A2 beginner vocab files** `data/woorden/a2_woorden_bas
 - `data/lezen/a2_lezen_2.js`  ✅ wired & tested
 - `data/lezen/a2_lezen_3.js`  ✅ wired & tested
 - `data/lezen/a2_lezen_4.js`  ✅ wired & tested
+- `data/lezen/a2_lezen_5.js`  ✅ wired & tested
+- `data/lezen/a2_lezen_6.js`  ✅ wired & tested
+- `data/lezen/a2_lezen_7.js`  ✅ wired & tested
+- `data/lezen/a2_lezen_8.js`  ✅ wired & tested
 - `data/knm/a2_knm_oefen_1.js`  ✅ wired & tested
 - `data/knm/a2_knm_oefen_2.js`  ✅ wired & tested
 - `data/woorden/a2_woorden_basis_6.js`  ✅ wired & tested
@@ -120,6 +124,17 @@ Build a set of **thematic A2 beginner vocab files** `data/woorden/a2_woorden_bas
 - `data/schrijven/a2_schrijven_notities.js`  ✅ wired & tested
 - `data/spreken/a2_spreken_2.js`  ✅ wired & tested
 - `data/spreken/a2_spreken_notities.js`  ✅ wired & tested
+- `data/knm/a2_knm_thema_1_werk.js`  ✅ wired & tested (Task 10, 14 vragen)
+- `data/knm/a2_knm_thema_2_omgang.js`  ✅ wired & tested (Task 10, 13 vragen)
+- `data/knm/a2_knm_thema_3_wonen.js`  ✅ wired & tested (Task 10, 12 vragen)
+- `data/knm/a2_knm_thema_4_gezondheid.js`  ✅ wired & tested (Task 10, 16 vragen)
+- `data/knm/a2_knm_thema_5_geschiedenis.js`  ✅ wired & tested (Task 10, 14 vragen)
+- `data/knm/a2_knm_thema_6_instanties.js`  ✅ wired & tested (Task 10, 13 vragen)
+- `data/knm/a2_knm_thema_7_onderwijs.js`  ✅ wired & tested (Task 10, 13 vragen)
+- `data/knm/a2_knm_thema_8_politiek.js`  ✅ wired & tested (Task 10, 13 vragen)
+- `data/knm/a2_knm_oefen_3.js`  ✅ produced (not yet wired)
+- `data/knm/a2_knm_oefen_4.js`  ✅ produced (not yet wired)
+
 
 ---
 
@@ -151,3 +166,142 @@ The site's biggest content gap was Schrijven & Spreken: only ONE file each. We h
 - **Task 9 — NEW: "Veelgebruikte zinnen & uitdrukkingen" (daily phrases) vocab set:** **DONE** (created and wired `a2_woorden_zinnen.js` with 50 high-quality phrases and 20 practice questions).
 
 > AGY: produce only the `data/woorden/*.js` files above; Opus wires + bumps versions. Content quality (accurate de/het, correct TR) over quantity. After this, the site's beginner vocab is genuinely comprehensive.
+
+---
+
+## 7. NEW: KNM thema-oefentoetsen — research-backed (2026-06-22, by 2 Opus research subagents)
+
+Two research subagents searched the web for **real, previously-used KNM exam questions and the recurring topics**. The richest find: three full community practice exams **with answer keys** — *Knoester Trainingen "Oefentoets 003 / 007 / 010 / 011"* (hosted on steunpuntvluchtelingendebilt.nl & taalabc.nl). These are teacher/community material modelled closely on the real DUO KNM exam (the **official** DUO online KNM exams publish **no** answer key — same situation as Lezen). Everything below is sourced; verbatim items carry the published key.
+
+### Confirmed exam structure (use this for the new files)
+- **~40 vragen** per real KNM exam (some sources say 45), **45 min**, pass ≈ **60%** (~24–28 goed). Multiple choice: mostly **3 opties A/B/C**, some 4 (A–D), and **many `Waar` / `Niet waar`** (true/false) items. The real exam shows a **short video/situation**, then the question → so items are **situational** ("U bent…, wat doet u het beste?").
+- Official source booklets: **"Welkom in Nederland"** (Coutinho, 4e ed. — aangepast aan de **nieuwe KNM-eindtermen per 1 juli 2025**) and **"Kom verder!"**.
+- **2025-herziening (per 1 juli 2025):** extra nadruk op **zelfbeschikkingsrecht van vrouwen**, **kennis van de Holocaust + herkennen van antisemitisme**, en **recht boven religie/cultuur**. Lean factual.
+
+### ⚠️ Current-facts cautions (do NOT bake outdated facts into questions)
+- **Minister-president:** RESEARCH CONFLICT. One subagent (web, June 2026) reports **Rob Jetten** (D66, beëdigd 23 feb 2026); the project's earlier QA note (§5) and `a2_knm_oefen_2.js` use **Dick Schoof** (PM jul 2024–feb 2026). → **Safest rule for A2: do NOT name the sitting PM in any new question.** A2 KNM asks the *role* ("wie leidt het kabinet?" → de minister-president), not the name. If a name is unavoidable, Opus confirms the current one before wiring.
+- ✅ Stable facts (safe to use): koning **Willem-Alexander**; **12 provincies**; hoofdstad **Amsterdam**; regeringszetel **Den Haag**; Tweede Kamer **150**, Eerste Kamer **75**; buurlanden **België & Duitsland**; munt **euro**; leerplicht vanaf **5** tot **16** + **kwalificatieplicht tot 18**.
+- ❌ **Avoid** "partij links/midden/rechts" placement questions (PVV/BBB/NSC/D66-kabinet — landscape shifted, ages badly). Possibly dated: **CIZ vs gemeente** for thuiszorg (Wmo-routing changed) — prefer clearer items.
+
+---
+
+### Task 10 — Build 8 thematic KNM practice sets (AGY: produce only `data/knm/*.js`)
+
+Create **one file per official KNM theme**, standard `INB.registerExamen` schema (KNM runs on the Lezen runner — short situation in `teksten[].html`, MC in `vragen[]`). Aim **12–20 vragen each**, `vak:"knm"`, `niveau:"A2"`, `bron:"oefentoets"`, trilingual `uitleg:{nl,en,tr}` per vraag, **no `scoretabel`**, `geslaagdVanaf` ≈ 65% of the count. Because these are not official DUO keys, set **`antwoordBron:"afgeleid"`** on each vraag. `antwoord` is **0-based** — match the ✓ option by its TEXT (shuffle option order freely). Validate with `node validate_data.js <file>`, then list filenames in §4.
+
+Filenames + the sourced question bank to draw from (✓ = correct answer from the published key):
+
+**`data/knm/a2_knm_thema_1_werk.js`** — *Werk en inkomen.* Subtopics: vaste/tijdelijke/parttime baan, vrijwilligerswerk, zelfstandig ondernemer, WW→**UWV**, CAO & vakbond, arbowet, ziekmelden, cv, jaaropgave, bruto/belasting, lening aflossen, KvK/ondernemingsplan.
+- Wat is een vaste baan? → *een baan voor onbepaalde tijd* ✓ (vs stopt op bepaalde tijd / fulltime)
+- Wat is vrijwilligerswerk? → *werken zonder salaris* ✓
+- U bent ontslagen, u wilt een werkloosheidsuitkering. Waar? → *naar het UWV* ✓ (vs gemeente / Sociale dienst)
+- Wat is een cv? → *overzicht van persoonlijke gegevens, opleiding en werkervaring* ✓
+- Wat is een parttime baan? → *een baan van 32 uur per week* ✓
+- Wat doet de vakbond? → *zorgt samen met werkgevers voor een CAO* ✓
+- Belangrijke regel uit de arbowet? → *elke werknemer moet veilig kunnen werken* ✓
+- Wat doe je als je geld leent van de bank? → *de lening aflossen* ✓ (niet oplossen/afschrijven)
+- (Waar/Niet waar) Je jaaropgave is een loonstrook voor een heel jaar. → **Waar** ✓
+- (W/NW) In de cao staan afspraken voor alle mensen die in een sector werken. → **Waar** ✓
+- Hoe verdient een zelfstandig ondernemer geld? → *met een eigen bedrijf* ✓
+- Van je bruto salaris betaal je belasting; wat doet de overheid ermee? → *bouwt o.a. wegen en bruggen* ✓
+
+**`data/knm/a2_knm_thema_2_omgang.js`** — *Omgangsvormen, waarden en normen.* Subtopics: op tijd komen, gelijkheid (homohuwelijk/samenwonen), geweldloos (niemand slaan), feliciteren/condoleren/beterschap, buren informeren bij feest, gastvrijheid/terugvragen, discriminatie melden, schooltas buiten bij diploma. (2025: zelfbeschikking vrouwen, Holocaust/antisemitisme.)
+- Gewoonte als iemand geslaagd is (voortgezet onderwijs)? → *de schooltas buiten hangen* ✓
+- Jongen schopt bal tegen winkelraam; mag u hem slaan? → *Nee, u vraagt naam/adres en raakt hem niet aan* ✓
+- Dochter gaat op kamers; buren zijn lesbische vrouwen; wat doet u? → *Niets* ✓
+- Mag je in NL samenwonen zonder te trouwen? → *Ja, iedereen mag samenwonen met wie hij/zij wil* ✓
+- Buurman overleden; wat doet u? → *u condoleert de buren* ✓
+- Welke felicitatie is goed? → *Proficiat, van harte gefeliciteerd* ✓
+- U geeft een tuinfeestje; wat doet u? → *u vertelt uw buren dat u een feestje geeft* ✓
+- Verplicht om een kennis die u uitnodigde terug te vragen? → *Nee, niet verplicht, maar men vraagt mensen meestal wel terug* ✓
+- Collega discrimineert op het werk; wat doet u? → *met uw baas praten* ✓
+- "Een praatje maken" = → *een kort gesprekje* ✓
+- Wat doet het Anti-Discriminatiebureau met een klacht? → *registreert de klacht en kan juridische hulp regelen* ✓
+
+**`data/knm/a2_knm_thema_3_wonen.js`** — *Wonen.* Subtopics: huren via woningcorporatie (aangeboden woning niet verplicht), reparaties→verhuurder/loodgieter, afval scheiden (GFT, chemobox→milieustraat, grof afval = groot, textielbak), inboedelverzekering, buren.
+- (W/NW) Chemisch afval mag in de GFT-container. → **Niet waar** ✓
+- (W/NW) Een loodgieter kan je kapotte kraan repareren. → **Waar** ✓
+- "Grof huishoudelijk afval" — grof betekent? → *groot* ✓
+- Volle chemobox legen; wat doet u? → *naar de milieustraat brengen* ✓
+- Waar breng je textiel heen? → *naar de textielbak of kledinginzamelacties* ✓
+- (W/NW) Aangeboden woning van de woningbouwvereniging: je moet er gaan wonen. → **Niet waar** ✓
+- Container vol, vuilniswagen komt pas later, u gaat op vakantie; wat doet u? → *buren vragen de container buiten te zetten* ✓
+- Wanneer betaalt de inboedelverzekering NIET? → *als het dak kapot is door storm* (dat is opstal) ✓
+- Hoe werkt een kledinginzamelactie? → *u krijgt thuis een plastic zak voor oude kleding* ✓
+
+**`data/knm/a2_knm_thema_4_gezondheid.js`** — *Gezondheidszorg.* Subtopics: huisarts eerst, huisartsenpost ('s nachts/weekend), 112 (spoed/levensgevaar), verwijsbrief→specialist, recept→apotheek, zorgverzekering (vrije keuze, basis dekt niet alles, eigen risico, polis), AOW=volksverzekering, consultatiebureau, verloskundige/gynaecoloog, GGZ, maatschappelijk werker, patiëntenpas.
+- Welk briefje heb je nodig voor de specialist? → *een verwijsbrief* ✓ (niet etiket/recept)
+- (W/NW) Met eigen risico betaal je álle kosten zelf. → **Niet waar** ✓
+- (W/NW) Bij de basisverzekering worden alle kosten betaald. → **Niet waar** ✓
+- (W/NW) Hoger eigen risico = meer eigen risico betalen. → **Waar** ✓
+- 's Nachts een huisarts nodig; wat doe je? → *je belt de huisartsenpost* ✓
+- Wanneer bel je 112? → *als je snel politie, brandweer of ambulance nodig hebt* (bv. gebroken been) ✓
+- (W/NW) In NL kies je vrij je eigen zorgverzekeraar. → **Waar** ✓
+- Hoe heet het officiële document van de verzekering? → *polis* ✓ (niet premie/zorgpas)
+- Voorbeeld van een volksverzekering? → *AOW* ✓ (niet bijstand/zorgverzekering)
+- Wat is de GGZ? → *plaats waar psychologen en psychiaters werken* ✓
+- (W/NW) De wijkverpleegkundige is een dokter. → **Niet waar** ✓
+- Wie controleert de baby tijdens de zwangerschap? → *de verloskundige* ✓
+- Wie is een speciale vrouwendokter? → *de gynaecoloog* ✓
+- Wat is een patiëntenpas? → *kaartje met informatie over jou en een persoonlijke barcode* ✓
+
+**`data/knm/a2_knm_thema_5_geschiedenis.js`** — *Geschiedenis en geografie.* Subtopics: 12 provincies + hoofdsteden, buurlanden, Den Haag = westen, Deltawerken (na Watersnoodramp 1953), gastarbeiders na de wederopbouw, euro, industrie 1800–1900, 1648 zelfstandig, Wilhelmus, WOII/Holocaust, 4 mei Dodenherdenking / 5 mei Bevrijdingsdag.
+- Welke 2 buurlanden heeft NL? → *België en Duitsland* ✓
+- In welke provincie veel duinen? → *Noord-Holland* ✓
+- Waar ligt Den Haag? → *in het westen van NL* ✓
+- Hoe heten de dijken na de Watersnoodramp in Zeeland? → *de Deltawerken* ✓
+- Wanneer kwamen er veel gastarbeiders? → *na de wederopbouw* ✓
+- Met de euro betaal je → *in veel landen in Europa* ✓
+- Hoofdstad van de provincie Groningen? → *Groningen* ✓
+- Hoe hielp Amerika NL na WOII? → *bevrijding in WOII en daarna financiële hulp* ✓
+- Wanneer veel industrie in NL? → *1800–1900* ✓
+- (W/NW) In 1648 werden de Nederlanden zelfstandig. → **Waar** ✓
+- (W/NW) Het Wilhelmus wordt nog steeds gezongen. → **Waar** ✓
+- 1940: 140.000 Joden, 1945: 36.000 — waar zijn ze gebleven? → *vermoord in concentratiekampen van de nazi's* ✓
+- Op 4 mei om 20:00 doen mensen → *twee minuten stilte* ✓
+- Wanneer is Bevrijdingsdag? → *5 mei* ✓
+
+**`data/knm/a2_knm_thema_6_instanties.js`** — *Instanties.* Subtopics: gemeente (adres/BRP, paspoort, OZB), IND (verblijfsvergunning), UWV (WW), Belastingdienst (toeslagen, BSN), DUO (studiefinanciering/inburgering), SVB (AOW/kinderbijslag), DigiD (veilig inloggen), politie/aangifte, 112, Anti-Discriminatiebureau, Nationale Ombudsman (klacht over overheid), Sociaal Raadslieden.
+- Verblijfsvergunning voor onbepaalde tijd aanvragen — waar? → *bij de IND* ✓
+- Huurtoeslag aanvragen bij → *de Belastingdienst* ✓
+- Werkloosheidsuitkering — waar? → *het UWV* ✓
+- Studiefinanciering aanvragen bij → *DUO* ✓
+- (W/NW) De OZB betaal je aan de gemeente. → **Waar** ✓
+- (W/NW) Je BSN staat op papieren van de belasting. → **Waar** ✓
+- (W/NW) Iets officieel tegen de politie zeggen = aangifte doen. → **Waar** ✓
+- Wat doet het Anti-Discriminatiebureau met een klacht? → *registreert de klacht + kan juridische hulp regelen* ✓
+- (W/NW) Sociaal Raadslieden helpen met formulieren invullen. → **Waar** ✓
+- Waarvoor gebruik je DigiD? → *veilig inloggen op overheidswebsites* ✓
+- Je verhuist; wie moet je nieuwe adres weten? → *de gemeente* ✓
+- Gevaarlijk ongeluk, directe hulp nodig; welk nummer? → *112* ✓
+
+**`data/knm/a2_knm_thema_7_onderwijs.js`** — *Onderwijs en opvoeding.* Subtopics: leerplicht 5–16 + kwalificatieplicht 18, basisonderwijs (groep 1–8, ouderbijdrage/overblijven), brugklas, vmbo/havo/vwo (duur 4/5/6 jaar), vmbo = beroep, Cito-toets, ouderavond/schoolgids, consultatiebureau (tot 4 jaar), klaar-overs, vrije studie-/beroepskeuze kind.
+- Leerplichtig tot? → *16 jaar* ✓ (+ uitleg: kwalificatieplicht tot 18)
+- Leerplicht vanaf welke leeftijd? → *5 jaar* ✓
+- Het VWO duurt → *6 jaar* ✓
+- Het VMBO duurt → *4 jaar* ✓
+- VWO is → *Voorbereidend Wetenschappelijk Onderwijs* ✓
+- Op welke school leer je een beroep? → *vmbo* ✓
+- Een Cito-toets is → *de test aan het eind van de basisschool* ✓
+- Wat is de brugklas? → *klas waarin de definitieve schoolkeuze wordt uitgesteld* ✓
+- Is de basisschool gratis? → *Ja, maar ouders betalen ouderbijdrage en overblijven* ✓
+- Wat betaal je met de vrijwillige bijdrage? → *schoolreisjes* ✓
+- (W/NW) Bij het consultatiebureau krijgen ouders van kinderen tot 4 jaar advies. → **Waar** ✓
+- Wat zijn klaar-overs? → *mensen die kinderen helpen oversteken bij de school* ✓
+- Zoon wil lange studie (dokter), u wilt dat hij werkt; wat doet u? → *u zegt dat hij zelf mag beslissen* ✓
+
+**`data/knm/a2_knm_thema_8_politiek.js`** — *Politiek en grondrechten.* Subtopics: democratie ("de baas is het volk"), koning = staatshoofd, Tweede/Eerste Kamer, trias politica, actief/passief kiesrecht, niet-Nederlander mag pas na 5 jaar legaal verblijf voor de gemeenteraad stemmen, gemeente (burgemeester+wethouders+raad), Grondwet/Artikel 1 (discriminatieverbod), vrijheid van meningsuiting/godsdienst, rechtsstaat, EU/Europees Parlement.
+- Wie is de baas in NL? → *het volk* ✓
+- U woont 4 jaar legaal in NL; gemeenteverkiezingen — mag u stemmen? → *Nee, u woont nog geen vijf jaar legaal in NL* ✓
+- Dochter (18, Nederlands paspoort) wil in de Tweede Kamer; kan dat? → *Ja, ze heeft passief kiesrecht* ✓
+- Waar gaat het Europees Parlement over? → *economie, milieu en veiligheid* ✓
+- Hassan wordt geweigerd ("Nederlanders werken harder"); wat doet hij? → *naar het Anti-Discriminatiebureau* ✓
+- (W/NW) Iemand met de Nederlandse nationaliteit is altijd in NL geboren. → **Niet waar** ✓
+- (W/NW) Als je wilt scheiden, kan een advocaat je helpen. → **Waar** ✓
+- Wie leidt de gemeente? → *de burgemeester en wethouders, met de gemeenteraad* ✓
+- Waar gaat de rechtsstaat over? → *overheid én burgers volgen de wet; rechters zijn onafhankelijk* ✓
+- Wat zegt Artikel 1 van de Grondwet over discriminatie? → *het is verboden* ✓
+
+> **Optional Task 11** — once the 8 themed sets exist, AGY may also assemble **2 new mixed full oefenexamens** `data/knm/a2_knm_oefen_3.js` / `_4.js` (40 vragen each, drawn across all 8 themes, `geslaagdVanaf:26`) to complement the existing oefen-1/2. Same schema, `antwoordBron:"afgeleid"`.
+
+> **Sources (for verification):** Oefentoets PDFs `steunpuntvluchtelingendebilt.nl/.../Oefenexamen_003_KNM.pdf`, `.../Oefenexamen_007_KNM.pdf`, `.../Oefenexamen_010_KNM.pdf`, `taalabc.nl/.../oefentekst011_KNM-1.pdf`; study sites `knmleren.nl/onderwerpen/*`, `inburgering.org/nl/exam-info/knm-exam-guide`, `denieuwenederlanders.nl/knm-2025`; structure `inburgeren.nl/examen-doen/inhoud-kennisexamens.jsp`; 2025-herziening `rijksoverheid.nl` (30-06-2025). The verbatim items above carry the published teacher answer key but are **not** official DUO/CvTE → use `antwoordBron:"afgeleid"`.
