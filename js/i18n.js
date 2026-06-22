@@ -9,7 +9,7 @@
 
   var STRINGS = {
     // ---- nav / header ----
-    app_title:        { nl: "Inburgeringsexamen A2", en: "Civic Integration Exam A2", tr: "İnburgering Sınavı A2" },
+    app_title:        { nl: "Inburgeringsexamen", en: "Civic Integration Exam", tr: "İnburgering Sınavı" },
     app_tagline:       { nl: "Oefenen voor het inburgeringsexamen", en: "Practice for the civic integration exam", tr: "İnburgering sınavı için pratik yapın" },
     nav_examens:       { nl: "Examens", en: "Exams", tr: "Sınavlar" },
     nav_voortgang:     { nl: "Mijn voortgang", en: "My progress", tr: "İlerlemem" },
