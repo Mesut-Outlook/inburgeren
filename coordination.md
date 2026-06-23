@@ -132,8 +132,18 @@ Build a set of **thematic A2 beginner vocab files** `data/woorden/a2_woorden_bas
 - `data/knm/a2_knm_thema_6_instanties.js`  ✅ wired & tested (Task 10, 13 vragen)
 - `data/knm/a2_knm_thema_7_onderwijs.js`  ✅ wired & tested (Task 10, 13 vragen)
 - `data/knm/a2_knm_thema_8_politiek.js`  ✅ wired & tested (Task 10, 13 vragen)
-- `data/knm/a2_knm_oefen_3.js`  ✅ produced (not yet wired)
-- `data/knm/a2_knm_oefen_4.js`  ✅ produced (not yet wired)
+- `data/knm/a2_knm_oefen_3.js`  ✅ wired & tested
+- `data/knm/a2_knm_oefen_4.js`  ✅ wired & tested
+
+---
+
+## 8. Linux-session sync (2026-06-23)
+
+A second Opus session (Linux box) had its own uncommitted core changes (a new Apple-style hero section on the hub — `hero-section`/`hero-feature-card`/`hero-scroll-btn` markup+CSS, `app.js`/`i18n.js`) sitting in the working tree when `33bd3a7` (sitename rename) and `0c8d100` (KNM theme sets) landed on `origin/main`. Merged cleanly (commit `78ad677`); only conflict was the `<title>` tag, resolved in favor of the rename (`Inburgeringsexamen` + 🇳🇱, no "A2"). `hero_title` in `i18n.js` was also reworded to drop "A2" for consistency with that decision.
+
+**Bug found & fixed during sync:** a bare `agy` token had been pasted directly into `index.html` (inside the core inline loader `<script>`), breaking the data-loading sequence with a `ReferenceError`. This is exactly the kind of core-file edit §1 says AGY/data agents must never make — whoever/whatever inserted it should stick to `data/<vak>/*.js` only. Fixed before commit (`a626bc3`); not present in the version pushed to GitHub.
+
+CLAUDE.md status section updated to reflect that all current A2 data (Lezen ×8, KNM ×11, Schrijven ×4, Spreken ×3, woordenschat ×11) is wired in `js/data-files.js`, 0 errors per `node validate_data.js`.
 
 
 ---
