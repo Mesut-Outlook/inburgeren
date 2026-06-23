@@ -36,6 +36,8 @@
   --color-peach: #ff9500;  /* orange */
   --color-blush: #ff453a;  /* red    */
   --color-sand: #ffcc00;   /* yellow */
+  --color-mint-soft: #e6f2fc;
+  --color-peach-soft: #fff8f0;
 
   --radius: 18px;
   --radius-sm: 12px;
@@ -71,6 +73,8 @@
     --color-peach: #ff9f0a;
     --color-blush: #ff6961;
     --color-sand: #ffd60a;
+    --color-mint-soft: #102a45;
+    --color-peach-soft: #3d2308;
 
     --shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.4);
     --shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.55), 0 12px 28px rgba(0, 0, 0, 0.5);
@@ -106,6 +110,8 @@
   --color-peach: #ff9500;
   --color-blush: #ff453a;
   --color-sand: #ffcc00;
+  --color-mint-soft: #e6f2fc;
+  --color-peach-soft: #fff8f0;
 
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.04);
   --shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.06), 0 12px 28px rgba(0, 0, 0, 0.08);
@@ -136,6 +142,8 @@
   --color-peach: #ff9f0a;
   --color-blush: #ff6961;
   --color-sand: #ffd60a;
+  --color-mint-soft: #102a45;
+  --color-peach-soft: #3d2308;
 
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.4);
   --shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.55), 0 12px 28px rgba(0, 0, 0, 0.5);
@@ -1112,5 +1120,200 @@ html {
   }
 }
 
-</content>
-</invoke>
+/* ---- option button states (correct / wrong) ---- */
+.optie-btn.optie-correct {
+  border-color: var(--color-success-text);
+  background: var(--color-success-bg);
+  box-shadow: inset 0 0 0 1px var(--color-success-text);
+}
+.optie-btn.optie-correct .optie-letter {
+  background: var(--color-success-text);
+  color: #ffffff;
+}
+.optie-btn.optie-wrong {
+  border-color: var(--color-fail-text);
+  background: var(--color-fail-bg);
+  box-shadow: inset 0 0 0 1px var(--color-fail-text);
+}
+.optie-btn.optie-wrong .optie-letter {
+  background: var(--color-fail-text);
+  color: #ffffff;
+}
+
+/* ---- voortgang dashboard (progress) ---- */
+.vg-overall {
+  margin-bottom: 2rem;
+}
+.vg-progress {
+  position: relative;
+  height: 26px;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 13px;
+  overflow: hidden;
+  margin: 1.5rem 0 2rem 0;
+  display: flex;
+  align-items: center;
+}
+.vg-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-sky));
+  border-radius: 13px;
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.vg-progress-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text);
+  text-shadow: 0 0 2px var(--color-bg);
+  pointer-events: none;
+}
+.vg-row--clickable {
+  cursor: pointer;
+}
+.vg-row--clickable:active td {
+  background: var(--color-primary-soft) !important;
+}
+
+/* ---- words practice (wpract) ---- */
+.wpract {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0.5rem 0;
+  width: 100%;
+}
+.wpract-top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.wpract-bar {
+  flex-grow: 1;
+  height: 14px;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  overflow: hidden;
+  position: relative;
+}
+.wpract-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-sky));
+  border-radius: 7px;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wpract-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-peach);
+  background: var(--color-peach-soft);
+  border: 1px solid rgba(255, 149, 0, 0.25);
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+  white-space: nowrap;
+  animation: streakPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes streakPop {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.wpract-card {
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--color-border);
+}
+.wpract-card .vraag-nummer {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0;
+  margin-bottom: 0.8rem;
+}
+.wpract-card .vraag-tekst {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+.wpract-feedback {
+  margin-top: 1.5rem;
+  padding: 1.2rem;
+  border-radius: var(--radius-sm);
+  border-left: 5px solid transparent;
+  animation: feedbackSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes feedbackSlide {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.wpract-feedback.correct {
+  background: var(--color-success-bg);
+  border-left-color: var(--color-success-text);
+}
+.wpract-feedback.correct .wpract-feedback-title {
+  color: var(--color-success-text);
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin: 0;
+}
+.wpract-feedback.wrong {
+  background: var(--color-fail-bg);
+  border-left-color: var(--color-fail-text);
+}
+.wpract-feedback.wrong .wpract-feedback-title {
+  color: var(--color-fail-text);
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin: 0 0 0.4rem 0;
+}
+.wpract-feedback-answer {
+  font-size: 0.95rem;
+  margin: 0 0 0.3rem 0;
+  color: var(--color-text);
+}
+.wpract-feedback-answer strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+.wpract-feedback-note {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin: 0 0 0.5rem 0;
+}
+.wpract-feedback-uitleg {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  line-height: 1.45;
+  margin: 0;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--color-border);
+}
+.wpract-done {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+.wpract-done-emoji {
+  font-size: 4.5rem;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+  animation: emojiBounce 1s infinite alternate cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+@keyframes emojiBounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-12px); }
+}
+.wpract-done-enc {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+}

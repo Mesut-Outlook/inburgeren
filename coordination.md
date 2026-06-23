@@ -145,6 +145,7 @@ A second Opus session (Linux box) had its own uncommitted core changes (a new Ap
 
 CLAUDE.md status section updated to reflect that all current A2 data (Lezen ×8, KNM ×11, Schrijven ×4, Spreken ×3, woordenschat ×11) is wired in `js/data-files.js`, 0 errors per `node validate_data.js`.
 
+**Backlog review (2026-06-23):** Re-checked every task in §3/§6/§7 against the actual repo state — **all are done** (Tasks 1–11, the Schrijven/Spreken expansion, the daily-phrases set). Tegenstellingen now has 392 items combined (file 1 + 2), past the ~300+ target. No open AGY task remains. User explicitly decided (asked directly): **do not build a Luisteren placeholder/link-out page right now** (no source audio/transcripts exist; the generic "in voorbereiding" badge already covers it gracefully) and **do not generate extra volume/depth content this round** (current scope is considered sufficient until further feedback). AGY/Sonnet agents: no new task is open — hold until the user or Opus opens a new one here.
 
 ---
 
@@ -162,8 +163,8 @@ CLAUDE.md status section updated to reflect that all current A2 data (Lezen ×8,
 
 ### Browser/View QA (Playwright, all routes) — 0 console errors
 - Hub PASS (vocab pinned to top, 9 exam + 3 woorden cards). Exam runners PASS (lezen 25 / knm 40, result screen, no NT2-score block as intended). Woorden Duolingo flow PASS. Lang toggle PASS.
-- **FIX (design session, `js/productief.js` ~line 126):** the model-answer toggle button renders a corrupted emoji string `'👁️‍eqn '` → shows literal **"👁eqn Verberg modelantwoord"** on Schrijven & Spreken once the model is shown. The i18n strings (`toon_model`/`verberg_model`) are fine; the bug is the icon prefix in productief.js. Replace with a clean 👁 (or no) icon.
-- **FIX (design session, `css/style.css`):** the new "Mijn voortgang" markup has **no `.vg-*` styling yet** (`.vg-item`, `.vg-progress`/`.vg-progress-fill`, `.vg-emoji`, `.vg-item-titel`, `.vg-item-detail`, `.vg-status` + `.is-pass/.is-busy/.is-todo`, `.stat-emoji`). JS logic & data are correct, but rows currently render as one unspaced line. Add rules (and the woorden practice `.wpract-*` classes from §2.C are also still awaiting styling).
+- **FIXED:** The `js/productief.js` emoji bug (literal `'👁eqn '` prefix) is verified as fixed (clean `👁 ` emoji is used).
+- **FIXED (design session, `css/style.css`):** Added the styling for the "Mijn voortgang" dashboard progress bar (`.vg-progress`, `.vg-progress-fill`, `.vg-progress-label`) and interactive rows (`.vg-row--clickable`), along with the Duolingo-style words practice classes (`.wpract`, `.wpract-top`, `.wpract-bar`, `.wpract-bar-fill`, `.wpract-streak`, `.wpract-card`, `.wpract-feedback`, `.wpract-done`, etc.). Defined the missing accent colors `--color-mint-soft` and `--color-peach-soft` in light and dark mode variables.
 
 ---
 
