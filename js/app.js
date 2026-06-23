@@ -108,6 +108,54 @@
   function renderHub() {
     var html = "";
 
+    // Apple-style Hero Section
+    html += '<section class="hero-section">' +
+              '<div class="hero-header fade-in">' +
+                '<h1 class="hero-title">' + escapeHtml(INB.t("hero_title")) + '</h1>' +
+                '<p class="hero-subtitle">' + escapeHtml(INB.t("hero_subtitle")) + '</p>' +
+                '<p class="hero-desc">' + escapeHtml(INB.t("hero_desc")) + '</p>' +
+              '</div>' +
+              
+              '<div class="hero-features fade-in-delay-1">' +
+                '<h2 class="hero-features-title">' + escapeHtml(INB.t("hero_feature_title")) + '</h2>' +
+                '<div class="hero-features-grid">' +
+                  
+                  '<div class="hero-feature-card">' +
+                    '<div class="feature-icon">📚</div>' +
+                    '<h3>' + escapeHtml(INB.t("hero_feat_exams_title")) + '</h3>' +
+                    '<p>' + escapeHtml(INB.t("hero_feat_exams_desc")) + '</p>' +
+                  '</div>' +
+                  
+                  '<div class="hero-feature-card">' +
+                    '<div class="feature-icon">📝</div>' +
+                    '<h3>' + escapeHtml(INB.t("hero_feat_prod_title")) + '</h3>' +
+                    '<p>' + escapeHtml(INB.t("hero_feat_prod_desc")) + '</p>' +
+                  '</div>' +
+                  
+                  '<div class="hero-feature-card">' +
+                    '<div class="feature-icon">📖</div>' +
+                    '<h3>' + escapeHtml(INB.t("hero_feat_vocab_title")) + '</h3>' +
+                    '<p>' + escapeHtml(INB.t("hero_feat_vocab_desc")) + '</p>' +
+                  '</div>' +
+                  
+                  '<div class="hero-feature-card">' +
+                    '<div class="feature-icon">📈</div>' +
+                    '<h3>' + escapeHtml(INB.t("hero_feat_track_title")) + '</h3>' +
+                    '<p>' + escapeHtml(INB.t("hero_feat_track_desc")) + '</p>' +
+                  '</div>' +
+
+                '</div>' +
+              '</div>' +
+
+              '<div class="hero-scroll-container fade-in-delay-2">' +
+                '<button type="button" class="btn btn-primary hero-scroll-btn" id="hero-scroll-btn">' +
+                  escapeHtml(INB.t("hero_scroll_label")) + ' <span class="arrow">↓</span>' +
+                '</button>' +
+              '</div>' +
+            '</section>';
+
+    html += '<div id="hub-content" class="hub-content fade-in-delay-2">';
+
     // Woordenschat practice goes FIRST (top of the page) — it's the daily,
     // gamified core of the site. `hub-featured` marks it for prominent styling.
     html +=
@@ -123,7 +171,20 @@
       html += renderOnderdeelSection(onderdelen[o]);
     }
 
+    html += '</div>'; // close hub-content
+
     rootEl.innerHTML = html;
+
+    // Attach smooth scroll behavior to the scroll button
+    var scrollBtn = document.getElementById("hero-scroll-btn");
+    if (scrollBtn) {
+      scrollBtn.addEventListener("click", function () {
+        var contentEl = document.getElementById("hub-content");
+        if (contentEl) {
+          contentEl.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    }
 
     var woordenGrid = document.getElementById("woorden-grid");
     var sets = INB.getWoordenSets() || [];

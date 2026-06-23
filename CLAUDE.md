@@ -75,7 +75,7 @@ INB.registerWoorden({
 ## Werkwijze (tokenbeleid)
 **Planning + coördinatie + verificatie door Opus 4.8; code/data door Sonnet-subagents (mechanisch evt. Haiku).** Bulk PDF/afbeelding-extractie + generatie kan via AGY (Antigravity CLI) — verdeel per bestandseigenaarschap zodat niemand elkaars bestanden overschrijft. Commit-trailer: `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`. **Design: pastel, zacht, licht, elegant — NOOIT paars.**
 
-## Status (2026-06-21)
-- ✅ Engine (Lezen/woorden), drietalige UI, 5-onderdelen-hub, "Over het examen", "Alle woorden", per-examen dashboard, pastel thema.
-- 🔄 **Omschakeling naar A2 bezig.** B1/NT2-content opzijgezet (niet geladen). A2-databestanden worden door andere agents/AGY in `data/` geschreven; Opus wired ze in `data-files.js`.
-- ⬜ A2 Lezen (4 oefenexamens), KNM, Schrijven, woordenschat A2 — in productie door agents. ⬜ Luisteren/Spreken (online/audio).
+## Status (2026-06-23)
+- ✅ Engine (Lezen/woorden), drietalige UI, 5-onderdelen-hub, "Over het examen", "Alle woorden", per-examen dashboard, pastel thema, Apple-stijl hero-sectie op de hub.
+- ✅ **Omschakeling naar A2 voltooid.** B1/NT2-content opzijgezet (niet geladen, blijft lokaal). Alle huidige A2-databestanden zijn in `js/data-files.js` gewired: Lezen (4 oefenexamens), KNM (1 + 2 oefen), Schrijven (3 + notities), Spreken (2 + notities), woordenschat (11 sets: basis 1–6, tegenstellingen 1–2, KNM 1–2, zinnen).
+- ⬜ Luisteren (audio) — nog niet gestart. ⬜ Verdere uitbreiding oefenexamens (Lezen/KNM/Schrijven/Spreken) blijft doorlopend.
