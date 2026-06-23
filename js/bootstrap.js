@@ -111,10 +111,10 @@
    */
   INB.ONDERDELEN = [
     { vak: "lezen",      icoon: "📖", titelKey: "onderdeel_lezen_titel",      descKey: "onderdeel_lezen_desc",      noteKey: null },
-    { vak: "luisteren",  icoon: "🎧", titelKey: "onderdeel_luisteren_titel",  descKey: "onderdeel_luisteren_desc",  noteKey: "onderdeel_luisteren_note" },
+    { vak: "knm",        icoon: "🏛️", titelKey: "onderdeel_knm_titel",        descKey: "onderdeel_knm_desc",        noteKey: "onderdeel_knm_note" },
     { vak: "schrijven",  icoon: "✍️", titelKey: "onderdeel_schrijven_titel",  descKey: "onderdeel_schrijven_desc",  noteKey: "onderdeel_schrijven_note" },
     { vak: "spreken",    icoon: "🗣️", titelKey: "onderdeel_spreken_titel",    descKey: "onderdeel_spreken_desc",    noteKey: "onderdeel_spreken_note" },
-    { vak: "knm",        icoon: "🏛️", titelKey: "onderdeel_knm_titel",        descKey: "onderdeel_knm_desc",        noteKey: "onderdeel_knm_note" }
+    { vak: "luisteren",  icoon: "🎧", titelKey: "onderdeel_luisteren_titel",  descKey: "onderdeel_luisteren_desc",  noteKey: "onderdeel_luisteren_note" }
   ];
 
   /**
