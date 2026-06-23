@@ -31,6 +31,21 @@ INB.dataFiles = [
   "data/lezen/a2_lezen_2.js?v=1",
   "data/lezen/a2_lezen_3.js?v=1",
   "data/lezen/a2_lezen_4.js?v=1",
+  "data/lezen/a2_lezen_5.js?v=1",
+  "data/lezen/a2_lezen_6.js?v=1",
+  "data/lezen/a2_lezen_7.js?v=1",
+  "data/lezen/a2_lezen_8.js?v=1",
   "data/knm/a2_knm_oefen_1.js?v=1",
-  "data/knm/a2_knm_oefen_2.js?v=1"
+  "data/knm/a2_knm_oefen_2.js?v=1",
+  "data/knm/a2_knm_thema_1_werk.js?v=1",
+  "data/knm/a2_knm_thema_2_omgang.js?v=1",
+  "data/knm/a2_knm_thema_3_wonen.js?v=1",
+  "data/knm/a2_knm_thema_4_gezondheid.js?v=1",
+  "data/knm/a2_knm_thema_5_geschiedenis.js?v=1",
+  "data/knm/a2_knm_thema_6_instanties.js?v=1",
+  "data/knm/a2_knm_thema_7_onderwijs.js?v=1",
+  "data/knm/a2_knm_thema_8_politiek.js?v=1",
+  "data/knm/a2_knm_oefen_3.js?v=1",
+  "data/knm/a2_knm_oefen_4.js?v=1"
 ];
+

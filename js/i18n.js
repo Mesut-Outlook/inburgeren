@@ -9,7 +9,7 @@
 
   var STRINGS = {
     // ---- nav / header ----
-    app_title:        { nl: "Inburgeringsexamen A2", en: "Civic Integration Exam A2", tr: "İnburgering Sınavı A2" },
+    app_title:        { nl: "Inburgeringsexamen", en: "Civic Integration Exam", tr: "İnburgering Sınavı" },
     app_tagline:       { nl: "Oefenen voor het inburgeringsexamen", en: "Practice for the civic integration exam", tr: "İnburgering sınavı için pratik yapın" },
     nav_examens:       { nl: "Examens", en: "Exams", tr: "Sınavlar" },
     nav_voortgang:     { nl: "Mijn voortgang", en: "My progress", tr: "İlerlemem" },
@@ -19,7 +19,7 @@
     lang_tr:           { nl: "Turks", en: "Turkish", tr: "Türkçe" },
 
     // ---- hub ----
-    hero_title:           { nl: "Inburgeringsexamen A2", en: "Civic Integration Exam A2", tr: "İnburgering Sınavı A2" },
+    hero_title:           { nl: "Inburgeringsexamen", en: "Civic Integration Exam", tr: "İnburgering Sınavı" },
     hero_subtitle:        { nl: "Eenvoudig, doeltreffend en volledig.", en: "Simple, effective, and complete.", tr: "Basit, etkili ve eksiksiz." },
     hero_desc:            { nl: "Bereid je optimaal voor op het A2-inburgeringsexamen. Deze drietalige oefensite helpt je om alle onderdelen in je eigen tempo onder de knie te krijgen, ondersteund met uitleg in het Nederlands, Engels en Turks.",
                             en: "Prepare optimally for the A2 civic integration exam. This trilingual practice site helps you master all components at your own pace, supported with explanations in Dutch, English, and Turkish.",

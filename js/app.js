@@ -74,7 +74,7 @@
     var html = '';
     html += '<div class="header-inner">';
     html += '<a class="brand-link" href="#/">';
-    html += '<span class="brand">' + escapeHtml(INB.t("app_title")) + '</span>';
+    html += '<span class="brand"><span class="brand-flag" aria-hidden="true">🇳🇱</span>' + escapeHtml(INB.t("app_title")) + '</span>';
     html += '<span class="brand-tagline">' + escapeHtml(INB.t("app_tagline")) + '</span>';
     html += '</a>';
     html += '<nav class="main-nav">';
