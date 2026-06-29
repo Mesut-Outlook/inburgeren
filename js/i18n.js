@@ -173,6 +173,8 @@
     card_exams_taken:     { nl: "Examens gemaakt", en: "Exams taken", tr: "Yapılan sınavlar" },
     card_avg_score:       { nl: "Gemiddelde NT2-score", en: "Average NT2 score", tr: "Ortalama NT2 puanı" },
     card_best_score:      { nl: "Beste score", en: "Best score", tr: "En iyi puan" },
+    card_last_score:      { nl: "Laatste score", en: "Last score", tr: "Son puan" },
+    card_average_score:   { nl: "Gemiddelde score", en: "Average score", tr: "Ortalama puan" },
     card_pass_count:      { nl: "Keer geslaagd", en: "Times passed", tr: "Geçilen sayısı" },
     table_examen:         { nl: "Examen", en: "Exam", tr: "Sınav" },
     table_score:          { nl: "Score", en: "Score", tr: "Puan" },

@@ -445,6 +445,19 @@ p { margin: 0 0 0.75em 0; }
   background: var(--color-surface-alt);
 }
 
+.card.attempted-1 {
+  background: var(--color-mint-soft);
+}
+
+.card.attempted-2 {
+  background: var(--color-peach-soft);
+}
+
+.card.attempted-3 {
+  background: var(--color-success-bg);
+}
+
+
 /* ---- onderdeel sections (hub) ----
    Five sections render in fixed order: lezen, luisteren, schrijven, spreken, knm.
    A thin, muted accent on each heading keeps sections distinguishable while

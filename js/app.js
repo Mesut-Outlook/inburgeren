@@ -361,15 +361,44 @@
     if (!all) { return ""; }
     var aantalItems = (all.items || []).length;
     var stats = (INB.store.getWoordenStats(all.id)) || null;
-    var statsLine = "";
+    var attemptClass = "";
+    var attemptInfoLine = "";
     if (stats) {
-      statsLine = '<p class="card-attempt-info">' + escapeHtml(INB.t("table_best")) + ": " + (stats.beste || 0) + "%</p>";
+      var history = stats.history || [];
+      var count = history.length || stats.pogingen || 0;
+      if (count === 1) {
+        attemptClass = " attempted-1";
+      } else if (count === 2) {
+        attemptClass = " attempted-2";
+      } else if (count >= 3) {
+        attemptClass = " attempted-3";
+      }
+
+      var totalPercent = 0;
+      for (var i = 0; i < history.length; i++) {
+        totalPercent += (history[i].percent || 0);
+      }
+      var avgPercent = history.length ? Math.round(totalPercent / history.length) : 0;
+      var lastEntry = history[history.length - 1];
+
+      attemptInfoLine = '<div class="card-attempt-info-block">';
+      if (lastEntry) {
+        attemptInfoLine += '<p class="card-attempt-info">➡️ ' + escapeHtml(INB.t("card_last_score")) + ': ' +
+          lastEntry.percent + '% (' + lastEntry.correct + '/' + lastEntry.total + ')</p>';
+      }
+      if (count > 1) {
+        attemptInfoLine += '<p class="card-attempt-info">📊 ' + escapeHtml(INB.t("card_average_score")) + ': ' +
+          avgPercent + '% (' + count + ' ' + escapeHtml(INB.t("vg_col_keer")).toLowerCase() + ')</p>';
+      } else if (!lastEntry && stats.beste) {
+        attemptInfoLine += '<p class="card-attempt-info">' + escapeHtml(INB.t("table_best")) + ': ' + stats.beste + '%</p>';
+      }
+      attemptInfoLine += '</div>';
     }
     return (
-      '<div class="card woorden-card woorden-card-alle">' +
+      '<div class="card woorden-card woorden-card-alle' + attemptClass + '">' +
         '<h3>' + (all.icoon ? all.icoon + " " : "") + escapeHtml(INB.tr(all.titel)) + '</h3>' +
         '<p class="card-meta">' + aantalItems + " " + escapeHtml(INB.t("label_items")) + '</p>' +
-        statsLine +
+        attemptInfoLine +
         '<a class="btn btn-primary" href="#/woorden/' + encodeURIComponent(all.id) + '">' + escapeHtml(INB.t("btn_bekijk")) + '</a>' +
       '</div>'
     );
@@ -385,7 +414,7 @@
 
     // Meta line + best-score line differ for productive (taken-based) exams,
     // which are not auto-scored, vs. scored MC exams (lezen / knm).
-    var metaTail, bestLine = "", actions;
+    var metaTail, actions;
     if (isProductief) {
       var aantalTaken = (examen.taken || []).length;
       metaTail = aantalTaken + " " + escapeHtml(INB.t("label_taken"));
@@ -399,23 +428,51 @@
       }
       metaTail = aantalTeksten + " " + escapeHtml(INB.t("label_teksten")) +
         " · " + aantalVragen + " " + escapeHtml(INB.t("label_vragen"));
-      var attempt = (INB.store.getExamAttempt(examen.id)) || null;
-      if (attempt && attempt.best) {
-        bestLine = '<p class="card-attempt-info">' + escapeHtml(INB.t("result_score_label")) + ": " +
-          attempt.best.score + " (" + attempt.best.correct + "/" + attempt.best.total + ")</p>";
-      }
       actions =
         '<a class="btn btn-primary" href="#/examen/' + encodeURIComponent(examen.id) + '">' + escapeHtml(INB.t("btn_start")) + '</a>' +
         '<a class="btn" href="#/examen/' + encodeURIComponent(examen.id) + '/stats">' + escapeHtml(INB.t("btn_resultaten")) + '</a>';
     }
 
+    var attempt = (INB.store.getExamAttempt(examen.id)) || null;
+    var attemptClass = "";
+    var attemptInfoLine = "";
+    if (attempt && attempt.history && attempt.history.length > 0) {
+      var count = attempt.history.length;
+      if (count === 1) {
+        attemptClass = " attempted-1";
+      } else if (count === 2) {
+        attemptClass = " attempted-2";
+      } else {
+        attemptClass = " attempted-3";
+      }
+
+      var totalScore = 0;
+      for (var i = 0; i < count; i++) {
+        totalScore += attempt.history[i].score;
+      }
+      var avgScore = Math.round((totalScore / count) * 10) / 10;
+      var lastEntry = attempt.last || attempt.history[count - 1];
+
+      attemptInfoLine = '<div class="card-attempt-info-block">';
+      // Last score
+      attemptInfoLine += '<p class="card-attempt-info">➡️ ' + escapeHtml(INB.t("card_last_score")) + ': ' +
+        lastEntry.score + ' (' + lastEntry.correct + '/' + lastEntry.total + ')</p>';
+      
+      // If multiple attempts, show average too
+      if (count > 1) {
+        attemptInfoLine += '<p class="card-attempt-info">📊 ' + escapeHtml(INB.t("card_average_score")) + ': ' +
+          avgScore + ' (' + count + ' ' + escapeHtml(INB.t("vg_col_keer")).toLowerCase() + ')</p>';
+      }
+      attemptInfoLine += '</div>';
+    }
+
     return (
-      '<div class="card examen-card">' +
+      '<div class="card examen-card' + attemptClass + '">' +
         '<div class="card-top"><span class="badge ' + badgeClass + '">' + escapeHtml(badgeLabel) + '</span>' + niveauBadge + '</div>' +
         '<h3>' + escapeHtml(INB.tr(examen.titel)) + '</h3>' +
         '<p class="card-meta">' + escapeHtml(INB.t("label_niveau")) + ": " + escapeHtml(examen.niveau || "") +
           " · " + metaTail + '</p>' +
-        bestLine +
+        attemptInfoLine +
         '<div class="card-actions">' + actions + '</div>' +
       '</div>'
     );
@@ -424,15 +481,44 @@
   function renderWoordenCard(set) {
     var aantalItems = (set.items || []).length;
     var stats = (INB.store.getWoordenStats(set.id)) || null;
-    var statsLine = "";
+    var attemptClass = "";
+    var attemptInfoLine = "";
     if (stats) {
-      statsLine = '<p class="card-attempt-info">' + escapeHtml(INB.t("table_best")) + ": " + (stats.beste || 0) + "%</p>";
+      var history = stats.history || [];
+      var count = history.length || stats.pogingen || 0;
+      if (count === 1) {
+        attemptClass = " attempted-1";
+      } else if (count === 2) {
+        attemptClass = " attempted-2";
+      } else if (count >= 3) {
+        attemptClass = " attempted-3";
+      }
+
+      var totalPercent = 0;
+      for (var i = 0; i < history.length; i++) {
+        totalPercent += (history[i].percent || 0);
+      }
+      var avgPercent = history.length ? Math.round(totalPercent / history.length) : 0;
+      var lastEntry = history[history.length - 1];
+
+      attemptInfoLine = '<div class="card-attempt-info-block">';
+      if (lastEntry) {
+        attemptInfoLine += '<p class="card-attempt-info">➡️ ' + escapeHtml(INB.t("card_last_score")) + ': ' +
+          lastEntry.percent + '% (' + lastEntry.correct + '/' + lastEntry.total + ')</p>';
+      }
+      if (count > 1) {
+        attemptInfoLine += '<p class="card-attempt-info">📊 ' + escapeHtml(INB.t("card_average_score")) + ': ' +
+          avgPercent + '% (' + count + ' ' + escapeHtml(INB.t("vg_col_keer")).toLowerCase() + ')</p>';
+      } else if (!lastEntry && stats.beste) {
+        attemptInfoLine += '<p class="card-attempt-info">' + escapeHtml(INB.t("table_best")) + ': ' + stats.beste + '%</p>';
+      }
+      attemptInfoLine += '</div>';
     }
     return (
-      '<div class="card woorden-card">' +
+      '<div class="card woorden-card' + attemptClass + '">' +
         '<h3>' + (set.icoon ? set.icoon + " " : "") + escapeHtml(INB.tr(set.titel)) + '</h3>' +
         '<p class="card-meta">' + aantalItems + " " + escapeHtml(INB.t("label_items")) + '</p>' +
-        statsLine +
+        attemptInfoLine +
         '<a class="btn btn-primary" href="#/woorden/' + encodeURIComponent(set.id) + '">' + escapeHtml(INB.t("btn_bekijk")) + '</a>' +
       '</div>'
     );

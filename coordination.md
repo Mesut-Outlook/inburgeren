@@ -119,6 +119,7 @@ Build a set of **thematic A2 beginner vocab files** `data/woorden/a2_woorden_bas
 - `data/woorden/a2_woorden_basis_6.js`  ✅ wired & tested
 - `data/woorden/a2_woorden_tegenstellingen_2.js`  ✅ wired & tested
 - `data/woorden/a2_woorden_zinnen.js`  ✅ wired & tested
+- `data/woorden/a2_woorden_schrijven.js`  ✅ wired & tested
 - `data/schrijven/a2_schrijven_2.js`  ✅ wired & tested
 - `data/schrijven/a2_schrijven_3.js`  ✅ wired & tested
 - `data/schrijven/a2_schrijven_4.js`  ✅ wired & tested
@@ -127,6 +128,9 @@ Build a set of **thematic A2 beginner vocab files** `data/woorden/a2_woorden_bas
 - `data/schrijven/a2_schrijven_7.js`  ✅ wired & tested
 - `data/schrijven/a2_schrijven_notities.js`  ✅ wired & tested
 - `data/spreken/a2_spreken_2.js`  ✅ wired & tested
+- `data/spreken/a2_spreken_3.js`  ✅ wired & tested
+- `data/spreken/a2_spreken_4.js`  ✅ wired & tested
+- `data/spreken/a2_spreken_5.js`  ✅ wired & tested
 - `data/spreken/a2_spreken_notities.js`  ✅ wired & tested
 - `data/knm/a2_knm_thema_1_werk.js`  ✅ wired & tested (Task 10, 14 vragen)
 - `data/knm/a2_knm_thema_2_omgang.js`  ✅ wired & tested (Task 10, 13 vragen)
@@ -154,6 +158,10 @@ CLAUDE.md status section updated to reflect that all current A2 data (Lezen ×8,
 ## 9. Linux-session sync (2026-06-29)
 
 Opus (Linux) reworked the hub **hero welcome copy** in `js/i18n.js` per user feedback: `hero_desc` is now mission-driven and warm/personal ("yolda yanında olan", "acele etmeden", own progress-page mention; the "no financial/commercial motive" clause was dropped on request); `hero_subtitle` → "A2 sınavını geçmek için — ücretsiz ve herkes için" (NL/EN/TR). Cache-busting bumped: `i18n.js?v=14`, `css/style.css?v=13`, `app.js?v=10`. Also picked up another agent's in-tree work and verified it before committing: **4 new Schrijven sets** `data/schrijven/a2_schrijven_4..7.js` (wired into `data-files.js`, `node --check` clean) → Schrijven count is now **×7** (CLAUDE.md + this doc updated from ×4). All committed + pushed together.
+
+## 10. Linux-session sync (2026-06-30)
+
+Pushed another batch of parallel-session work after verifying it. New data files (all `node validate_data.js` clean, 0 errors): **3 new Spreken sets** `data/spreken/a2_spreken_3..5.js` (Spreken ×2 → **×5**) and **1 new vocab set** `data/woorden/a2_woorden_schrijven.js` (woordenschat ×11 → **×12**), both already wired into `data-files.js` by the data session. The design/app session also extended `js/app.js` (~+118 lines, per-exam stats view) + added `card_last_score`/`card_average_score` i18n keys + minor `css/style.css`. Cache-busting bumped: `i18n.js?v=15`, `css?v=14`, `app.js?v=11`, `data-files.js?v=8`. CLAUDE.md status updated (Spreken ×5, woordenschat ×12). **Note:** a cross-device progress-sync feature (Option A export/import + Option B sync-code via a Cloudflare Worker) was scoped & approved by the user but implementation was paused mid-edit and **reverted** — `js/store.js` is back to its committed state. Resume there if/when the user asks.
 
 ---
 
