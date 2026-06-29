@@ -78,7 +78,8 @@
     html += '<span class="brand-tagline">' + escapeHtml(INB.t("app_tagline")) + '</span>';
     html += '</a>';
     html += '<nav class="main-nav">';
-    html += '<a href="#/" data-route="hub-examens" class="nav-link">' + escapeHtml(INB.t("nav_examens")) + '</a>';
+    html += buildExamensDropdown();
+    html += buildWoordenDropdown();
     html += '<a href="#/voortgang" data-route="voortgang" class="nav-link">' + escapeHtml(INB.t("nav_voortgang")) + '</a>';
     html += '<a href="#/info" data-route="info" class="nav-link">' + escapeHtml(INB.t("nav_info")) + '</a>';
     html += '</nav>';
@@ -101,6 +102,116 @@
         INB.setLang(newLang);
       });
     }
+
+    wireDropdowns(header);
+  }
+
+  // Build the "Examens" dropdown: an entry per onderdeel (Lezen, KNM, …),
+  // each grouping its registered exams. Empty onderdelen show a muted
+  // "in voorbereiding" placeholder so the full structure stays visible.
+  function buildExamensDropdown() {
+    var onderdelen = INB.getOnderdelen() || [];
+    var menu = '';
+    menu += '<a class="nav-menu-link nav-menu-overview" href="#/">' + escapeHtml(INB.t("nav_overzicht")) + '</a>';
+    for (var i = 0; i < onderdelen.length; i++) {
+      var sec = onderdelen[i];
+      menu += '<div class="nav-menu-group">';
+      menu += '<span class="nav-menu-group-title">' + sec.icoon + ' ' + escapeHtml(INB.t(sec.titelKey)) + '</span>';
+      if (sec.examens && sec.examens.length > 0) {
+        for (var j = 0; j < sec.examens.length; j++) {
+          var ex = sec.examens[j];
+          menu += '<a class="nav-menu-link" href="#/examen/' + encodeURIComponent(ex.id) + '">' +
+            escapeHtml(INB.tr(ex.titel)) + '</a>';
+        }
+      } else {
+        menu += '<span class="nav-menu-empty">' + escapeHtml(INB.t("nav_in_voorbereiding")) + '</span>';
+      }
+      menu += '</div>';
+    }
+    return dropdownShell("nav-dd-examens", INB.t("nav_examens"), menu);
+  }
+
+  // Build the "Woorden" dropdown: the combined "Alle woorden" set first,
+  // then one entry per registered vocabulary set.
+  function buildWoordenDropdown() {
+    var sets = INB.getWoordenSets() || [];
+    var menu = '';
+    if (INB.getAllWoorden && INB.getAllWoorden()) {
+      menu += '<a class="nav-menu-link nav-menu-overview" href="#/woorden/' + encodeURIComponent(INB.ALLE_WOORDEN_ID) + '">' +
+        '🗂️ ' + escapeHtml(INB.t("nav_alle_woorden")) + '</a>';
+    }
+    if (sets.length > 0) {
+      menu += '<div class="nav-menu-group">';
+      for (var i = 0; i < sets.length; i++) {
+        var set = sets[i];
+        menu += '<a class="nav-menu-link" href="#/woorden/' + encodeURIComponent(set.id) + '">' +
+          (set.icoon ? set.icoon + ' ' : '') + escapeHtml(INB.tr(set.titel)) + '</a>';
+      }
+      menu += '</div>';
+    } else {
+      menu += '<span class="nav-menu-empty">' + escapeHtml(INB.t("nav_in_voorbereiding")) + '</span>';
+    }
+    return dropdownShell("nav-dd-woorden", INB.t("nav_woorden"), menu);
+  }
+
+  // Wrap a dropdown toggle button + its menu panel in the shared shell markup.
+  function dropdownShell(id, label, menuHtml) {
+    return (
+      '<div class="nav-dropdown" data-dropdown="' + id + '">' +
+        '<button type="button" class="nav-link nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">' +
+          escapeHtml(label) + '<span class="nav-caret" aria-hidden="true">▾</span>' +
+        '</button>' +
+        '<div class="nav-menu" role="menu">' + menuHtml + '</div>' +
+      '</div>'
+    );
+  }
+
+  // Close every open dropdown inside the header.
+  function closeDropdowns() {
+    var hdr = document.getElementById("app-header");
+    if (!hdr) { return; }
+    var open = hdr.querySelectorAll(".nav-dropdown.open");
+    for (var i = 0; i < open.length; i++) {
+      open[i].classList.remove("open");
+      var btn = open[i].querySelector(".nav-dropdown-toggle");
+      if (btn) { btn.setAttribute("aria-expanded", "false"); }
+    }
+  }
+
+  // Click to open a dropdown (closing any other); click a link, click outside,
+  // or press Escape to close.
+  function wireDropdowns(header) {
+    var dropdowns = header.querySelectorAll(".nav-dropdown");
+
+    for (var d = 0; d < dropdowns.length; d++) {
+      (function (dd) {
+        var toggle = dd.querySelector(".nav-dropdown-toggle");
+        if (toggle) {
+          toggle.addEventListener("click", function (ev) {
+            ev.stopPropagation();
+            var isOpen = dd.classList.contains("open");
+            closeDropdowns();
+            if (!isOpen) {
+              dd.classList.add("open");
+              toggle.setAttribute("aria-expanded", "true");
+            }
+          });
+        }
+        // Selecting an item navigates (hash change) — just close the menu.
+        var links = dd.querySelectorAll(".nav-menu-link");
+        for (var i = 0; i < links.length; i++) {
+          links[i].addEventListener("click", closeDropdowns);
+        }
+      })(dropdowns[d]);
+    }
+
+    if (!wireDropdowns._docHandler) {
+      wireDropdowns._docHandler = true;
+      document.addEventListener("click", closeDropdowns);
+      document.addEventListener("keydown", function (ev) {
+        if (ev.key === "Escape") { closeDropdowns(); }
+      });
+    }
   }
 
   // ---- hub: list of exams + woorden sets ----
@@ -120,29 +231,41 @@
                 '<h2 class="hero-features-title">' + escapeHtml(INB.t("hero_feature_title")) + '</h2>' +
                 '<div class="hero-features-grid">' +
                   
-                  '<div class="hero-feature-card">' +
-                    '<div class="feature-icon">📚</div>' +
-                    '<h3>' + escapeHtml(INB.t("hero_feat_exams_title")) + '</h3>' +
-                    '<p>' + escapeHtml(INB.t("hero_feat_exams_desc")) + '</p>' +
-                  '</div>' +
-                  
-                  '<div class="hero-feature-card">' +
-                    '<div class="feature-icon">📝</div>' +
-                    '<h3>' + escapeHtml(INB.t("hero_feat_prod_title")) + '</h3>' +
-                    '<p>' + escapeHtml(INB.t("hero_feat_prod_desc")) + '</p>' +
-                  '</div>' +
-                  
-                  '<div class="hero-feature-card">' +
+                  '<a class="hero-feature-card" href="javascript:void(0)" data-target="sec-woorden">' +
                     '<div class="feature-icon">📖</div>' +
                     '<h3>' + escapeHtml(INB.t("hero_feat_vocab_title")) + '</h3>' +
                     '<p>' + escapeHtml(INB.t("hero_feat_vocab_desc")) + '</p>' +
-                  '</div>' +
+                  '</a>' +
                   
-                  '<div class="hero-feature-card">' +
+                  '<a class="hero-feature-card" href="javascript:void(0)" data-target="sec-lezen">' +
+                    '<div class="feature-icon">📚</div>' +
+                    '<h3>' + escapeHtml(INB.t("onderdeel_lezen_titel")) + '</h3>' +
+                    '<p>' + escapeHtml(INB.t("hero_feat_lezen_desc")) + '</p>' +
+                  '</a>' +
+                  
+                  '<a class="hero-feature-card" href="javascript:void(0)" data-target="sec-knm">' +
+                    '<div class="feature-icon">🏛️</div>' +
+                    '<h3>' + escapeHtml(INB.t("hero_feat_knm_title")) + '</h3>' +
+                    '<p>' + escapeHtml(INB.t("hero_feat_knm_desc")) + '</p>' +
+                  '</a>' +
+                  
+                  '<a class="hero-feature-card" href="javascript:void(0)" data-target="sec-schrijven">' +
+                    '<div class="feature-icon">📝</div>' +
+                    '<h3>' + escapeHtml(INB.t("hero_feat_prod_title")) + '</h3>' +
+                    '<p>' + escapeHtml(INB.t("hero_feat_prod_desc")) + '</p>' +
+                  '</a>' +
+                  
+                  '<a class="hero-feature-card" href="javascript:void(0)" data-target="sec-luisteren">' +
+                    '<div class="feature-icon">🎧</div>' +
+                    '<h3>' + escapeHtml(INB.t("onderdeel_luisteren_titel")) + '</h3>' +
+                    '<p>' + escapeHtml(INB.t("onderdeel_luisteren_desc")) + '</p>' +
+                  '</a>' +
+                  
+                  '<a class="hero-feature-card" href="#/voortgang">' +
                     '<div class="feature-icon">📈</div>' +
                     '<h3>' + escapeHtml(INB.t("hero_feat_track_title")) + '</h3>' +
                     '<p>' + escapeHtml(INB.t("hero_feat_track_desc")) + '</p>' +
-                  '</div>' +
+                  '</a>' +
 
                 '</div>' +
               '</div>' +
@@ -159,7 +282,7 @@
     // Woordenschat practice goes FIRST (top of the page) — it's the daily,
     // gamified core of the site. `hub-featured` marks it for prominent styling.
     html +=
-      '<section class="hub-section hub-section-woorden hub-featured">' +
+      '<section id="sec-woorden" class="hub-section hub-section-woorden hub-featured">' +
         '<h2>' + escapeHtml(INB.t("hub_woorden_title")) + '</h2>' +
         '<p class="section-sub">' + escapeHtml(INB.t("hub_woorden_sub")) + '</p>' +
         '<div class="card-grid" id="woorden-grid"></div>' +
@@ -186,6 +309,19 @@
       });
     }
 
+    // Attach smooth scroll behavior to the feature cards
+    var featureCards = rootEl.querySelectorAll(".hero-feature-card[data-target]");
+    for (var i = 0; i < featureCards.length; i++) {
+      featureCards[i].addEventListener("click", function (ev) {
+        ev.preventDefault();
+        var targetId = ev.currentTarget.getAttribute("data-target");
+        var targetEl = document.getElementById(targetId);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    }
+
     var woordenGrid = document.getElementById("woorden-grid");
     var sets = INB.getWoordenSets() || [];
     var woordenHtml = "";
@@ -198,7 +334,7 @@
 
   function renderOnderdeelSection(sectie) {
     var html = "";
-    html += '<section class="hub-section onderdeel-section">';
+    html += '<section id="sec-' + escapeHtml(sectie.vak) + '" class="hub-section onderdeel-section">';
     html += '<h2>' + sectie.icoon + ' ' + escapeHtml(INB.t(sectie.titelKey)) + '</h2>';
     html += '<p class="section-sub">' + escapeHtml(INB.t(sectie.descKey)) + '</p>';
 
@@ -638,6 +774,7 @@
     html += '<p class="section-sub">' + escapeHtml(INB.t("info_intro")) + '</p>';
 
     html += '<div class="info-grid">';
+    html += infoBlock("info_project_titel", "info_project_desc");
     html += infoBlock("info_taalvaardigheden_titel", "info_taalvaardigheden_desc");
     html += infoBlock("info_knm_titel", "info_knm_desc");
     html += infoBlock("info_ona_pvt_titel", "info_ona_pvt_desc");

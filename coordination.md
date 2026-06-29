@@ -121,6 +121,10 @@ Build a set of **thematic A2 beginner vocab files** `data/woorden/a2_woorden_bas
 - `data/woorden/a2_woorden_zinnen.js`  ✅ wired & tested
 - `data/schrijven/a2_schrijven_2.js`  ✅ wired & tested
 - `data/schrijven/a2_schrijven_3.js`  ✅ wired & tested
+- `data/schrijven/a2_schrijven_4.js`  ✅ wired & tested
+- `data/schrijven/a2_schrijven_5.js`  ✅ wired & tested
+- `data/schrijven/a2_schrijven_6.js`  ✅ wired & tested
+- `data/schrijven/a2_schrijven_7.js`  ✅ wired & tested
 - `data/schrijven/a2_schrijven_notities.js`  ✅ wired & tested
 - `data/spreken/a2_spreken_2.js`  ✅ wired & tested
 - `data/spreken/a2_spreken_notities.js`  ✅ wired & tested
@@ -143,9 +147,13 @@ A second Opus session (Linux box) had its own uncommitted core changes (a new Ap
 
 **Bug found & fixed during sync:** a bare `agy` token had been pasted directly into `index.html` (inside the core inline loader `<script>`), breaking the data-loading sequence with a `ReferenceError`. This is exactly the kind of core-file edit §1 says AGY/data agents must never make — whoever/whatever inserted it should stick to `data/<vak>/*.js` only. Fixed before commit (`a626bc3`); not present in the version pushed to GitHub.
 
-CLAUDE.md status section updated to reflect that all current A2 data (Lezen ×8, KNM ×11, Schrijven ×4, Spreken ×3, woordenschat ×11) is wired in `js/data-files.js`, 0 errors per `node validate_data.js`.
+CLAUDE.md status section updated to reflect that all current A2 data (Lezen ×8, KNM ×11, Schrijven ×7, Spreken ×3, woordenschat ×11) is wired in `js/data-files.js`, 0 errors per `node validate_data.js`.
 
 **Backlog review (2026-06-23):** Re-checked every task in §3/§6/§7 against the actual repo state — **all are done** (Tasks 1–11, the Schrijven/Spreken expansion, the daily-phrases set). Tegenstellingen now has 392 items combined (file 1 + 2), past the ~300+ target. No open AGY task remains. User explicitly decided (asked directly): **do not build a Luisteren placeholder/link-out page right now** (no source audio/transcripts exist; the generic "in voorbereiding" badge already covers it gracefully) and **do not generate extra volume/depth content this round** (current scope is considered sufficient until further feedback). AGY/Sonnet agents: no new task is open — hold until the user or Opus opens a new one here.
+
+## 9. Linux-session sync (2026-06-29)
+
+Opus (Linux) reworked the hub **hero welcome copy** in `js/i18n.js` per user feedback: `hero_desc` is now mission-driven and warm/personal ("yolda yanında olan", "acele etmeden", own progress-page mention; the "no financial/commercial motive" clause was dropped on request); `hero_subtitle` → "A2 sınavını geçmek için — ücretsiz ve herkes için" (NL/EN/TR). Cache-busting bumped: `i18n.js?v=14`, `css/style.css?v=13`, `app.js?v=10`. Also picked up another agent's in-tree work and verified it before committing: **4 new Schrijven sets** `data/schrijven/a2_schrijven_4..7.js` (wired into `data-files.js`, `node --check` clean) → Schrijven count is now **×7** (CLAUDE.md + this doc updated from ×4). All committed + pushed together.
 
 ---
 
