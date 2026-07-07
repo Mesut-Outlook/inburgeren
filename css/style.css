@@ -1445,3 +1445,227 @@ html {
   color: var(--color-text-muted);
   margin-bottom: 1.5rem;
 }
+
+/* ---- reviews & comments (gorusler) ---- */
+
+.gorusler-container {
+  display: grid;
+  grid-template-columns: 1.1fr 1.9fr;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .gorusler-container {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+.gorusler-form-card {
+  padding: 1.8rem;
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow);
+}
+
+.gorusler-form-group {
+  margin-bottom: 1.2rem;
+}
+
+.gorusler-form-group label {
+  display: block;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  color: var(--color-text);
+}
+
+.gorusler-form-group input,
+.gorusler-form-group select,
+.gorusler-form-group textarea {
+  width: 100%;
+  max-width: 100%;
+}
+
+.star-rating-input {
+  display: flex;
+  gap: 0.3rem;
+  font-size: 1.5rem;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--color-text-muted);
+  transition: transform 0.1s ease, color 0.1s ease;
+}
+
+.star-btn.active {
+  color: #ffb100;
+}
+
+.star-btn:hover {
+  transform: scale(1.2);
+}
+
+.success-alert {
+  padding: 0.9rem 1.2rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+  font-size: 0.92rem;
+  margin-bottom: 1.2rem;
+  border-left: 4px solid var(--color-success-text);
+  animation: feedbackSlide 0.25s ease-out;
+}
+
+/* Reviews List side */
+.gorusler-list-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.review-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 0.5rem;
+}
+
+.filter-chip {
+  background: var(--color-surface-alt);
+  border: 1px solid transparent;
+  color: var(--color-text);
+  padding: 0.4rem 0.9rem;
+  border-radius: 980px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-chip:hover {
+  background: var(--color-border);
+}
+
+.filter-chip.active {
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
+  border-color: var(--color-primary);
+}
+
+.review-card-item {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.4rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: feedbackSlide 0.3s ease-out;
+}
+
+.review-card-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.review-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.review-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-sky));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.review-meta-info {
+  flex-grow: 1;
+}
+
+.review-user-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.review-stars {
+  color: #ffb100;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.review-date-badge {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.review-date {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.review-tags {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+}
+
+.review-tag-badge {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.tag-component {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+}
+
+.tag-status-passed {
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+.tag-status-preparing {
+  background: var(--color-peach-soft);
+  color: var(--color-peach);
+}
+
+.review-comment-body {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  margin: 0;
+  white-space: pre-line;
+}
+
+@media (min-width: 681px) {
+  .hero-features-grid .hero-feature-card:last-child {
+    grid-column: span 2;
+  }
+}

@@ -81,6 +81,7 @@
     html += buildExamensDropdown();
     html += buildWoordenDropdown();
     html += '<a href="#/voortgang" data-route="voortgang" class="nav-link">' + escapeHtml(INB.t("nav_voortgang")) + '</a>';
+    html += '<a href="#/gorusler" data-route="gorusler" class="nav-link">' + escapeHtml(INB.t("nav_gorusler")) + '</a>';
     html += '<a href="#/info" data-route="info" class="nav-link">' + escapeHtml(INB.t("nav_info")) + '</a>';
     html += '</nav>';
     html += '<button type="button" class="theme-toggle" id="theme-toggle" aria-label="Theme" title="Light / Dark">' + (effectiveTheme() === 'dark' ? '☀️' : '🌙') + '</button>';
@@ -265,6 +266,12 @@
                     '<div class="feature-icon">📈</div>' +
                     '<h3>' + escapeHtml(INB.t("hero_feat_track_title")) + '</h3>' +
                     '<p>' + escapeHtml(INB.t("hero_feat_track_desc")) + '</p>' +
+                  '</a>' +
+
+                  '<a class="hero-feature-card" href="#/gorusler">' +
+                    '<div class="feature-icon">💬</div>' +
+                    '<h3>' + escapeHtml(INB.t("nav_gorusler")) + '</h3>' +
+                    '<p>' + escapeHtml(INB.t("hero_feat_gorusler_desc")) + '</p>' +
                   '</a>' +
 
                 '</div>' +
@@ -894,6 +901,7 @@
     if (parts[0] === "woorden" && parts[1]) { return { view: "woorden", id: decodeURIComponent(parts[1]) }; }
     if (parts[0] === "voortgang") { return { view: "voortgang" }; }
     if (parts[0] === "info") { return { view: "info" }; }
+    if (parts[0] === "gorusler") { return { view: "gorusler" }; }
     return { view: "hub" };
   }
 
@@ -924,6 +932,9 @@
     } else if (route.view === "info") {
       renderInfo();
       currentRerender = renderInfo;
+    } else if (route.view === "gorusler") {
+      renderGorusler();
+      currentRerender = renderGorusler;
     } else {
       renderHub();
       currentRerender = renderHub;
@@ -938,6 +949,7 @@
     var key = "hub-examens";
     if (route.view === "voortgang") { key = "voortgang"; }
     else if (route.view === "info") { key = "info"; }
+    else if (route.view === "gorusler") { key = "gorusler"; }
     var active = document.querySelector('.nav-link[data-route="' + key + '"]');
     if (active) { active.classList.add("active"); }
   }
@@ -957,9 +969,304 @@
     };
   }
 
+  // ---- gorusler (comments & reviews) view implementation ----
+  // NB: deze declaraties moeten VÓÓR de init()-aanroep staan — init() kan
+  // renderGorusler() synchroon uitvoeren en heeft de data dan al nodig.
+
+  var MOCK_REVIEWS = [
+    {
+      name: "Ahmet",
+      rating: 5,
+      component: "general",
+      status: "passed",
+      comment: "Harika bir çalışma sitesi! Özellikle kelime kartları ve okuma parçaları çok işime yaradı. KNM sorularının açıklamaları sayesinde sınavı ilk seferde geçtim. Herkese tavsiye ederim.",
+      date: "2026-06-15T10:00:00.000Z"
+    },
+    {
+      name: "Sarah",
+      rating: 5,
+      component: "lezen",
+      status: "passed",
+      comment: "I was very nervous about the Reading (Lezen) part of the exam, but the practice exams on this website are exactly like the real ones. The translation options helped me understand the tricky parts. Thank you!",
+      date: "2026-06-28T14:30:00.000Z"
+    },
+    {
+      name: "Emily",
+      rating: 4,
+      component: "knm",
+      status: "preparing",
+      comment: "De KNM-oefeningen zijn erg nuttig om de Nederlandse cultuur en regels te leren. De uitleg in het Engels helpt me echt om sneller te begrijpen waarom bepaalde antwoorden goed zijn.",
+      date: "2026-07-01T09:15:00.000Z"
+    },
+    {
+      name: "Mesut",
+      rating: 5,
+      component: "schrijven",
+      status: "passed",
+      comment: "Sitedeki Yazma (Schrijven) örnekleri çok iyi hazırlanmış. Kendi cevaplarımı model cevaplarla karşılaştırarak eksiklerimi gördüm. Kesinlikle çok faydalı.",
+      date: "2026-07-05T18:20:00.000Z"
+    }
+  ];
+
+  var currentReviewFilter = "all";
+  var ratingInputVal = 5;
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
   } else {
     init();
+  }
+
+  function renderGorusler() {
+    var customReviews = INB.store.getCustomReviews() || [];
+    var allReviews = MOCK_REVIEWS.concat(customReviews);
+
+    allReviews.sort(function (a, b) {
+      return new Date(b.date) - new Date(a.date);
+    });
+
+    var html = "";
+    html += '<section class="hub-section">';
+    html += '<h2>' + escapeHtml(INB.t("gorusler_title")) + '</h2>';
+    html += '<p class="section-sub">' + escapeHtml(INB.t("gorusler_intro")) + '</p>';
+
+    html += '<div class="gorusler-container">';
+    
+    // Left: form
+    html += '<div class="gorusler-form-card">';
+    html += '<h3>' + escapeHtml(INB.t("gorusler_form_title")) + '</h3>';
+    html += '<div id="gorusler-success-msg" style="display:none;" class="success-alert">' +
+              escapeHtml(INB.t("gorusler_submit_success")) +
+            '</div>';
+    html += '<form id="gorusler-form">';
+    
+    html += '<div class="gorusler-form-group">';
+    html += '<label for="rev-name">' + escapeHtml(INB.t("gorusler_label_name")) + '</label>';
+    html += '<input type="text" id="rev-name" class="text-input" required placeholder="' + escapeHtml(INB.t("gorusler_placeholder_name")) + '" minlength="2" maxlength="30">';
+    html += '</div>';
+
+    html += '<div class="gorusler-form-group">';
+    html += '<label>' + escapeHtml(INB.t("gorusler_label_rating")) + '</label>';
+    html += '<div class="star-rating-input" id="rev-star-container" role="radiogroup" aria-label="Rating">';
+    for (var r = 1; r <= 5; r++) {
+      html += '<button type="button" class="star-btn active" data-val="' + r + '" aria-label="' + r + ' ' + escapeHtml(INB.t("gorusler_rating_stars")) + '">★</button>';
+    }
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="gorusler-form-group">';
+    html += '<label for="rev-comp">' + escapeHtml(INB.t("gorusler_label_component")) + '</label>';
+    html += '<select id="rev-comp" class="text-input">';
+    html += '<option value="general">' + escapeHtml(INB.t("gorusler_comp_algemeen")) + '</option>';
+    html += '<option value="lezen">' + escapeHtml(INB.t("onderdeel_lezen_titel")) + '</option>';
+    html += '<option value="luisteren">' + escapeHtml(INB.t("onderdeel_luisteren_titel")) + '</option>';
+    html += '<option value="spreken">' + escapeHtml(INB.t("onderdeel_spreken_titel")) + '</option>';
+    html += '<option value="schrijven">' + escapeHtml(INB.t("onderdeel_schrijven_titel")) + '</option>';
+    html += '<option value="knm">' + escapeHtml(INB.t("onderdeel_knm_titel")) + '</option>';
+    html += '</select>';
+    html += '</div>';
+
+    html += '<div class="gorusler-form-group">';
+    html += '<label for="rev-status">' + escapeHtml(INB.t("gorusler_label_status")) + '</label>';
+    html += '<select id="rev-status" class="text-input">';
+    html += '<option value="preparing">' + escapeHtml(INB.t("gorusler_status_preparing")) + '</option>';
+    html += '<option value="passed">' + escapeHtml(INB.t("gorusler_status_passed")) + '</option>';
+    html += '</select>';
+    html += '</div>';
+
+    html += '<div class="gorusler-form-group">';
+    html += '<label for="rev-comment">' + escapeHtml(INB.t("gorusler_label_comment")) + '</label>';
+    html += '<textarea id="rev-comment" class="text-input" rows="5" required minlength="10" placeholder="' + escapeHtml(INB.t("gorusler_placeholder_comment")) + '"></textarea>';
+    html += '</div>';
+
+    html += '<button type="submit" class="btn btn-primary" style="width:100%;">' + escapeHtml(INB.t("gorusler_btn_submit")) + '</button>';
+    html += '</form>';
+    html += '</div>';
+
+    // Right: list
+    html += '<div class="gorusler-list-section">';
+    html += '<div class="review-filters">';
+    var filters = ["all", "general", "lezen", "luisteren", "spreken", "schrijven", "knm"];
+    for (var f = 0; f < filters.length; f++) {
+      var filterKey = filters[f];
+      var filterLabel = filterKey === "all" ? INB.t("gorusler_filter_all") :
+                         (filterKey === "general" ? INB.t("gorusler_comp_algemeen") :
+                         (filterKey === "lezen" ? INB.t("onderdeel_lezen_titel") :
+                         (filterKey === "luisteren" ? INB.t("onderdeel_luisteren_titel") :
+                         (filterKey === "spreken" ? INB.t("onderdeel_spreken_titel") :
+                         (filterKey === "schrijven" ? INB.t("onderdeel_schrijven_titel") :
+                         INB.t("onderdeel_knm_titel"))))));
+      
+      var activeClass = currentReviewFilter === filterKey ? " active" : "";
+      html += '<button type="button" class="filter-chip' + activeClass + '" data-filter="' + filterKey + '">' + escapeHtml(filterLabel) + '</button>';
+    }
+    html += '</div>';
+
+    html += '<div class="review-cards-container" id="review-cards-container">';
+    html += renderFilteredReviews(allReviews);
+    html += '</div>';
+    html += '</div>'; // close list section
+    
+    html += '</div>'; // close container
+    html += '</section>';
+
+    rootEl.innerHTML = html;
+
+    // Form submission listener
+    var form = document.getElementById("gorusler-form");
+    if (form) {
+      form.addEventListener("submit", function (ev) {
+        ev.preventDefault();
+        var nameInput = document.getElementById("rev-name");
+        var compSelect = document.getElementById("rev-comp");
+        var statusSelect = document.getElementById("rev-status");
+        var commentText = document.getElementById("rev-comment");
+
+        var newReview = {
+          name: nameInput.value,
+          rating: ratingInputVal,
+          component: compSelect.value,
+          status: statusSelect.value,
+          comment: commentText.value
+        };
+
+        INB.store.saveCustomReview(newReview);
+
+        var successAlert = document.getElementById("gorusler-success-msg");
+        if (successAlert) {
+          successAlert.style.display = "block";
+        }
+
+        form.reset();
+        ratingInputVal = 5;
+        updateStarRatingVisuals(5);
+
+        var updatedCustomReviews = INB.store.getCustomReviews() || [];
+        var updatedAllReviews = MOCK_REVIEWS.concat(updatedCustomReviews);
+        updatedAllReviews.sort(function (a, b) {
+          return new Date(b.date) - new Date(a.date);
+        });
+        
+        var listContainer = document.getElementById("review-cards-container");
+        if (listContainer) {
+          listContainer.innerHTML = renderFilteredReviews(updatedAllReviews);
+        }
+
+        setTimeout(function () {
+          var alert = document.getElementById("gorusler-success-msg");
+          if (alert) { alert.style.display = "none"; }
+        }, 4000);
+      });
+    }
+
+    // Star rating picker listener
+    var starContainer = document.getElementById("rev-star-container");
+    if (starContainer) {
+      var stars = starContainer.querySelectorAll(".star-btn");
+      for (var s = 0; s < stars.length; s++) {
+        stars[s].addEventListener("click", function (ev) {
+          ev.preventDefault();
+          var val = parseInt(ev.currentTarget.getAttribute("data-val"), 10);
+          ratingInputVal = val;
+          updateStarRatingVisuals(val);
+        });
+      }
+    }
+
+    // Filter listener
+    var filtersContainer = rootEl.querySelector(".review-filters");
+    if (filtersContainer) {
+      var chips = filtersContainer.querySelectorAll(".filter-chip");
+      for (var c = 0; c < chips.length; c++) {
+        chips[c].addEventListener("click", function (ev) {
+          var clickedChip = ev.currentTarget;
+          var filterVal = clickedChip.getAttribute("data-filter");
+          currentReviewFilter = filterVal;
+
+          for (var j = 0; j < chips.length; j++) {
+            chips[j].classList.remove("active");
+          }
+          clickedChip.classList.add("active");
+
+          var freshCustom = INB.store.getCustomReviews() || [];
+          var freshAll = MOCK_REVIEWS.concat(freshCustom);
+          freshAll.sort(function (a, b) {
+            return new Date(b.date) - new Date(a.date);
+          });
+          var listContainer = document.getElementById("review-cards-container");
+          if (listContainer) {
+            listContainer.innerHTML = renderFilteredReviews(freshAll);
+          }
+        });
+      }
+    }
+  }
+
+  function updateStarRatingVisuals(rating) {
+    var starContainer = document.getElementById("rev-star-container");
+    if (!starContainer) { return; }
+    var stars = starContainer.querySelectorAll(".star-btn");
+    for (var i = 0; i < stars.length; i++) {
+      var starVal = parseInt(stars[i].getAttribute("data-val"), 10);
+      if (starVal <= rating) {
+        stars[i].classList.add("active");
+      } else {
+        stars[i].classList.remove("active");
+      }
+    }
+  }
+
+  function renderFilteredReviews(reviewsList) {
+    var filtered = reviewsList.filter(function (rev) {
+      if (currentReviewFilter === "all") { return true; }
+      return rev.component === currentReviewFilter;
+    });
+
+    if (filtered.length === 0) {
+      return '<div class="card placeholder-card" style="padding:2rem; text-align:center;">' +
+               '<p>' + escapeHtml(INB.t("gorusler_no_reviews")) + '</p>' +
+             '</div>';
+    }
+
+    var html = "";
+    for (var i = 0; i < filtered.length; i++) {
+      var rev = filtered[i];
+      var initial = (rev.name || "A").trim().charAt(0);
+      var componentLabel = rev.component === "general" ? INB.t("gorusler_comp_algemeen") :
+                           (rev.component === "lezen" ? INB.t("onderdeel_lezen_titel") :
+                           (rev.component === "luisteren" ? INB.t("onderdeel_luisteren_titel") :
+                           (rev.component === "spreken" ? INB.t("onderdeel_spreken_titel") :
+                           (rev.component === "schrijven" ? INB.t("onderdeel_schrijven_titel") :
+                           INB.t("onderdeel_knm_titel")))));
+      
+      var statusLabel = rev.status === "passed" ? INB.t("gorusler_status_passed") : INB.t("gorusler_status_preparing");
+      var statusClass = rev.status === "passed" ? "tag-status-passed" : "tag-status-preparing";
+
+      var starsHtml = "";
+      for (var r = 0; r < 5; r++) {
+        starsHtml += r < rev.rating ? "★" : "☆";
+      }
+
+      html += '<div class="review-card-item">';
+      html += '<div class="review-card-header">';
+      html += '<div class="review-avatar">' + escapeHtml(initial) + '</div>';
+      html += '<div class="review-meta-info">';
+      html += '<h4 class="review-user-name">' + escapeHtml(rev.name) + '</h4>';
+      html += '<div class="review-stars" aria-label="' + rev.rating + ' stars">' + starsHtml + '</div>';
+      html += '</div>';
+      html += '<div class="review-date-badge">';
+      html += '<span class="review-date">' + escapeHtml(formatDate(rev.date)) + '</span>';
+      html += '</div>';
+      html += '</div>';
+
+      html += '<div class="review-tags">';
+      html += '<span class="review-tag-badge tag-component">' + escapeHtml(componentLabel) + '</span>';
+      html += '<span class="review-tag-badge ' + statusClass + '">' + escapeHtml(statusLabel) + '</span>';
+      html += '</div>';
+
+      html += '<p class="review-comment-body">' + escapeMultiline(rev.comment) + '</p>';
+      html += '</div>';
+    }
+    return html;
   }
 })();

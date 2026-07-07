@@ -115,12 +115,35 @@
     safeSet(KEY_WOORDEN_STATS, JSON.stringify(all));
   }
 
+  // ---- custom reviews ----
+  var KEY_REVIEWS = "inb_reviews";
+
+  function getCustomReviews() {
+    return safeParse(safeGet(KEY_REVIEWS)) || [];
+  }
+
+  function saveCustomReview(review) {
+    if (!review) { return; }
+    var all = getCustomReviews();
+    all.push({
+      name: review.name || "Anoniem",
+      rating: parseInt(review.rating, 10) || 5,
+      component: review.component || "general",
+      status: review.status || "preparing",
+      comment: review.comment || "",
+      date: new Date().toISOString()
+    });
+    safeSet(KEY_REVIEWS, JSON.stringify(all));
+  }
+
   INB.store = {
     getAllExamAttempts: getAllExamAttempts,
     getExamAttempt: getExamAttempt,
     saveExamAttempt: saveExamAttempt,
     getAllWoordenStats: getAllWoordenStats,
     getWoordenStats: getWoordenStats,
-    saveWoordenAttempt: saveWoordenAttempt
+    saveWoordenAttempt: saveWoordenAttempt,
+    getCustomReviews: getCustomReviews,
+    saveCustomReview: saveCustomReview
   };
 })();

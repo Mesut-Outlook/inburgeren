@@ -247,7 +247,39 @@
     info_disclaimer_desc: { nl: "Deze website is een onofficiële oefensite. Voor officiële informatie, inschrijving en regelgeving ga je naar inburgeren.nl en DUO.",
                               en: "This website is an unofficial practice site. For official information, registration and rules, go to inburgeren.nl and DUO.",
                               tr: "Bu web sitesi resmi olmayan bir alıştırma sitesidir. Resmi bilgi, kayıt ve kurallar için inburgeren.nl ve DUO'yu ziyaret edin." },
-    info_link_label: { nl: "Officiële informatie over het examen (inburgeren.nl)", en: "Official information about the exam (inburgeren.nl)", tr: "Sınav hakkında resmi bilgi (inburgeren.nl)" }
+    info_link_label: { nl: "Officiële informatie over het examen (inburgeren.nl)", en: "Official information about the exam (inburgeren.nl)", tr: "Sınav hakkında resmi bilgi (inburgeren.nl)" },
+
+    // ---- gorusler (reviews and opinions) ----
+    nav_gorusler: { nl: "Ervaringen & Feedback", en: "Reviews & Feedback", tr: "Yorumlar ve Görüşler" },
+    hero_feat_gorusler_desc: { nl: "Lees en deel ervaringen, tips en feedback van andere kandidaten over het examen.",
+                               en: "Read and share reviews, tips, and feedback from other integration candidates.",
+                               tr: "Diğer adayların sınav hakkındaki yorumlarını, tavsiyelerini ve deneyimlerini okuyun ve paylaşın." },
+    gorusler_title: { nl: "Ervaringen & Feedback", en: "Reviews & Feedback", tr: "Yorumlar ve Görüşler" },
+    gorusler_intro: { nl: "Lees hier de ervaringen van anderen die zich voorbereiden of al zijn geslaagd voor het examen. Deel ook jouw eigen tips en feedback!",
+                     en: "Read the experiences of others preparing for or who have already passed the exam. Share your own tips and feedback too!",
+                     tr: "Sınava hazırlanan veya sınavı geçmiş olan kişilerin deneyimlerini okuyun. Kendi tavsiye ve görüşlerinizi de paylaşın!" },
+    gorusler_form_title: { nl: "Jouw ervaring delen", en: "Share your experience", tr: "Deneyiminizi Paylaşın" },
+    gorusler_label_name: { nl: "Naam", en: "Name", tr: "İsim" },
+    gorusler_label_rating: { nl: "Beoordeling", en: "Rating", tr: "Değerlendirme" },
+    gorusler_label_component: { nl: "Onderdeel", en: "Exam Component", tr: "Sınav Bölümü" },
+    gorusler_label_status: { nl: "Status", en: "Status", tr: "Durum" },
+    gorusler_label_comment: { nl: "Jouw reactie of tip", en: "Your comment or tip", tr: "Yorumunuz veya Tavsiyeniz" },
+    gorusler_btn_submit: { nl: "Versturen", en: "Submit Review", tr: "Gönder" },
+    gorusler_placeholder_name: { nl: "Bv. Ahmet", en: "e.g. Ahmet", tr: "Örn. Ahmet" },
+    gorusler_placeholder_comment: { nl: "Deel je tips, hoe je hebt geleerd of feedback over de site...",
+                                   en: "Share your tips, how you studied, or feedback about the site...",
+                                   tr: "Tavsiyelerinizi, nasıl çalıştığınızı veya site hakkındaki görüşlerinizi yazın..." },
+    gorusler_status_preparing: { nl: "Voorbereiden", en: "Preparing", tr: "Hazırlanıyor" },
+    gorusler_status_passed: { nl: "Geslaagd", en: "Passed", tr: "Geçti" },
+    gorusler_filter_all: { nl: "Alle onderdelen", en: "All components", tr: "Tüm bölümler" },
+    gorusler_no_reviews: { nl: "Nog geen reacties voor dit onderdeel. Wees de eerste!",
+                           en: "No reviews for this component yet. Be the first!",
+                           tr: "Bu bölüm için henüz yorum yapılmamış. İlk yazan siz olun!" },
+    gorusler_rating_stars: { nl: "Sterren", en: "Stars", tr: "Yıldız" },
+    gorusler_submit_success: { nl: "Bedankt! Je feedback is toegevoegd.",
+                               en: "Thank you! Your feedback has been added.",
+                               tr: "Teşekkürler! Yorumunuz başarıyla eklendi." },
+    gorusler_comp_algemeen: { nl: "Algemeen", en: "General", tr: "Genel" }
   };
 
   function getLang() {
