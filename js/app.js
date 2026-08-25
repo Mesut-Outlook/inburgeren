@@ -876,6 +876,24 @@
     html += infoBlock("info_vrijstelling_titel", "info_vrijstelling_desc");
     html += '</div>';
 
+    // Detailed guides for all 5 exam components
+    html += '<h3 class="info-guide-main-heading">📋 ' + escapeHtml(INB.t("hub_examens_title")) + ' — ' + escapeHtml(INB.t("guide_title")) + '</h3>';
+    html += '<div class="info-guides-list">';
+    var guideVakken = ["lezen", "knm", "schrijven", "spreken", "luisteren"];
+    for (var gv = 0; gv < guideVakken.length; gv++) {
+      var vakKey = guideVakken[gv];
+      var icon = vakKey === "lezen" ? "📖" : (vakKey === "knm" ? "🏛️" : (vakKey === "schrijven" ? "✍️" : (vakKey === "spreken" ? "🗣️" : "🎧")));
+      html += '<div class="card info-guide-card">';
+      html += '<h4 class="info-guide-title">' + icon + ' ' + escapeHtml(INB.t("onderdeel_" + vakKey + "_titel")) + '</h4>';
+      html += '<div class="guide-grid">';
+      html += '<div class="guide-cell"><div class="guide-cell-header"><span class="cell-ico">⏱️</span> <strong>' + escapeHtml(INB.t("guide_sec_format")) + '</strong></div><div class="guide-cell-body">' + escapeMultiline(INB.t("guide_" + vakKey + "_format")) + '</div></div>';
+      html += '<div class="guide-cell"><div class="guide-cell-header"><span class="cell-ico">❓</span> <strong>' + escapeHtml(INB.t("guide_sec_questions")) + '</strong></div><div class="guide-cell-body">' + escapeMultiline(INB.t("guide_" + vakKey + "_questions")) + '</div></div>';
+      html += '<div class="guide-cell"><div class="guide-cell-header"><span class="cell-ico">🎯</span> <strong>' + escapeHtml(INB.t("guide_sec_scoring")) + '</strong></div><div class="guide-cell-body">' + escapeMultiline(INB.t("guide_" + vakKey + "_scoring")) + '</div></div>';
+      html += '<div class="guide-cell"><div class="guide-cell-header"><span class="cell-ico">🚀</span> <strong>' + escapeHtml(INB.t("guide_sec_tips")) + '</strong></div><div class="guide-cell-body">' + escapeMultiline(INB.t("guide_" + vakKey + "_tips")) + '</div></div>';
+      html += '</div></div>';
+    }
+    html += '</div>';
+
     html += '<div class="card info-disclaimer">';
     html += '<h3>' + escapeHtml(INB.t("info_disclaimer_titel")) + '</h3>';
     html += '<p>' + escapeHtml(INB.t("info_disclaimer_desc")) + '</p>';

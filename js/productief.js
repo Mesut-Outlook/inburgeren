@@ -64,6 +64,11 @@
       html += '</div>';
       html += '</div>';
 
+      // Collapsible Exam Guide Box
+      if (typeof INB.renderExamGuideHtml === "function") {
+        html += INB.renderExamGuideHtml(examen.vak);
+      }
+
       // Intro warning/instruction banner
       html += '<div class="card info-card prod-intro-banner">';
       html += '<p>💡 ' + escapeHtml(isSpreken ? INB.t("prod_intro_spreken") : INB.t("prod_intro_schrijven")) + '</p>';
@@ -231,6 +236,10 @@
       document.getElementById("btn-abort-task").addEventListener("click", function () {
         window.location.hash = "#/";
       });
+
+      if (typeof INB.wireExamGuide === "function") {
+        INB.wireExamGuide(container);
+      }
     }
 
     // --- Media Recording Logic ---

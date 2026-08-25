@@ -279,7 +279,126 @@
     gorusler_submit_success: { nl: "Bedankt! Je feedback is toegevoegd.",
                                en: "Thank you! Your feedback has been added.",
                                tr: "Teşekkürler! Yorumunuz başarıyla eklendi." },
-    gorusler_comp_algemeen: { nl: "Algemeen", en: "General", tr: "Genel" }
+    gorusler_comp_algemeen: { nl: "Algemeen", en: "General", tr: "Genel" },
+
+    // ---- exam guide & tips per component ----
+    guide_title: { nl: "Exameninformatie & Tips", en: "Exam Guide & Tips", tr: "Sınav Rehberi ve İpuçları" },
+    guide_toggle_open: { nl: "💡 Hoe werkt dit examen? (Format, vraagtypen & studietips)", en: "💡 How does this exam work? (Format, questions & study tips)", tr: "💡 Bu sınav nasıl yapılıyor? (Format, soru tipleri & çalışma tavsiyeleri)" },
+    guide_toggle_close: { nl: "Rehberi kapat / Sluit gids", en: "Close guide", tr: "Rehberi kapat" },
+    guide_sec_format: { nl: "Format & Duur", en: "Format & Duration", tr: "Format & Süre" },
+    guide_sec_questions: { nl: "Vraagtypen & Inhoud", en: "Question Types & Content", tr: "Soru Tipleri & Neler Sorulur?" },
+    guide_sec_scoring: { nl: "Belangrijke Regels & Püf Noktaları", en: "Key Rules & Scoring", tr: "Puanlama & Püf Noktaları" },
+    guide_sec_tips: { nl: "Hoe moet je leren?", en: "How to study?", tr: "Nasıl Çalışmalı?" },
+
+    // Spreken Guide
+    guide_spreken_format: {
+      nl: "Wordt afgenomen op de computer met een headset en microfoon. Duurt ongeveer 35 minuten en bestaat uit 2 hoofdonderdelen.",
+      en: "Taken on a computer with a headset and microphone. Lasts approx. 35 minutes and consists of 2 main parts.",
+      tr: "Bilgisayar başında mikrofonlu kulaklık ile yapılır. Yaklaşık 35 dakika sürer ve 2 ana bölümden oluşur."
+    },
+    guide_spreken_questions: {
+      nl: "• Deel 1 (Kort spreken): Je ziet een video/foto en krijgt een vraag (bv. 'Welke sport doe je graag en waarom?'). Na 20-30 sec bedenktijd spreek je 1-2 duidelijke zinnen in.\n• Deel 2 (Meerkeuze): Je ziet een alledaagse situatie en kiest uit 3 audio-opties de best passende mondelinge reactie.",
+      en: "• Part 1 (Speaking): You watch a video/picture with a prompt (e.g. 'Which sport do you like and why?'). After 20-30s prep, you speak 1-2 clear sentences.\n• Part 2 (Multiple choice): You watch a situation and pick the most appropriate spoken response from 3 audio choices.",
+      tr: "• Bölüm 1 (Kısa Konuşma): Ekranda video/resim ve bir soru verilir (örn. 'Hangi sporu seversiniz ve neden?'). 20-30 sn düşünme süresinden sonra bip sesiyle 1-2 cümlelik net cevap verirsiniz.\n• Bölüm 2 (Çoktan Seçmeli): Günlük bir durum gösterilir ve 3 sesli şıktan en uygun konuşma tepkisini seçersiniz."
+    },
+    guide_spreken_scoring: {
+      nl: "Een perfect accent is niet nodig! Waar examinatoren op letten: verstaanbaarheid, goede werkwoordsvolgorde en het DIRECT beantwoorden van de vraag (inclusief de 'waarom' als die gevraagd wordt).",
+      en: "A perfect accent is not required! Examiners assess: clarity, basic verb order, and DIRECTLY answering the prompt (including the 'why' if asked).",
+      tr: "Mükemmel bir aksan aranmaz! Değerlendiriciler şunlara bakar: anlaşılırlık, basit fiil dizilimi ve sorunun istediği bilgiyi doğrudan vermek (özellikle 'neden' sorulduysa gerekçesini mutlaka belirtmek)."
+    },
+    guide_spreken_tips: {
+      nl: "Oefen met eenvoudige, volledige zinnen: 'Ik sport graag, want het is gezond.' Leer vaste verbindingswoorden (want, omdat, maar) en neem je eigen stem op om te vergelijken met de modelantwoorden.",
+      en: "Practice simple, complete sentences: 'Ik sport graag, want het is gezond.' Master connectors (want, omdat, maar) and record your voice to compare with model answers.",
+      tr: "Basit ve tam cümleler kurun: 'Ik sport graag, want het is gezond.' Bağlaçları (want, omdat, maar) ve günlük kalıpları sesli çalışın; kendi sesinizi kaydedip model cevaplarla karşılaştırın."
+    },
+
+    // Schrijven Guide
+    guide_schrijven_format: {
+      nl: "Wordt afgenomen op de computer of papier. Duurt 40 minuten en bevat 4 verschillende schrijfopdrachten.",
+      en: "Taken on computer or paper. Lasts 40 minutes and contains 4 different writing tasks.",
+      tr: "Bilgisayarda veya kağıt üzerinde yapılır. Toplam 40 dakika sürer ve 4 farklı yazma görevi içerir."
+    },
+    guide_schrijven_questions: {
+      nl: "• Korte taken (2 opdrachten): Een kort formulier invullen of een kort briefje/notitie schrijven (1-2 zinnen).\n• Korte brieven/e-mails (2 opdrachten): Bv. een afspraak bij de tandarts afzeggen, ziekmelding aan je werkgever, klacht over een aankoop of uitnodiging (~30-50 woorden).",
+      en: "• Short tasks (2 tasks): Filling in a form or writing a short note/memo (1-2 sentences).\n• Short letters/emails (2 tasks): E.g. cancelling a dentist appointment, sick leave to your manager, complaint about a purchase, or party invitation (~30-50 words).",
+      tr: "• Kısa Görevler (2 adet): Form doldurma veya kısa bir not yazma (1-2 cümle).\n• Kısa Mektup / E-posta (2 adet): Diş randevusu iptali, işe hastalık bildirimi, ürün şikayeti, kurs kaydı veya davetiye gibi günlük konularda e-posta/mektup (~30-50 kelime)."
+    },
+    guide_schrijven_scoring: {
+      nl: "GOUDEN REGEL: Beantwoord ALLE gevraagde punten (bullet points / eisen) uit de opdracht! Mis je één punt, dan verlies je direct score. Houd je zinnen kort en grammaticaal kloppend.",
+      en: "GOLDEN RULE: Address EVERY single bullet point (eisen) in the task! Missing even one costs points immediately. Keep sentences short and structurally sound.",
+      tr: "ALTIN KURAL: Görevde istenen TÜM maddeleri (eisen / maddeler) eksiksiz yazın! Bir maddeyi bile atlarsanız doğrudan puan kaybedersiniz. Cümleleri sade ve dilbilgisi kurallarına uygun tutun."
+    },
+    guide_schrijven_tips: {
+      nl: "Leer vaste openings- en afsluitzinnen (Beste... / Geachte..., Met vriendelijke groet / Groetjes). Gebruik vaste patronen: 'Ik wil graag...', 'Ik kan niet komen, want...', 'Kunt u mij laten weten...'.",
+      en: "Memorize standard greetings and closings (Beste... / Geachte..., Met vriendelijke groet). Use reliable patterns: 'Ik wil graag...', 'Ik kan niet komen, want...', 'Kunt u mij laten weten...'.",
+      tr: "Standart hitap ve kapanışları ezberleyin (Beste... / Geachte..., Met vriendelijke groet / Groetjes). Güvenli kalıplar kullanın: 'Ik wil graag...', 'Ik kan niet komen, want...', 'Kunt u mij laten weten...'."
+    },
+
+    // Lezen Guide
+    guide_lezen_format: {
+      nl: "Wordt afgenomen op de computer. 25 meerkeuzevragen (A, B, C) over diverse korte teksten. Tijd: 65 minuten. Slaaggrens ligt meestal rond 16-17 goede antwoorden.",
+      en: "Computer-based. 25 multiple-choice questions (A, B, C) on various short texts. Time: 65 minutes. Pass threshold is typically around 16-17 correct answers.",
+      tr: "Bilgisayarda yapılır. Çeşitli kısa metinler üzerinden 25 çoktan seçmeli (A, B, C) soru sorulur. Süre: 65 dakika. Geçme barajı genellikle 16-17 doğrudur."
+    },
+    guide_lezen_questions: {
+      nl: "Praktische teksten uit het dagelijks leven: reclamefolders, korte e-mails van school of werk, supermarktadvertenties, huisregels, vacatures en brieven van de gemeente of zorgverleners.",
+      en: "Practical everyday texts: promotional flyers, short emails from school/work, supermarket ads, house rules, job vacancies, and letters from the municipality or clinic.",
+      tr: "Günlük hayattan pratik metinler: broşürler, okul veya iş e-postaları, market ilanları, apartman kuralları, iş ilanları, belediye veya sağlık ocağı bilgilendirmeleri."
+    },
+    guide_lezen_scoring: {
+      nl: "Elke vraag is evenveel waard (1 punt). Er is geen puntenaftrek voor foute antwoorden, dus vul altijd een antwoord in!",
+      en: "Each question is worth 1 point. There is no penalty for wrong answers, so never leave any question blank!",
+      tr: "Her soru 1 puandır. Yanlışlar doğruyu götürmez, bu yüzden hiçbir soruyu boş bırakmayın!"
+    },
+    guide_lezen_tips: {
+      nl: "Lees ALTIJD eerst de vraag en de antwoordopties vóórdat je de tekst leest. Zoek daarna doelgericht naar sleutelwoorden en synoniemen (scanning). Leer de A2 Basiswoorden en Tegenstellingen.",
+      en: "ALWAYS read the question and answer choices BEFORE reading the text. Then scan the text specifically for keywords and synonyms. Master A2 Core Vocabulary and Antonyms.",
+      tr: "Metni okumadan ÖNCE mutlaka soruyu ve şıkları okuyun. Ardından metinde anahtar kelimeleri ve eşanlamlıları tarayarak bulun (tarama tekniği). A2 Temel Kelimeleri ve Zıt Anlamlıları bolca çalışın."
+    },
+
+    // KNM Guide
+    guide_knm_format: {
+      nl: "Wordt afgenomen op de computer. Ca. 40-45 meerkeuzevragen in 45 minuten. Bij vrijwel elke vraag hoort een korte situatievideo of foto.",
+      en: "Computer-based. Approx. 40-45 multiple-choice questions in 45 minutes. Almost every question features a short situation video or photo.",
+      tr: "Bilgisayarda yapılır. 45 dakikada yaklaşık 40-45 çoktan seçmeli soru sorulur. Hemen her soruda kısa video veya resimli senaryo bulunur."
+    },
+    guide_knm_questions: {
+      nl: "8 officiële thema's: Werk & inkomen (solliciteren, UWV, belasting), Gezondheid (huisarts, 112, eigen risico), Wonen (huren, afval, buren), Onderwijs (basisschool, mbo), Omgangsvormen (normen en waarden), Geschiedenis & geografie, Instanties en Politiek/Grondrechten.",
+      en: "8 official themes: Work & income (job search, UWV, tax), Healthcare (GP/huisarts, 112, deductible), Housing (renting, recycling, neighbors), Education (primary, vocational), Social norms, History & geography, Public agencies, and Politics/Rights.",
+      tr: "8 resmi konu: İş ve Gelir (iş arama, UWV, vergi), Sağlık (huisarts, 112/nöbetçi doktor, eigen risico), Konut (kira, atık ayrıştırma, komşuluk), Eğitim sistemi (ilkokul, mbo), Sosyal Kurallar (değerler, randevulu yaşam), Tarih ve Coğrafya, Resmi Kurumlar ve Politika/Temel Haklar."
+    },
+    guide_knm_scoring: {
+      nl: "Kennis van hoe Nederland praktisch functioneert staat centraal. Vragen toetsen vaak de 'eerste logische stap' in een probleem.",
+      en: "Practical understanding of Dutch life is key. Questions frequently test the 'first logical step' to solve a daily issue.",
+      tr: "Hollanda'daki pratik yaşam mantığı test edilir. Sorularda genellikle bir problem karşısındaki 'ilk doğru ve mantıklı adım' sorulur."
+    },
+    guide_knm_tips: {
+      nl: "Onthoud basisregels: bij ziekte ga je eerst naar de huisarts (niet direct naar het ziekenhuis); bij ruzie met de buren praat je eerst zelf met hen; voor officiële zaken maak je altijd eerst een afspraak.",
+      en: "Remember golden rules: for illness always see the GP (huisarts) first; for neighborhood disputes talk to neighbors first; for official business always book an appointment in advance.",
+      tr: "Temel kuralları aklınızda tutun: Sağlıkta acil durum yoksa doğrudan hastaneye değil daima ev doktoruna (huisarts) gidilir; komşuyla sorunda önce kendisiyle konuşulur; resmi daireler için randevu şarttır."
+    },
+
+    // Luisteren Guide
+    guide_luisteren_format: {
+      nl: "Wordt afgenomen op de computer met een hoofdtelefoon. 25 meerkeuzevragen, ca. 45 minuten.",
+      en: "Computer-based with headphones. 25 multiple-choice questions, approx. 45 minutes.",
+      tr: "Bilgisayarda kulaklıkla yapılır. 25 çoktan seçmeli soru, yaklaşık 45 dakika sürer."
+    },
+    guide_luisteren_questions: {
+      nl: "Gesprekken bij de kassa, telefoongesprekken, berichten op het antwoordapparaat, omroepberichten op stations of in het openbaar vervoer.",
+      en: "Conversations at the checkout counter, phone calls, voicemail messages, announcements at train stations or public transit.",
+      tr: "Kasa/mağaza konuşmaları, telefon görüşmeleri, sesli mesajlar, tren istasyonu ve toplu taşıma anonsları."
+    },
+    guide_luisteren_scoring: {
+      nl: "Je mag audiofragmenten vaak twee keer beluisteren. Let op specifieke details (tijdstippen, prijzen, data).",
+      en: "You can usually listen to audio clips twice. Pay close attention to specific details (times, prices, dates).",
+      tr: "Ses kayıtlarını genellikle iki kez dinleme hakkınız olur. Sayılara, saatlere, fiyatlara ve tarihlere odaklanın."
+    },
+    guide_luisteren_tips: {
+      nl: "Lees de vraag en antwoorden vliegensvlug vóórdat het geluidsfragment start. Let extra goed op ontkennende woorden zoals 'niet', 'geen' of 'nooit'.",
+      en: "Quickly read the question and choices before the audio starts. Watch out for negations such as 'niet', 'geen', or 'nooit'.",
+      tr: "Ses kaydı başlamadan önce soruyu ve seçenekleri hızla gözden geçirin. 'Niet', 'geen', 'nooit' gibi olumsuzluk eklerine özellikle dikkat edin."
+    }
   };
 
   function getLang() {

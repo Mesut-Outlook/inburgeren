@@ -38,7 +38,7 @@
   function renderExamen(examenId, container) {
     var examen = INB.getExamen(examenId);
     if (!examen) {
-      container.innerHTML = "<p>Examen niet gevonden.</p>";
+      container.innerHTML = "<p>" + escapeHtml(INB.t("no_exam_found")) + "</p>";
       return;
     }
 
@@ -52,6 +52,11 @@
       html += '<div class="exam-meta"><span class="pill">' + escapeHtml(INB.t("label_niveau")) + ": " + escapeHtml(examen.niveau || "") + '</span>';
       html += '<span class="pill">' + flat.length + ' ' + escapeHtml(INB.t("label_vragen")) + '</span></div>';
       html += '</div>';
+
+      // Collapsible Exam Guide Box
+      if (typeof INB.renderExamGuideHtml === "function") {
+        html += INB.renderExamGuideHtml(examen.vak);
+      }
 
       var teksten = examen.teksten || [];
       var isKnm = examen.vak === "knm";
@@ -96,7 +101,13 @@
       }
 
       var checkBtn = document.getElementById("btn-check-exam");
-      checkBtn.addEventListener("click", onCheck);
+      if (checkBtn) {
+        checkBtn.addEventListener("click", onCheck);
+      }
+
+      if (typeof INB.wireExamGuide === "function") {
+        INB.wireExamGuide(container);
+      }
     }
 
     function findGlobalIndex(flat, textIndex, qIndexWithinText) {
