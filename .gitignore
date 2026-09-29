@@ -3,6 +3,10 @@
 data/lezen/examen_2023.js
 data/lezen/examen_2024.js
 data/lezen/examen_2025.js
+# Vocabulary sets derived from those CvTE exams — same rule, local-only.
+data/woorden/w_2023.js
+data/woorden/w_2024.js
+data/woorden/w_2025.js
 js/data-files.local.js
 
 # Intermediate extraction scripts/outputs left by helper agents (not part of the site)
