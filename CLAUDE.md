@@ -76,9 +76,10 @@ INB.registerWoorden({
 ## Werkwijze (tokenbeleid)
 **Planning + coördinatie + verificatie door Opus 4.8; code/data door Sonnet-subagents (mechanisch evt. Haiku).** Bulk PDF/afbeelding-extractie + generatie kan via AGY (Antigravity CLI) — verdeel per bestandseigenaarschap zodat niemand elkaars bestanden overschrijft. Commit-trailer: `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`. **Design: pastel, zacht, licht, elegant — NOOIT paars.**
 
-## Status (2026-06-29)
+## Status (2026-09-29)
 - ✅ Engine (Lezen/woorden), drietalige UI, 5-onderdelen-hub, "Over het examen", "Alle woorden", per-examen dashboard, pastel thema, Apple-stijl hero-sectie op de hub.
 - ✅ **Ervaringen & Feedback** (`#/gorusler`): reviewformulier (naam/sterren/onderdeel/status) + filterbare lijst; opslag localStorage `inb_reviews` (alleen lokaal, geen gedeelde feed).
 - ✅ **Hero-welkomsttekst** herschreven (missie-gericht, warme/persoonlijke toon): vrij & voor iedereen, echte examenvragen + soortgelijke oefeningen, woordenschat/terminologie, ondersteunende documenten in NL/EN/TR, oefenen in eigen tempo + eigen voortgangspagina. Subtitle: "A2 sınavını geçmek için — ücretsiz ve herkes için" (`hero_subtitle`/`hero_desc` in `js/i18n.js`).
 - ✅ **Omschakeling naar A2 voltooid.** B1/NT2-content opzijgezet (niet geladen, blijft lokaal). Alle huidige A2-databestanden zijn in `js/data-files.js` gewired: Lezen (4 oefenexamens), KNM (1 + 2 oefen), Schrijven (7 + notities), Spreken (5 + notities), woordenschat (12 sets: basis 1–6, tegenstellingen 1–2, KNM 1–2, zinnen, schrijven).
-- ⬜ Luisteren (audio) — nog niet gestart. ⬜ Verdere uitbreiding oefenexamens (Lezen/KNM/Schrijven/Spreken) blijft doorlopend.
+- ✅ **Luisteren** (2026-09-29): 4 oefenexamens (`data/luisteren/a2_luisteren_1..4.js`, eigen materiaal, 25 vragen elk) met natuurlijke neurale MP3's in `audio/luisteren/<id>/`. Woordkaarten hebben 🔊-uitspraak: `node tools/gen_woorden_audio.js` → `audio/woorden/<slug>.mp3` (slug-regel gelijk aan `woordSlug()` in `js/woorden.js`); draai het opnieuw na nieuwe woorden (alleen ontbrekende worden gemaakt).
+- ⬜ Verdere uitbreiding oefenexamens (Lezen/KNM/Schrijven/Spreken) blijft doorlopend.

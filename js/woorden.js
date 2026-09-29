@@ -51,6 +51,31 @@
     return false;
   }
 
+  // ---- pronunciation: audio/woorden/<slug>.mp3 (tools/gen_woorden_audio.js) ----
+  // Keep spreekTekst/woordSlug in sync with tools/gen_woorden_audio.js.
+  function spreekTekst(woord) { return String(woord || "").replace(/\(.*?\)/g, "").trim(); }
+  function woordSlug(woord) {
+    return spreekTekst(woord).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  }
+
+  var huidigeAudio = null;
+  function spreekUit(woord) {
+    if (huidigeAudio) { huidigeAudio.pause(); }
+    var audio = new Audio("audio/woorden/" + woordSlug(woord) + ".mp3");
+    huidigeAudio = audio;
+    // No MP3 (new word not generated yet): fall back to the browser's Dutch voice.
+    audio.onerror = function () {
+      if (!window.speechSynthesis) { return; }
+      var u = new SpeechSynthesisUtterance(spreekTekst(woord));
+      u.lang = "nl-NL";
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    };
+    var p = audio.play();
+    if (p && p.catch) { p.catch(function () {}); } // load errors are handled by onerror
+  }
+
   /** In-place Fisher–Yates shuffle. */
   function shuffle(arr) {
     for (var i = arr.length - 1; i > 0; i--) {
@@ -115,7 +140,8 @@
       for (var i = 0; i < items.length; i++) {
         var item = items[i];
         html += '<div class="flashcard card">';
-        html += '<div class="flashcard-woord">' + escapeHtml(item.woord) + '</div>';
+        html += '<div class="flashcard-woord">' + escapeHtml(item.woord) +
+          ' <button type="button" class="say-btn" data-say="' + i + '" aria-label="' + escapeHtml(INB.t("luister_play")) + '">🔊</button></div>';
         html += '<div class="flashcard-glosses">';
         if (item.nl) { html += '<span class="gloss gloss-nl">NL: ' + escapeHtml(item.nl) + '</span>'; }
         if (item.en) { html += '<span class="gloss gloss-en">EN: ' + escapeHtml(item.en) + '</span>'; }
@@ -128,6 +154,13 @@
       }
       html += '</div>';
       subContainer.innerHTML = html;
+
+      var sayBtns = subContainer.querySelectorAll("[data-say]");
+      for (var s = 0; s < sayBtns.length; s++) {
+        sayBtns[s].addEventListener("click", function (ev) {
+          spreekUit(items[parseInt(ev.currentTarget.getAttribute("data-say"), 10)].woord);
+        });
+      }
     }
 
     // ---- Duolingo-style practice ----------------------------------------
