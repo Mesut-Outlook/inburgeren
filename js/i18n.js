@@ -101,6 +101,13 @@
     text_label:           { nl: "Tekst", en: "Text", tr: "Metin" },
     question_label:       { nl: "Vraag", en: "Question", tr: "Soru" },
     of_label:             { nl: "van", en: "of", tr: "/" },
+    fragment_label:       { nl: "Fragment", en: "Fragment", tr: "Parça" },
+    luister_play:         { nl: "Luisteren", en: "Listen", tr: "Dinle" },
+    luister_playing:      { nl: "Aan het afspelen…", en: "Playing…", tr: "Çalıyor…" },
+    luister_plays_left:   { nl: "Je kunt nog {n}× luisteren.", en: "You can listen {n} more time(s).", tr: "{n} kez daha dinleyebilirsiniz." },
+    luister_no_plays:     { nl: "Je hebt dit fragment al 2× beluisterd.", en: "You have already listened to this fragment twice.", tr: "Bu parçayı zaten 2 kez dinlediniz." },
+    luister_no_voice:     { nl: "Deze browser kan geen tekst voorlezen. Probeer Chrome, Edge of Safari.", en: "This browser cannot read text aloud. Try Chrome, Edge or Safari.", tr: "Bu tarayıcı metni sesli okuyamıyor. Chrome, Edge veya Safari deneyin." },
+    luister_transcript:   { nl: "Transcript", en: "Transcript", tr: "Metin dökümü" },
     unanswered_warning:   { nl: "Nog {n} vraag/vragen niet beantwoord. Klik nogmaals om toch na te kijken.", en: "{n} question(s) not answered yet. Click again to check anyway.", tr: "{n} soru henüz cevaplanmadı. Yine de kontrol etmek için tekrar tıklayın." },
     answer_all_warning:   { nl: "Beantwoord alle vragen voordat je nakijkt.", en: "Answer all questions before checking.", tr: "Kontrol etmeden önce tüm soruları cevaplayın." },
 

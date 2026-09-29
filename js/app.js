@@ -904,6 +904,7 @@
   function render() {
     var route = parseHash();
     currentRerender = null;
+    if (window.speechSynthesis) { window.speechSynthesis.cancel(); } // stop a luisteren fragment on navigation
     updateNavActiveState(route);
 
     if (route.view === "examen") {

@@ -44,6 +44,9 @@
 
     var flat = flattenQuestions(examen);
     var answers = new Array(flat.length); // user's selected option index per question, or undefined
+    var isLuisteren = examen.vak === "luisteren";
+    var plays = [];        // luisteren: times each fragment has been played
+    var MAX_PLAYS = 2;
     var lastResult = null; // args of the shown result screen, so a language switch keeps it
     var warnedUnanswered = false;
 
@@ -64,7 +67,13 @@
         // questions (.vragen-list, right column). KNM has no reading panel and
         // renders full-width.
         html += '<section class="tekst-block card' + (isKnm ? " knm-block" : " tekst-block--split") + '">';
-        if (!isKnm) {
+        if (isLuisteren) {
+          html += '<div class="tekst-kolom">';
+          html += '<h3>' + escapeHtml(INB.t("fragment_label")) + ' ' + (ti + 1) + ': ' + escapeHtml(tekst.titel || "") + '</h3>';
+          if (tekst.situatie) { html += '<p class="luister-situatie"><em>' + escapeHtml(tekst.situatie) + '</em></p>'; }
+          html += '<div class="luister-player" data-player="' + ti + '">' + playerHtml(ti) + '</div>';
+          html += '</div>';
+        } else if (!isKnm) {
           html += '<div class="tekst-kolom">';
           html += '<h3>' + escapeHtml(INB.t("text_label")) + ' ' + (ti + 1) + ': ' + escapeHtml(tekst.titel || "") + '</h3>';
           html += '<div class="tekst-html scroll-panel">' + (tekst.html || "") + '</div>';
@@ -97,8 +106,102 @@
         optionButtons[i].addEventListener("click", onOptionClick);
       }
 
+      var playBtns = container.querySelectorAll("[data-play]");
+      for (var p = 0; p < playBtns.length; p++) {
+        playBtns[p].addEventListener("click", onPlayClick);
+      }
+
       var checkBtn = document.getElementById("btn-check-exam");
       checkBtn.addEventListener("click", onCheck);
+    }
+
+    // ---- luisteren: fragments read aloud by the browser's Dutch voice ----
+
+    function playerHtml(ti) {
+      var used = plays[ti] || 0;
+      if (!("speechSynthesis" in window)) {
+        return '<p class="hint-text">' + escapeHtml(INB.t("luister_no_voice")) + '</p>';
+      }
+      if (used >= MAX_PLAYS) {
+        return '<p class="hint-text">' + escapeHtml(INB.t("luister_no_plays")) + '</p>';
+      }
+      return '<button type="button" class="btn btn-primary" data-play="' + ti + '">🔊 ' + escapeHtml(INB.t("luister_play")) + '</button>' +
+        ' <span class="card-meta">' + escapeHtml(INB.t("luister_plays_left").replace("{n}", MAX_PLAYS - used)) + '</span>';
+    }
+
+    function nlVoice() {
+      var voices = window.speechSynthesis.getVoices() || [];
+      for (var i = 0; i < voices.length; i++) {
+        if (/^nl/i.test(voices[i].lang)) { return voices[i]; }
+      }
+      return null;
+    }
+
+    // One voice only in most browsers, so speakers differ by pitch.
+    var PITCH = { v: 1.25, m: 0.75, n: 1 };
+
+    function onPlayClick(ev) {
+      var ti = parseInt(ev.currentTarget.getAttribute("data-play"), 10);
+      var tekst = (examen.teksten || [])[ti];
+      if (!tekst) { return; }
+      var synth = window.speechSynthesis;
+      synth.cancel();
+      plays[ti] = (plays[ti] || 0) + 1;
+      var voice = nlVoice();
+      var slot = ev.currentTarget.parentNode;
+      slot.innerHTML = '<p class="hint-text">🔊 ' + escapeHtml(INB.t("luister_playing")) + '</p>';
+
+      var regels = tekst.audio || [];
+      var utterances = [];
+      for (var r = 0; r < regels.length; r++) {
+        // Sentence-sized chunks: Chrome's online voices stop after ~15 s per utterance.
+        var zinnen = String(regels[r].tekst || "").match(/[^.!?]+[.!?]*/g) || [];
+        for (var z = 0; z < zinnen.length; z++) {
+          var u = new SpeechSynthesisUtterance(zinnen[z].trim());
+          u.lang = "nl-NL";
+          if (voice) { u.voice = voice; }
+          u.rate = 0.9;
+          u.pitch = PITCH[regels[r].spreker] || 1;
+          utterances.push(u);
+        }
+      }
+      if (!utterances.length) { return; }
+      function refresh() {
+        var fresh = container.querySelector('[data-player="' + ti + '"]');
+        if (fresh) { fresh.innerHTML = playerHtml(ti); wirePlay(fresh); }
+      }
+      var started = false;
+      utterances[0].onstart = function () { started = true; };
+      utterances[utterances.length - 1].onend = refresh;
+      // Blocked or failed (e.g. no voice / offline): don't leave the player stuck,
+      // and give the play back if nothing was heard.
+      var failed = false;
+      for (var e = 0; e < utterances.length; e++) {
+        utterances[e].onerror = function (err) {
+          if (failed || err.error === "interrupted" || err.error === "canceled") { return; }
+          failed = true;
+          synth.cancel();
+          if (!started) { plays[ti]--; }
+          refresh();
+        };
+      }
+      for (var k = 0; k < utterances.length; k++) { synth.speak(utterances[k]); }
+    }
+
+    function wirePlay(scope) {
+      var b = scope.querySelector("[data-play]");
+      if (b) { b.addEventListener("click", onPlayClick); }
+    }
+
+    function transcriptHtml(tekst) {
+      var WIE = { v: "👩", m: "👨", n: "📢" };
+      var html = '<details class="luister-transcript"><summary>' + escapeHtml(INB.t("luister_transcript")) + ': ' +
+        escapeHtml(tekst.titel || "") + '</summary>';
+      var regels = tekst.audio || [];
+      for (var r = 0; r < regels.length; r++) {
+        html += '<p>' + (WIE[regels[r].spreker] || "") + ' ' + escapeHtml(regels[r].tekst) + '</p>';
+      }
+      return html + '</details>';
     }
 
     function findGlobalIndex(flat, textIndex, qIndexWithinText) {
@@ -213,6 +316,9 @@
         var userText = (typeof userIdx === "number" && opties[userIdx]) ? opties[userIdx] : INB.t("no_answer");
         var correctText = opties[vraag.antwoord];
 
+        if (isLuisteren && (i === 0 || flat[i - 1].textIndex !== item.textIndex)) {
+          html += transcriptHtml(item.tekst);
+        }
         html += '<div class="review-item ' + (isCorrect ? "review-correct" : "review-wrong") + '">';
         html += '<p class="review-q">' + (i + 1) + '. ' + escapeHtml(vraag.vraag) + '</p>';
         html += '<p class="review-your">' + escapeHtml(INB.t("your_answer")) + ': ' + escapeHtml(userText) + '</p>';
@@ -236,6 +342,7 @@
 
       document.getElementById("btn-restart-exam").addEventListener("click", function () {
         answers = new Array(flat.length);
+        plays = [];
         lastResult = null;
         warnedUnanswered = false;
         renderRunner();

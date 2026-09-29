@@ -54,6 +54,7 @@ INB.dataFiles = [
   "data/knm/a2_knm_thema_7_onderwijs.js?v=1",
   "data/knm/a2_knm_thema_8_politiek.js?v=1",
   "data/knm/a2_knm_oefen_3.js?v=1",
-  "data/knm/a2_knm_oefen_4.js?v=1"
+  "data/knm/a2_knm_oefen_4.js?v=1",
+  "data/luisteren/a2_luisteren_1.js?v=1"
 ];
 

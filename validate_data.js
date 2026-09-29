@@ -24,7 +24,7 @@ const VAKKEN = ["lezen", "luisteren", "spreken", "schrijven", "knm"];
 const SCORED = ["lezen", "luisteren", "knm"];      // teksten/vragen schema
 const PRODUCTIEF = ["schrijven", "spreken"];        // taken schema
 // Rough per-exam question counts (warning only).
-const VERWACHTE_VRAGEN = { lezen: 25, knm: 40 };
+const VERWACHTE_VRAGEN = { lezen: 25, knm: 40, luisteren: 25 };
 // B1/NT2 content set aside per CLAUDE.md — not errors if unwired.
 const OPZIJGEZET = /(examen_20(23|24|25)|examen_oefen_1|w_20(23|24|25)|w_oefen_1)\.js$/;
 
@@ -119,7 +119,14 @@ function validateExamen(e, rel, errs, warns) {
   if (!teksten.length) { errs.push("geen 'teksten[]'"); }
   let totaalVragen = 0;
   teksten.forEach((tk, ti) => {
-    if (e.vak !== "knm" && !tk.html) { warns.push(`tekst ${ti + 1}: lege 'html' (leestekst ontbreekt)`); }
+    if (e.vak === "luisteren") {
+      const audio = tk.audio || [];
+      if (!audio.length) { errs.push(`tekst ${ti + 1}: geen 'audio[]' (luisterfragment ontbreekt)`); }
+      audio.forEach((r, ri) => {
+        if (!r.tekst) { errs.push(`tekst ${ti + 1}, regel ${ri + 1}: mist 'tekst'`); }
+        if (!["v", "m", "n"].includes(r.spreker)) { warns.push(`tekst ${ti + 1}, regel ${ri + 1}: 'spreker' moet v/m/n zijn`); }
+      });
+    } else if (e.vak !== "knm" && !tk.html) { warns.push(`tekst ${ti + 1}: lege 'html' (leestekst ontbreekt)`); }
     const vragen = tk.vragen || [];
     if (!vragen.length) { warns.push(`tekst ${ti + 1}: geen 'vragen[]'`); }
     vragen.forEach((v) => {
