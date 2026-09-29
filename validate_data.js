@@ -122,6 +122,10 @@ function validateExamen(e, rel, errs, warns) {
     if (e.vak === "luisteren") {
       const audio = tk.audio || [];
       if (!audio.length) { errs.push(`tekst ${ti + 1}: geen 'audio[]' (luisterfragment ontbreekt)`); }
+      const mp3 = path.join(ROOT, "audio", "luisteren", e.id, "f" + String(ti + 1).padStart(2, "0") + ".mp3");
+      if (!fs.existsSync(mp3)) {
+        warns.push(`tekst ${ti + 1}: geen ${path.relative(ROOT, mp3)} (browserstem als fallback) — draai tools/gen_luisteren_audio.js`);
+      }
       audio.forEach((r, ri) => {
         if (!r.tekst) { errs.push(`tekst ${ti + 1}, regel ${ri + 1}: mist 'tekst'`); }
         if (!["v", "m", "n"].includes(r.spreker)) { warns.push(`tekst ${ti + 1}, regel ${ri + 1}: 'spreker' moet v/m/n zijn`); }

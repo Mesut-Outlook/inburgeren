@@ -55,6 +55,7 @@ INB.registerExamen({
   } ]
 });
 ```
+**Luisteren** gebruikt dezelfde vorm, maar per tekst `situatie:"…"` + `audio:[{spreker:"v"|"m"|"n", tekst:"…"}]` i.p.v. `html` (transcript pas zichtbaar bij nakijken, max. 2× luisteren). Natuurlijke audio: `node tools/gen_luisteren_audio.js data/luisteren/<bestand>.js` (edge-tts via `uvx` + ffmpeg) → `audio/luisteren/<examen.id>/fNN.mp3`; ontbreekt een MP3, dan valt de runner terug op de browserstem.
 KNM kan dezelfde vorm gebruiken (korte situatie als `html` + MC-vraag). **Schrijven/Spreken zijn productief** (opdracht + modelantwoord/zelfbeoordeling) → eigen runner later; voorlopig als onderdeel-placeholder of simpele opdracht-weergave.
 
 ## Datacontract — WOORDEN (`data/woorden/*.js`)

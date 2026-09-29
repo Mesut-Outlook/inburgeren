@@ -119,9 +119,6 @@
 
     function playerHtml(ti) {
       var used = plays[ti] || 0;
-      if (!("speechSynthesis" in window)) {
-        return '<p class="hint-text">' + escapeHtml(INB.t("luister_no_voice")) + '</p>';
-      }
       if (used >= MAX_PLAYS) {
         return '<p class="hint-text">' + escapeHtml(INB.t("luister_no_plays")) + '</p>';
       }
@@ -140,17 +137,65 @@
     // One voice only in most browsers, so speakers differ by pitch.
     var PITCH = { v: 1.25, m: 0.75, n: 1 };
 
+    var currentAudio = null; // the MP3 element playing now (stopped on navigation)
+
+    // Leaving this view must silence a playing fragment.
+    if (isLuisteren) {
+      window.addEventListener("hashchange", function onLeave() {
+        window.removeEventListener("hashchange", onLeave);
+        if (currentAudio) { currentAudio.pause(); }
+      });
+    }
+
+    // Natural recordings live at audio/luisteren/<id>/fNN.mp3 (tools/gen_luisteren_audio.js).
+    function mp3Url(ti) {
+      return "audio/luisteren/" + examen.id + "/f" + (ti < 9 ? "0" : "") + (ti + 1) + ".mp3";
+    }
+
     function onPlayClick(ev) {
       var ti = parseInt(ev.currentTarget.getAttribute("data-play"), 10);
       var tekst = (examen.teksten || [])[ti];
       if (!tekst) { return; }
-      var synth = window.speechSynthesis;
-      synth.cancel();
+      if (currentAudio) { currentAudio.pause(); }
+      if (window.speechSynthesis) { window.speechSynthesis.cancel(); }
       plays[ti] = (plays[ti] || 0) + 1;
-      var voice = nlVoice();
       var slot = ev.currentTarget.parentNode;
       slot.innerHTML = '<p class="hint-text">🔊 ' + escapeHtml(INB.t("luister_playing")) + '</p>';
 
+      function refresh(msgKey) {
+        var fresh = container.querySelector('[data-player="' + ti + '"]');
+        if (!fresh) { return; }
+        fresh.innerHTML = msgKey ? '<p class="hint-text">' + escapeHtml(INB.t(msgKey)) + '</p>' : playerHtml(ti);
+        wirePlay(fresh);
+      }
+      // Nothing was heard: give the play back.
+      function mislukt(msgKey) { plays[ti]--; refresh(msgKey); }
+
+      var audio = new Audio(mp3Url(ti));
+      currentAudio = audio;
+      var gestart = false;
+      audio.onplaying = function () { gestart = true; };
+      audio.onended = function () { refresh(); };
+      // No MP3 for this fragment (or it fails to load): fall back to the browser voice.
+      audio.onerror = function () {
+        if (currentAudio !== audio) { return; }
+        currentAudio = null;
+        if (gestart) { refresh(); } else { speakTTS(tekst, refresh, mislukt); }
+      };
+      var p = audio.play();
+      if (p && p.catch) {
+        p.catch(function (err) {
+          // NotAllowedError = autoplay blocked; load errors are handled by onerror.
+          if (err && err.name === "NotAllowedError" && currentAudio === audio) { mislukt(); }
+        });
+      }
+    }
+
+    // Fallback: the browser's Dutch voice (robotic; speakers differ by pitch only).
+    function speakTTS(tekst, klaar, mislukt) {
+      var synth = window.speechSynthesis;
+      if (!synth) { mislukt("luister_no_voice"); return; }
+      var voice = nlVoice();
       var regels = tekst.audio || [];
       var utterances = [];
       for (var r = 0; r < regels.length; r++) {
@@ -165,24 +210,17 @@
           utterances.push(u);
         }
       }
-      if (!utterances.length) { return; }
-      function refresh() {
-        var fresh = container.querySelector('[data-player="' + ti + '"]');
-        if (fresh) { fresh.innerHTML = playerHtml(ti); wirePlay(fresh); }
-      }
+      if (!utterances.length) { mislukt(); return; }
       var started = false;
       utterances[0].onstart = function () { started = true; };
-      utterances[utterances.length - 1].onend = refresh;
-      // Blocked or failed (e.g. no voice / offline): don't leave the player stuck,
-      // and give the play back if nothing was heard.
+      utterances[utterances.length - 1].onend = function () { klaar(); };
       var failed = false;
       for (var e = 0; e < utterances.length; e++) {
         utterances[e].onerror = function (err) {
           if (failed || err.error === "interrupted" || err.error === "canceled") { return; }
           failed = true;
           synth.cancel();
-          if (!started) { plays[ti]--; }
-          refresh();
+          if (started) { klaar(); } else { mislukt(); }
         };
       }
       for (var k = 0; k < utterances.length; k++) { synth.speak(utterances[k]); }
@@ -271,6 +309,8 @@
     }
 
     function scoreAndRender() {
+      if (currentAudio) { currentAudio.pause(); }
+      if (isLuisteren && window.speechSynthesis) { window.speechSynthesis.cancel(); }
       var correct = 0;
       for (var i = 0; i < flat.length; i++) {
         if (answers[i] === flat[i].vraag.antwoord) { correct++; }
@@ -343,6 +383,7 @@
       document.getElementById("btn-restart-exam").addEventListener("click", function () {
         answers = new Array(flat.length);
         plays = [];
+        if (currentAudio) { currentAudio.pause(); }
         lastResult = null;
         warnedUnanswered = false;
         renderRunner();
