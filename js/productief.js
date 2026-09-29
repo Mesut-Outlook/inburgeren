@@ -42,6 +42,20 @@
     var mediaRecorder = null;
     var audioChunks = [];
     var isRecording = false;
+    var lastResult = null; // args of the shown result screen, so a language switch keeps it
+    var ownHash = window.location.hash;
+
+    // Leaving this view must release the microphone.
+    window.addEventListener("hashchange", function onLeave() {
+      window.removeEventListener("hashchange", onLeave);
+      stopRecording();
+    });
+
+    function setAnswer(idx, value) {
+      var old = userAnswers[idx];
+      if (typeof old === "string" && old.indexOf("blob:") === 0) { URL.revokeObjectURL(old); }
+      userAnswers[idx] = value;
+    }
 
     function renderRunner() {
       if (taken.length === 0) {
@@ -260,8 +274,8 @@
           };
           mediaRecorder.onstop = function () {
             var audioBlob = new Blob(audioChunks, { type: "audio/webm" });
-            userAnswers[currentIndex] = URL.createObjectURL(audioBlob);
-            renderRunner();
+            setAnswer(currentIndex, URL.createObjectURL(audioBlob));
+            if (window.location.hash === ownHash) { renderRunner(); } // not after navigating away
           };
           mediaRecorder.start();
           isRecording = true;
@@ -290,9 +304,10 @@
     }
 
     function startTimer() {
-      var timerEl = container.querySelector(".record-timer");
       clearInterval(timerInterval);
       timerInterval = setInterval(function () {
+        // Re-query each tick: a re-render (e.g. language switch) replaces the element.
+        var timerEl = container.querySelector(".record-timer");
         if (!timerEl) return;
         var elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
         var min = String(Math.floor(elapsed / 60)).padStart(2, "0");
@@ -325,6 +340,7 @@
     }
 
     function renderResult(passedCount, total, passed) {
+      lastResult = [passedCount, total, passed];
       var html = "";
       html += '<div class="result-screen card">';
       html += '<h2>' + escapeHtml(INB.t("result_title")) + '</h2>';
@@ -384,10 +400,12 @@
       html += '</div>';
 
       container.innerHTML = html;
+      window.scrollTo(0, 0);
 
       document.getElementById("btn-restart-exam").addEventListener("click", function () {
         currentIndex = 0;
-        userAnswers = new Array(total);
+        lastResult = null;
+        for (var r = 0; r < total; r++) { setAnswer(r, undefined); }
         selfEvaluations = new Array(total);
         showModel = new Array(total);
         renderRunner();
@@ -401,7 +419,9 @@
     renderRunner();
 
     return {
-      rerender: renderRunner
+      rerender: function () {
+        if (lastResult) { renderResult.apply(null, lastResult); } else { renderRunner(); }
+      }
     };
   }
 

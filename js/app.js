@@ -159,7 +159,7 @@
   function dropdownShell(id, label, menuHtml) {
     return (
       '<div class="nav-dropdown" data-dropdown="' + id + '">' +
-        '<button type="button" class="nav-link nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">' +
+        '<button type="button" class="nav-link nav-dropdown-toggle" data-route="' + id + '" aria-haspopup="true" aria-expanded="false">' +
           escapeHtml(label) + '<span class="nav-caret" aria-hidden="true">▾</span>' +
         '</button>' +
         '<div class="nav-menu" role="menu">' + menuHtml + '</div>' +
@@ -232,31 +232,31 @@
                 '<h2 class="hero-features-title">' + escapeHtml(INB.t("hero_feature_title")) + '</h2>' +
                 '<div class="hero-features-grid">' +
                   
-                  '<a class="hero-feature-card" href="javascript:void(0)" data-target="sec-woorden">' +
+                  '<a class="hero-feature-card" href="#sec-woorden" data-target="sec-woorden">' +
                     '<div class="feature-icon">📖</div>' +
                     '<h3>' + escapeHtml(INB.t("hero_feat_vocab_title")) + '</h3>' +
                     '<p>' + escapeHtml(INB.t("hero_feat_vocab_desc")) + '</p>' +
                   '</a>' +
                   
-                  '<a class="hero-feature-card" href="javascript:void(0)" data-target="sec-lezen">' +
+                  '<a class="hero-feature-card" href="#sec-lezen" data-target="sec-lezen">' +
                     '<div class="feature-icon">📚</div>' +
                     '<h3>' + escapeHtml(INB.t("onderdeel_lezen_titel")) + '</h3>' +
                     '<p>' + escapeHtml(INB.t("hero_feat_lezen_desc")) + '</p>' +
                   '</a>' +
                   
-                  '<a class="hero-feature-card" href="javascript:void(0)" data-target="sec-knm">' +
+                  '<a class="hero-feature-card" href="#sec-knm" data-target="sec-knm">' +
                     '<div class="feature-icon">🏛️</div>' +
                     '<h3>' + escapeHtml(INB.t("hero_feat_knm_title")) + '</h3>' +
                     '<p>' + escapeHtml(INB.t("hero_feat_knm_desc")) + '</p>' +
                   '</a>' +
                   
-                  '<a class="hero-feature-card" href="javascript:void(0)" data-target="sec-schrijven">' +
+                  '<a class="hero-feature-card" href="#sec-schrijven" data-target="sec-schrijven">' +
                     '<div class="feature-icon">📝</div>' +
                     '<h3>' + escapeHtml(INB.t("hero_feat_prod_title")) + '</h3>' +
                     '<p>' + escapeHtml(INB.t("hero_feat_prod_desc")) + '</p>' +
                   '</a>' +
                   
-                  '<a class="hero-feature-card" href="javascript:void(0)" data-target="sec-luisteren">' +
+                  '<a class="hero-feature-card" href="#sec-luisteren" data-target="sec-luisteren">' +
                     '<div class="feature-icon">🎧</div>' +
                     '<h3>' + escapeHtml(INB.t("onderdeel_luisteren_titel")) + '</h3>' +
                     '<p>' + escapeHtml(INB.t("onderdeel_luisteren_desc")) + '</p>' +
@@ -453,22 +453,18 @@
         attemptClass = " attempted-3";
       }
 
-      var totalScore = 0;
-      for (var i = 0; i < count; i++) {
-        totalScore += attempt.history[i].score;
-      }
-      var avgScore = Math.round((totalScore / count) * 10) / 10;
+      var avgPct = avg(attempt.history.map(gradePct));
       var lastEntry = attempt.last || attempt.history[count - 1];
 
       attemptInfoLine = '<div class="card-attempt-info-block">';
       // Last score
       attemptInfoLine += '<p class="card-attempt-info">➡️ ' + escapeHtml(INB.t("card_last_score")) + ': ' +
-        lastEntry.score + ' (' + lastEntry.correct + '/' + lastEntry.total + ')</p>';
+        gradePct(lastEntry) + '% (' + lastEntry.correct + '/' + lastEntry.total + ')</p>';
       
       // If multiple attempts, show average too
       if (count > 1) {
         attemptInfoLine += '<p class="card-attempt-info">📊 ' + escapeHtml(INB.t("card_average_score")) + ': ' +
-          avgScore + ' (' + count + ' ' + escapeHtml(INB.t("vg_col_keer")).toLowerCase() + ')</p>';
+          avgPct + '% (' + count + ' ' + escapeHtml(INB.t("vg_col_keer")).toLowerCase() + ')</p>';
       }
       attemptInfoLine += '</div>';
     }
@@ -590,7 +586,7 @@
       if (rec && (rec.best || rec.last)) { examDone++; }
       if (rec && rec.best) {
         if (rec.best.passed) { passCount++; }
-        if ((rec.best.score || 0) > bestScore) { bestScore = rec.best.score; }
+        if (gradePct(rec.best) > bestScore) { bestScore = gradePct(rec.best); }
       }
     }
 
@@ -616,7 +612,7 @@
     html += statCard("📚", INB.t("vg_done_count"), doneAll + " / " + totalAll);
     html += statCard("🎯", INB.t("card_pass_count"), passCount);
     html += statCard("🏆", INB.t("vg_woorden_mastered"), woordenMastered + " / " + woordenTotal);
-    html += statCard("⭐", INB.t("card_best_score"), bestScore);
+    html += statCard("⭐", INB.t("card_best_score"), examDone ? bestScore + '%' : '—');
     html += '</div>';
     html += '</section>';
 
@@ -788,9 +784,9 @@
     var rec = (INB.store.getExamAttempt(examenId)) || null;
     var history = (rec && rec.history) || [];
     var attemptsCount = history.length;
-    var bestScore = (rec && rec.best) ? rec.best.score : 0;
+    var bestScore = (rec && rec.best) ? gradePct(rec.best) + '%' : '—';
     var bestPassed = (rec && rec.best) ? rec.best.passed : false;
-    var lastScore = (rec && rec.last) ? rec.last.score : 0;
+    var lastScore = (rec && rec.last) ? gradePct(rec.last) + '%' : '—';
 
     var html = "";
     html += '<section class="hub-section">';
@@ -824,7 +820,7 @@
         html += '<tr>';
         html += '<td>' + escapeHtml(formatDate(entry.date)) + '</td>';
         html += '<td>' + entry.correct + '/' + entry.total + '</td>';
-        html += '<td>' + entry.score + '</td>';
+        html += '<td>' + gradePct(entry) + '%</td>';
         html += '<td><span class="badge ' + (entry.passed ? "badge-pass" : "badge-fail") + '">' +
           escapeHtml(entry.passed ? INB.t("result_pass") : INB.t("result_fail")) + '</span></td>';
         html += '</tr>';
@@ -946,7 +942,7 @@
     for (var i = 0; i < links.length; i++) {
       links[i].classList.remove("active");
     }
-    var key = "hub-examens";
+    var key = route.view === "woorden" ? "nav-dd-woorden" : "nav-dd-examens";
     if (route.view === "voortgang") { key = "voortgang"; }
     else if (route.view === "info") { key = "info"; }
     else if (route.view === "gorusler") { key = "gorusler"; }
@@ -965,48 +961,15 @@
     // Re-render header + current view whenever the language changes.
     INB.onLangChange = function () {
       renderHeader();
-      render();
+      updateNavActiveState(parseHash());
+      // Re-render in place so exam answers / practice progress survive the switch.
+      if (currentRerender) { currentRerender(); } else { render(); }
     };
   }
 
   // ---- gorusler (comments & reviews) view implementation ----
   // NB: deze declaraties moeten VÓÓR de init()-aanroep staan — init() kan
   // renderGorusler() synchroon uitvoeren en heeft de data dan al nodig.
-
-  var MOCK_REVIEWS = [
-    {
-      name: "Ahmet",
-      rating: 5,
-      component: "general",
-      status: "passed",
-      comment: "Harika bir çalışma sitesi! Özellikle kelime kartları ve okuma parçaları çok işime yaradı. KNM sorularının açıklamaları sayesinde sınavı ilk seferde geçtim. Herkese tavsiye ederim.",
-      date: "2026-06-15T10:00:00.000Z"
-    },
-    {
-      name: "Sarah",
-      rating: 5,
-      component: "lezen",
-      status: "passed",
-      comment: "I was very nervous about the Reading (Lezen) part of the exam, but the practice exams on this website are exactly like the real ones. The translation options helped me understand the tricky parts. Thank you!",
-      date: "2026-06-28T14:30:00.000Z"
-    },
-    {
-      name: "Emily",
-      rating: 4,
-      component: "knm",
-      status: "preparing",
-      comment: "De KNM-oefeningen zijn erg nuttig om de Nederlandse cultuur en regels te leren. De uitleg in het Engels helpt me echt om sneller te begrijpen waarom bepaalde antwoorden goed zijn.",
-      date: "2026-07-01T09:15:00.000Z"
-    },
-    {
-      name: "Mesut",
-      rating: 5,
-      component: "schrijven",
-      status: "passed",
-      comment: "Sitedeki Yazma (Schrijven) örnekleri çok iyi hazırlanmış. Kendi cevaplarımı model cevaplarla karşılaştırarak eksiklerimi gördüm. Kesinlikle çok faydalı.",
-      date: "2026-07-05T18:20:00.000Z"
-    }
-  ];
 
   var currentReviewFilter = "all";
   var ratingInputVal = 5;
@@ -1019,7 +982,7 @@
 
   function renderGorusler() {
     var customReviews = INB.store.getCustomReviews() || [];
-    var allReviews = MOCK_REVIEWS.concat(customReviews);
+    var allReviews = customReviews.slice();
 
     allReviews.sort(function (a, b) {
       return new Date(b.date) - new Date(a.date);
@@ -1142,7 +1105,7 @@
         updateStarRatingVisuals(5);
 
         var updatedCustomReviews = INB.store.getCustomReviews() || [];
-        var updatedAllReviews = MOCK_REVIEWS.concat(updatedCustomReviews);
+        var updatedAllReviews = updatedCustomReviews.slice();
         updatedAllReviews.sort(function (a, b) {
           return new Date(b.date) - new Date(a.date);
         });
@@ -1189,7 +1152,7 @@
           clickedChip.classList.add("active");
 
           var freshCustom = INB.store.getCustomReviews() || [];
-          var freshAll = MOCK_REVIEWS.concat(freshCustom);
+          var freshAll = freshCustom.slice();
           freshAll.sort(function (a, b) {
             return new Date(b.date) - new Date(a.date);
           });

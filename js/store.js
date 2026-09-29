@@ -40,9 +40,22 @@
 
   // ---- exam attempts ----
 
+  // Fraction correct. "best" is ranked by this, not by `score`: keyless exams
+  // (no scoretabel) always store score 0.
+  function frac(e) { return e && e.total ? e.correct / e.total : 0; }
+
   /** Returns the full map of exam attempts: { [examenId]: {...} }. Never null. */
   function getAllExamAttempts() {
-    return safeParse(safeGet(KEY_EXAM_ATTEMPTS)) || {};
+    var all = safeParse(safeGet(KEY_EXAM_ATTEMPTS)) || {};
+    // Re-derive best from history so records saved by the old score-based compare heal on read.
+    for (var id in all) {
+      var rec = all[id];
+      if (!rec || !rec.history) { continue; }
+      for (var i = 0; i < rec.history.length; i++) {
+        if (!rec.best || frac(rec.history[i]) > frac(rec.best)) { rec.best = rec.history[i]; }
+      }
+    }
+    return all;
   }
 
   /** Returns the attempt record for one exam id, or null if never attempted. */
@@ -68,7 +81,7 @@
       date: new Date().toISOString()
     };
     rec.last = entry;
-    if (!rec.best || entry.score > rec.best.score) {
+    if (!rec.best || frac(entry) > frac(rec.best)) {
       rec.best = entry;
     }
     rec.history = rec.history || [];

@@ -44,6 +44,8 @@
 
     var flat = flattenQuestions(examen);
     var answers = new Array(flat.length); // user's selected option index per question, or undefined
+    var lastResult = null; // args of the shown result screen, so a language switch keeps it
+    var warnedUnanswered = false;
 
     function renderRunner() {
       var html = "";
@@ -148,9 +150,18 @@
       for (var i = 0; i < flat.length; i++) {
         if (typeof answers[i] === "undefined") { unanswered++; }
       }
+      var warn = document.getElementById("exam-warning");
       if (unanswered === flat.length) {
-        var warn = document.getElementById("exam-warning");
         if (warn) { warn.style.display = "block"; }
+        return;
+      }
+      // Some left open: warn once, a second click checks anyway.
+      if (unanswered > 0 && !warnedUnanswered) {
+        warnedUnanswered = true;
+        if (warn) {
+          warn.textContent = INB.t("unanswered_warning").replace("{n}", unanswered);
+          warn.style.display = "block";
+        }
         return;
       }
       scoreAndRender();
@@ -178,6 +189,7 @@
     }
 
     function renderResult(correct, total, score, passed) {
+      lastResult = [correct, total, score, passed];
       var hasScoretabel = (examen.scoretabel || []).length > 0;
       var html = '<div class="result-screen card">';
       html += '<h2>' + escapeHtml(INB.t("result_title")) + '</h2>';
@@ -220,10 +232,14 @@
       html += '</div>';
 
       container.innerHTML = html;
+      window.scrollTo(0, 0);
 
       document.getElementById("btn-restart-exam").addEventListener("click", function () {
         answers = new Array(flat.length);
+        lastResult = null;
+        warnedUnanswered = false;
         renderRunner();
+        window.scrollTo(0, 0);
       });
       document.getElementById("btn-back-exam").addEventListener("click", function () {
         window.location.hash = "#/";
@@ -235,7 +251,9 @@
     // Allow the app shell to re-render text when the language changes,
     // by re-invoking this same render function (registered via app.js routing).
     return {
-      rerender: renderRunner
+      rerender: function () {
+        if (lastResult) { renderResult.apply(null, lastResult); } else { renderRunner(); }
+      }
     };
   }
 

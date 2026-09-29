@@ -73,6 +73,9 @@
       return;
     }
 
+    var mode = null;            // "teach" | "practice" | null — restored after a language switch
+    var redrawPractice = null;  // redraws the running practice round into a new container
+
     function renderMenu() {
       var html = "";
       html += '<div class="woorden-header card">';
@@ -90,11 +93,17 @@
       container.innerHTML = html;
 
       document.getElementById("btn-teach").addEventListener("click", function () {
+        mode = "teach";
         renderTeach(document.getElementById("woorden-sub"));
       });
       document.getElementById("btn-practice").addEventListener("click", function () {
+        mode = "practice";
         renderPractice(document.getElementById("woorden-sub"));
       });
+
+      var sub = document.getElementById("woorden-sub");
+      if (mode === "teach") { renderTeach(sub); }
+      else if (mode === "practice" && redrawPractice) { redrawPractice(sub); }
       document.getElementById("btn-back-woorden").addEventListener("click", function () {
         window.location.hash = "#/";
       });
@@ -125,6 +134,7 @@
 
     function renderPractice(subContainer) {
       var vragen = set.vragen || [];
+      redrawPractice = renderPractice;
 
       if (!vragen.length) {
         subContainer.innerHTML =
@@ -145,6 +155,18 @@
       var selectedOption = null; // mc selection for the current question
       var currentView = null;    // {promptHtml, opties[], correctIdx} for the current question
       var distractorPool = buildDistractorPool();
+      var phase = "step";        // "step" | "feedback" | "done"
+      var donePercent = 0;
+
+      // Language switch: redraw the current state into the fresh container
+      // without re-scoring. A question whose feedback was showing is already
+      // counted, so move on instead of asking it again.
+      redrawPractice = function (newSub) {
+        subContainer = newSub;
+        if (phase === "done") { renderDone(); }
+        else if (phase === "feedback") { next(); }
+        else { selectedOption = null; renderStep(); }
+      };
 
       function uniqueCorrect() {
         var c = 0;
@@ -217,6 +239,7 @@
       function renderStep() {
         var vraag = vragen[current];
         currentView = buildView(vraag); // always a multiple-choice view
+        phase = "step";
         var html = '<div class="wpract">';
         html += progressHtml();
         html += '<div class="wpract-card card" data-question="' + current + '">';
@@ -270,6 +293,7 @@
           queue.push(current); // re-queue to the end
         }
 
+        phase = "feedback";
         showFeedback(ok);
       }
 
@@ -317,6 +341,13 @@
           total: n,
           percent: percent
         });
+        phase = "done";
+        donePercent = percent;
+        renderDone();
+      }
+
+      function renderDone() {
+        var percent = donePercent;
 
         var encKey = percent >= 90 ? "enc_high" : (percent >= 60 ? "enc_mid" : "enc_low");
         var html = '<div class="result-screen card wpract-done">';
