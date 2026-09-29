@@ -167,6 +167,15 @@ Committed the **Ervaringen & Feedback view** (`#/gorusler`, user-requested "gör
 
 Pushed another batch of parallel-session work after verifying it. New data files (all `node validate_data.js` clean, 0 errors): **3 new Spreken sets** `data/spreken/a2_spreken_3..5.js` (Spreken ×2 → **×5**) and **1 new vocab set** `data/woorden/a2_woorden_schrijven.js` (woordenschat ×11 → **×12**), both already wired into `data-files.js` by the data session. The design/app session also extended `js/app.js` (~+118 lines, per-exam stats view) + added `card_last_score`/`card_average_score` i18n keys + minor `css/style.css`. Cache-busting bumped: `i18n.js?v=15`, `css?v=14`, `app.js?v=11`, `data-files.js?v=8`. CLAUDE.md status updated (Spreken ×5, woordenschat ×12). **Note:** a cross-device progress-sync feature (Option A export/import + Option B sync-code via a Cloudflare Worker) was scoped & approved by the user but implementation was paused mid-edit and **reverted** — `js/store.js` is back to its committed state. Resume there if/when the user asks.
 
+## 12. Linux-session sync (2026-09-29) — Luisteren + audio, bugfixes
+
+- **Luisteren is live** (supersedes the §8 "no Luisteren" decision — user requested it): `data/luisteren/a2_luisteren_1..4.js`, eigen materiaal, 25 vragen elk. Schema per tekst: `situatie` + `audio:[{spreker:"v"|"m"|"n", tekst}]` (no `html`); transcript only shows after checking; max 2× listening. Natural MP3s: `node tools/gen_luisteren_audio.js <file>` → `audio/luisteren/<id>/fNN.mp3` (edge-tts via `uvx` + ffmpeg); runner falls back to browser TTS if a file is missing. `validate_data.js` checks `audio[]` and warns on missing MP3s.
+- **Word audio:** 🔊 on every woordkaart (word + example sentence): `node tools/gen_woorden_audio.js` → `audio/woorden/<slug>.mp3` + `audio/zinnen/<fnv-hash>.mp3`; only missing files are generated. **Data agents: after adding/changing `items[].woord` or `voorbeeld`, re-run it** (Opus does this when wiring). Slug/hash rules live in both the tool and `js/woorden.js` — keep in sync.
+- **Bugfixes (Opus):** language switch no longer wipes exam/practice state (`currentRerender`); `best` attempt ranked by fraction correct (keyless exams stored score 0) + UI shows %; productive runner releases the mic on navigation; Lezen warns on unanswered questions; active nav item.
+- **Removed the 4 seed reviews** (§11 `MOCK_REVIEWS`) — they looked like real testimonials. Gorusler copy now says reviews are local-only.
+- `data/woorden/w_2023/24/25.js` untracked + gitignored (derived from CvTE exams).
+- Merged the parallel "Sınav rehberleri" commit (`ad31fef`) — only `index.html` ?v= conflicted. Current cache-busting: `i18n?v=19`, `bootstrap?v=3`, `store?v=3`, `lezen?v=7`, `woorden?v=7`, `productief?v=3`, `data-files?v=10`, `app?v=15`, `css?v=17`.
+
 ---
 
 ## 5. QA findings (3 subagents, read-only audit — 2026-06-21)

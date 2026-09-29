@@ -51,23 +51,34 @@
     return false;
   }
 
-  // ---- pronunciation: audio/woorden/<slug>.mp3 (tools/gen_woorden_audio.js) ----
-  // Keep spreekTekst/woordSlug in sync with tools/gen_woorden_audio.js.
+  // ---- pronunciation (tools/gen_woorden_audio.js) ----
+  // Words: audio/woorden/<slug>.mp3 \u00b7 example sentences: audio/zinnen/<hash>.mp3.
+  // Keep spreekTekst/woordSlug/zinHash in sync with tools/gen_woorden_audio.js.
   function spreekTekst(woord) { return String(woord || "").replace(/\(.*?\)/g, "").trim(); }
   function woordSlug(woord) {
     return spreekTekst(woord).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
       .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
   }
+  // FNV-1a (32-bit) over the trimmed sentence.
+  function zinHash(zin) {
+    var t = String(zin || "").trim(), h = 0x811c9dc5;
+    for (var i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+    return ("0000000" + h.toString(16)).slice(-8);
+  }
 
   var huidigeAudio = null;
-  function spreekUit(woord) {
+  function spreekUit(woord) { speel("audio/woorden/" + woordSlug(woord) + ".mp3", spreekTekst(woord)); }
+  function spreekZin(zin) { speel("audio/zinnen/" + zinHash(zin) + ".mp3", String(zin).trim()); }
+
+  function speel(url, tekst) {
     if (huidigeAudio) { huidigeAudio.pause(); }
-    var audio = new Audio("audio/woorden/" + woordSlug(woord) + ".mp3");
+    if (window.speechSynthesis) { window.speechSynthesis.cancel(); }
+    var audio = new Audio(url);
     huidigeAudio = audio;
-    // No MP3 (new word not generated yet): fall back to the browser's Dutch voice.
+    // No MP3 (new word/sentence not generated yet): fall back to the browser's Dutch voice.
     audio.onerror = function () {
-      if (!window.speechSynthesis) { return; }
-      var u = new SpeechSynthesisUtterance(spreekTekst(woord));
+      if (!window.speechSynthesis || huidigeAudio !== audio) { return; }
+      var u = new SpeechSynthesisUtterance(tekst);
       u.lang = "nl-NL";
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(u);
@@ -148,7 +159,8 @@
         if (item.tr) { html += '<span class="gloss gloss-tr">TR: ' + escapeHtml(item.tr) + '</span>'; }
         html += '</div>';
         if (item.voorbeeld) {
-          html += '<p class="flashcard-voorbeeld"><em>' + escapeHtml(INB.t("example_label")) + ':</em> ' + escapeHtml(item.voorbeeld) + '</p>';
+          html += '<p class="flashcard-voorbeeld"><em>' + escapeHtml(INB.t("example_label")) + ':</em> ' + escapeHtml(item.voorbeeld) +
+            ' <button type="button" class="say-btn" data-say-zin="' + i + '" aria-label="' + escapeHtml(INB.t("luister_play")) + '">🔊</button></p>';
         }
         html += '</div>';
       }
@@ -159,6 +171,12 @@
       for (var s = 0; s < sayBtns.length; s++) {
         sayBtns[s].addEventListener("click", function (ev) {
           spreekUit(items[parseInt(ev.currentTarget.getAttribute("data-say"), 10)].woord);
+        });
+      }
+      var zinBtns = subContainer.querySelectorAll("[data-say-zin]");
+      for (var z = 0; z < zinBtns.length; z++) {
+        zinBtns[z].addEventListener("click", function (ev) {
+          spreekZin(items[parseInt(ev.currentTarget.getAttribute("data-say-zin"), 10)].voorbeeld);
         });
       }
     }
