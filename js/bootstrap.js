@@ -142,4 +142,81 @@
     }
     return out;
   };
+
+  /**
+   * Helper to format multiline text safely for guide content.
+   */
+  function escapeGuideHtml(str) {
+    if (!str) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\n/g, "<br>");
+  }
+
+  /**
+   * Render collapsible exam guide HTML banner for a given exam component (`vak`).
+   * @param {string} vak ("spreken"|"schrijven"|"lezen"|"knm"|"luisteren")
+   * @returns {string}
+   */
+  INB.renderExamGuideHtml = function (vak) {
+    if (!vak) return "";
+    var format = INB.t("guide_" + vak + "_format");
+    var questions = INB.t("guide_" + vak + "_questions");
+    var scoring = INB.t("guide_" + vak + "_scoring");
+    var tips = INB.t("guide_" + vak + "_tips");
+
+    var html = '<div class="exam-guide-wrapper">';
+    html += '<button type="button" class="exam-guide-toggle-btn" aria-expanded="false">';
+    html += '<span class="guide-toggle-left">' + escapeGuideHtml(INB.t("guide_toggle_open")) + '</span>';
+    html += '<span class="guide-toggle-arrow">▾</span>';
+    html += '</button>';
+    html += '<div class="exam-guide-drawer" style="display:none;">';
+    html += '<div class="guide-grid">';
+
+    html += '<div class="guide-cell">';
+    html += '<div class="guide-cell-header"><span class="cell-ico">⏱️</span> <strong>' + escapeGuideHtml(INB.t("guide_sec_format")) + '</strong></div>';
+    html += '<div class="guide-cell-body">' + escapeGuideHtml(format) + '</div>';
+    html += '</div>';
+
+    html += '<div class="guide-cell">';
+    html += '<div class="guide-cell-header"><span class="cell-ico">❓</span> <strong>' + escapeGuideHtml(INB.t("guide_sec_questions")) + '</strong></div>';
+    html += '<div class="guide-cell-body">' + escapeGuideHtml(questions) + '</div>';
+    html += '</div>';
+
+    html += '<div class="guide-cell">';
+    html += '<div class="guide-cell-header"><span class="cell-ico">🎯</span> <strong>' + escapeGuideHtml(INB.t("guide_sec_scoring")) + '</strong></div>';
+    html += '<div class="guide-cell-body">' + escapeGuideHtml(scoring) + '</div>';
+    html += '</div>';
+
+    html += '<div class="guide-cell">';
+    html += '<div class="guide-cell-header"><span class="cell-ico">🚀</span> <strong>' + escapeGuideHtml(INB.t("guide_sec_tips")) + '</strong></div>';
+    html += '<div class="guide-cell-body">' + escapeGuideHtml(tips) + '</div>';
+    html += '</div>';
+
+    html += '</div>'; // guide-grid
+    html += '</div>'; // exam-guide-drawer
+    html += '</div>'; // exam-guide-wrapper
+    return html;
+  };
+
+  /**
+   * Attach click listener to toggle the exam guide accordion.
+   * @param {HTMLElement} container
+   */
+  INB.wireExamGuide = function (container) {
+    if (!container) return;
+    var btn = container.querySelector(".exam-guide-toggle-btn");
+    var drawer = container.querySelector(".exam-guide-drawer");
+    var arrow = container.querySelector(".guide-toggle-arrow");
+    if (!btn || !drawer) return;
+    btn.addEventListener("click", function () {
+      var isClosed = drawer.style.display === "none";
+      drawer.style.display = isClosed ? "block" : "none";
+      btn.classList.toggle("is-open", isClosed);
+      btn.setAttribute("aria-expanded", isClosed ? "true" : "false");
+      if (arrow) arrow.textContent = isClosed ? "▴" : "▾";
+    });
+  };
 })();

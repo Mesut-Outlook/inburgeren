@@ -9,13 +9,17 @@
 
   INB.registerWoorden({
     id: "a2-woorden-schrijven",
-    titel: "Yazma Sınavı Kelimeleri — Schrijven Woorden",
+    titel: {
+      nl: "Schrijven — Woordenschat",
+      en: "Writing — Vocabulary",
+      tr: "Yazma Sınavı Kelimeleri"
+    },
     bronExamen: "a2-schrijven-4",
     icoon: "✍️",
     intro: {
-      nl: "Leer de belangrijkste woorden uit de nieuwe yazma (schrijven) examens.",
-      en: "Learn the most important words from the new writing exams.",
-      tr: "Yeni yazma sınavlarında geçen en önemli kelimeleri öğrenin."
+      nl: "Leer de belangrijkste woorden uit de schrijfexamens.",
+      en: "Learn the most important words from the writing exams.",
+      tr: "Yazma sınavlarında geçen en önemli kelimeleri öğrenin."
     },
     items: [
       { woord: "de verhuurder", nl: "de persoon of organisatie van wie je een huis huurt", en: "landlord / lessor", tr: "ev sahibi / kiraya veren", voorbeeld: "Ik moet de verhuurder bellen over de lekkage." },
